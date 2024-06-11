@@ -1,0 +1,30 @@
+.mypageMenu .flex-row {
+  align-items: flex-start;
+  display: flex;
+  gap: 94px;
+  margin-top: 27px;
+  min-width: 214px;
+}
+
+.mypageMenu .avatar {
+  height: 60px;
+  width: 60px;
+}
+
+.mypageMenu .overlap-group {
+  align-items: center;
+  background-color: var(--gray);
+  border-radius: 200px;
+  display: flex;
+  height: 60px;
+  min-width: 60px;
+  padding: 0 15px;
+}
+
+.mypageMenu .text-1-1 {
+  color: var(--black);
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  width: 60px;
+}

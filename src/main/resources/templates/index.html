@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
+  <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
+  <meta name="viewport" content="width=1440, maximum-scale=1.0" />
+  <link rel="shortcut icon" type="image/png" th:href="@{https://animaproject.s3.amazonaws.com/home/favicon.png}" />
+  <meta name="og:type" content="website" />
+  <meta name="twitter:card" content="photo" />
+  <link th:href="@{/css/navbar.css}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{css/mainpage.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{css/styleguide.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{css/globals.css}" />
+</head>
+<body style="margin: 0; background: #ffffff">
+<input type="hidden" id="anPageName" name="page" th:value="u4358u4454u4363u4469u4523-u4369u4454u4363u4469u4364u4469" />
+<div class="container-center-horizontal">
+  <div class="mainpage screen">
+    <div th:replace="fragments/navbar"></div>
+    <div class="header-with-image">
+      <div class="text-146 title">책과 함께하는 즐거운 시간</div>
+      <span class="text-147 valign-text-middle subheading">책을 찾고, 리뷰를 공유하고, 더 나은 독서 경험을 만들어 보세요!</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

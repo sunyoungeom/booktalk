@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
+    <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
+    <meta name="viewport" content="width=1442, maximum-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" th:href="@{https://animaproject.s3.amazonaws.com/home/favicon.png}" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/mypage/mypageMenu.css}" rel="stylesheet" type="text/css" />
+
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/css/mypage/reviews-like.css}"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
+  </head>
+  <body style="margin: 0; background: #ffffff">
+    <input
+      type="hidden"
+      id="anPageName"
+      name="page"
+      value="reviews-like"
+    />
+    <div class="container-center-horizontal">
+      <div
+        class="reviews-like screen"
+      >
+        <div class="overlap-group">
+          <div th:replace="fragments/navbar :: navbar"></div>
+
+          <h1 class="text-31 inter-semi-bold-black-24px">마이페이지</h1>
+
+        </div>
+
+        <div class="flex-row">
+          <a th:href="@{/mypage/info}">
+            <img class="avatar-1" src="/img/avatar.svg" alt="Avatar"/>
+          </a>
+          <div class="overlap-group1">
+            <a th:href="@{/mypage/reviews/my}">
+              <img class="icon" src="/img/-icon.svg" alt="Icon"/>
+            </a>
+          </div>
+        </div>
+        <div class="text-container small-text">
+          <div class="text-3-1">회원정보</div>
+          <div class="text-3-1">리뷰보기</div>
+        </div>
+
+        <div class="flex-row-1">
+          <div class="text-36 manrope-bold-mirage-24px">리뷰보기</div>
+          <div class="search">
+            <img class="search-1" src="/img/search.svg" alt="search" />
+            <div class="label presetsbody2">Search</div>
+          </div>
+          <div class="segmented-control">
+            <div class="item-3 item"><div class="text-34 valign-text-middle small-text">내가쓴</div></div>
+            <div class="item-4 item"><div class="text-35 valign-text-middle small-text">좋아요한</div></div>
+          </div>
+        </div>
+        <div class="feed">
+          <div class="post-1">
+            <div class="avatar"><img class="rectangle-1" src="/img/rectangle-1-1.png" alt="Rectangle 1" /></div>
+            <div class="content">
+              <div class="person">
+                <div class="frame-2610450 frame">
+                  <div class="text-42 small-text">유저 닉네임1</div>
+                  <div class="text presetsbody2">미움받을 용기</div>
+                </div>
+                <div class="text-1 presetsbody2">2시간 전</div>
+              </div>
+              <div class="text-2 inter-normal-black-20px">리뷰 내용1</div>
+              <div class="icons">
+                <div class="likes">
+                  <img class="heart" src="/img/heart-3.svg" alt="heart" />
+                  <div class="address small-text">6 likes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="post">
+            <div class="avatar"><img class="rectangle-1-1" src="/img/rectangle-1-2@2x.png" alt="Rectangle 1" /></div>
+            <div class="content">
+              <div class="person">
+                <div class="frame-2610450 frame">
+                  <div class="text-46 small-text">유저 닉네임2</div>
+                  <div class="text presetsbody2">미움받을 용기</div>
+                </div>
+                <div class="text-1 presetsbody2">3시간 전</div>
+              </div>
+              <div class="text-2 inter-normal-black-20px">리뷰 내용2</div>
+              <div class="icons">
+                <div class="frame-2610462 frame">
+                  <img class="heart-5" src="/img/heart-3.svg" alt="heart" />
+                  <div class="address-5 small-text">4 likes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="post">
+            <div class="avatar"><img class="rectangle-1" src="/img/rectangle-1-3@2x.png" alt="Rectangle 1" /></div>
+            <div class="content">
+              <div class="person">
+                <div class="frame-2610450 frame">
+                  <div class="text-50 small-text">유저 닉네임3</div>
+                  <div class="text presetsbody2">미움받을 용기</div>
+                </div>
+                <div class="text-1 presetsbody2">6시간 전</div>
+              </div>
+              <div class="text-2 inter-normal-black-20px">리뷰 내용3</div>
+              <div class="icons">
+                <div class="frame-2610462-4">
+                  <img class="heart-5" src="/img/heart-3.svg" alt="heart" />
+                  <div class="address-5 small-text">85 likes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="post">
+            <div class="avatar"><img class="rectangle-1" src="/img/rectangle-1-3@2x.png" alt="Rectangle 1" /></div>
+            <div class="content">
+              <div class="person">
+                <div class="frame-2610450 frame">
+                  <div class="text-54 small-text">유저 닉네임4</div>
+                  <div class="text presetsbody2">미움받을 용기</div>
+                </div>
+                <div class="text-1 presetsbody2">6시간 전</div>
+              </div>
+              <div class="text-2 inter-normal-black-20px">리뷰 내용4</div>
+              <div class="icons">
+                <div class="frame-2610462-4">
+                  <img class="heart-5" src="/img/heart-3.svg" alt="heart" />
+                  <div class="address-5 small-text">85 likes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="post">
+            <div class="avatar"><img class="rectangle-1" src="/img/rectangle-1-3@2x.png" alt="Rectangle 1" /></div>
+            <div class="content">
+              <div class="person">
+                <div class="frame-2610450 frame">
+                  <div class="text-58 small-text">유저 닉네임5</div>
+                  <div class="text presetsbody2">미움받을 용기</div>
+                </div>
+                <div class="text-1 presetsbody2">6시간 전</div>
+              </div>
+              <div class="text-2 inter-normal-black-20px">리뷰 내용5</div>
+              <div class="icons">
+                <div class="frame-2610462-4">
+                  <img class="heart-5" src="/img/heart-3.svg" alt="heart" />
+                  <div class="address-5 small-text">85 likes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination">
+          <div class="pagination-button-group">
+            <div class="pagination-button-group-base-1 pagination-button-group-base-4">
+              <img class="arrow" src="/img/arrow-left-2.svg" alt="arrow-left" />
+            </div>
+            <div class="pagination-button-group-base-2 pagination-button-group-base-4">
+              <div class="x-line"></div>
+              <div class="content-1"><div class="text-5 text-smmedium">1</div></div>
+              <div class="x-line"></div>
+            </div>
+            <img class="divider-1" src="/img/divider.svg" alt="Divider" />
+            <div class="pagination-button-group-base">
+              <div class="x-line"></div>
+              <div class="content-1"><div class="text-4 text-smmedium">2</div></div>
+              <div class="x-line"></div>
+            </div>
+            <img class="divider-1" src="/img/divider.svg" alt="Divider" />
+            <div class="pagination-button-group-base">
+              <div class="x-line"></div>
+              <div class="content-1"><div class="text-4 text-smmedium">...</div></div>
+              <div class="x-line"></div>
+            </div>
+            <img class="divider-1" src="/img/divider.svg" alt="Divider" />
+            <div class="pagination-button-group-base">
+              <div class="x-line"></div>
+              <div class="content-1"><div class="text-4 text-smmedium">9</div></div>
+              <div class="x-line"></div>
+            </div>
+            <img class="divider-1" src="/img/divider.svg" alt="Divider" />
+            <div class="pagination-button-group-base">
+              <div class="x-line"></div>
+              <div class="content-1"><div class="text-4 text-smmedium">10</div></div>
+              <div class="x-line"></div>
+            </div>
+            <div class="pagination-button-group-base-3 pagination-button-group-base-4">
+              <img class="arrow" src="/img/arrow-right-2.svg" alt="arrow-right" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

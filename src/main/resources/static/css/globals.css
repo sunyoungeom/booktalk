@@ -1,0 +1,249 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url("https://fonts.googleapis.com/css?family=Inter:400,600|Poppins:400,600");
+/* The following line is used to measure usage of this code. You can remove it if you want. */
+@import url("https://px.animaapp.com/665702e4c69f864c505724f7.665702e5c69f864c505724fa.DQlns0K.hcp.png");
+
+
+
+.screen a {
+  display: contents;
+  text-decoration: none;
+}
+
+.container-center-horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+}
+
+.container-center-horizontal > * {
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+
+.valign-text-middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.frame-1 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 9px;
+  justify-content: center;
+  position: relative;
+}
+
+.button-name {
+  color: var(--gray600);
+  font-weight: 400;
+  line-height: 26px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.shape {
+  border: 1px solid;
+  border-color: var(--blue-gray400);
+  border-radius: 5px;
+  height: 19px;
+  width: 24px;
+}
+
+.span0 {
+  color: #71717a;
+}
+
+.span1 {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.button-primary-with-icon-3 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 65px;
+  justify-content: center;
+  padding: 16px;
+}
+
+.items {
+  align-items: center;
+  display: inline-flex;
+  gap: 40px;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.button {
+  align-items: center;
+  background-color: var(--black);
+  border-radius: 8px;
+  box-shadow: 0px 1px 2px #0000000d;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: center;
+  padding: 14px 24px;
+  position: relative;
+}
+
+.icon {
+  height: 30px;
+  width: 30px;
+}
+
+.text-container {
+  align-items: flex-start;
+  display: flex;
+  gap: 94px;
+  height: 24px;
+  margin-top: 13px;
+  min-width: 214px;
+}
+
+.search-1 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.person {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.frame-2610450 {
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.icons {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.likes {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.rectangle-1-1 {
+  height: 48px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 48px;
+}
+
+.frame-2610462 {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.pagination-button-group {
+  align-items: flex-start;
+  box-shadow: 0px 1px 2px #1018280d;
+  display: inline-flex;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.pagination-button-group-base-1 {
+  background-color: var(--basewhite);
+  border: 1px solid;
+  border-color: var(--gray300);
+  border-radius: 8px 0px 0px 8px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.arrow {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.pagination-button-group-base-2 {
+  background-color: var(--gray50);
+  flex-direction: column;
+}
+
+.x-line {
+  align-self: stretch;
+  background-color: var(--gray300);
+  height: 1px;
+  position: relative;
+  width: 100%;
+}
+
+.pagination-button-group-base {
+  align-items: center;
+  background-color: var(--basewhite);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 40px;
+}
+
+.pagination-button-group-base-3 {
+  background-color: var(--basewhite);
+  border: 1px solid;
+  border-color: var(--gray300);
+  border-radius: 0px 8px 8px 0px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.frame {
+  align-items: center;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.pagination-button-group-base-4 {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 40px;
+}
+
+.text-13 {
+  color: var(--black);
+  font-weight: 500;
+  line-height: 30px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}

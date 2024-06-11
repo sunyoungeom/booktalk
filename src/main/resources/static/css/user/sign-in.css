@@ -1,0 +1,185 @@
+/* screen - sign-in */
+
+.sign-in {
+  align-items: flex-start;
+  background-color: var(--basewhite);
+  display: flex;
+  height: 965px;
+  min-width: 1442px;
+}
+
+.sign-in .x1 {
+  align-items: center;
+  background-color: var(--blue-gray50);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 965px;
+  padding: 160px 0;
+  width: 1442px;
+}
+
+.sign-in .text-1 {
+  color: var(--base02);
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-xxxl);
+  font-weight: 600;
+  letter-spacing: -2.00px;
+  line-height: 62px;
+  text-align: center;
+  width: 573px;
+}
+
+.sign-in .overlap-group1 {
+  align-items: center;
+  background-color: var(--basewhite);
+  border-radius: 20px;
+  box-shadow: 0px 10px 15px #00000008 , 0px 3px 11px #0000000f;
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.9px;
+  min-height: 494px;
+  padding: 30px 19.8px;
+  width: 480px;
+}
+
+.sign-in .button-primary-with-icon {
+  align-items: center;
+  background-color: var(--basewhite);
+  border: 1px solid;
+  border-color: var(--mercury);
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 65px;
+  justify-content: center;
+  margin-right: 0.51px;
+  margin-top: 10px;
+  padding: 16px;
+  position: relative;
+  width: 426px;
+}
+
+.sign-in .button-primary-with-icon-1 {
+  background-color: var(--basewhite);
+  border: 1px solid;
+  border-color: var(--mercury);
+  border-radius: 9px;
+  margin-right: 0.51px;
+  margin-top: 24px;
+  position: relative;
+  width: 426px;
+}
+
+.sign-in .text {
+  align-items: flex-start;
+  display: flex;
+  margin-left: 3.4px;
+  margin-top: 26px;
+  min-width: 430px;
+}
+
+.sign-in .check {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  height: 22px;
+  min-width: 127px;
+}
+
+.sign-in .text-3 {
+  color: var(--base02);
+  font-weight: 400;
+  line-height: 22px;
+  width: 89px;
+}
+
+.sign-in .text-4 {
+  color: var(--base02);
+  font-weight: 400;
+  line-height: 22px;
+  margin-left: 130px;
+  width: 73px;
+}
+
+.sign-in .text-2 {
+  color: var(--base02);
+  font-weight: 400;
+  line-height: 22px;
+  margin-left: 9px;
+  width: 87px;
+}
+
+.sign-in .light-button {
+  align-items: center;
+  background-color: var(--black);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  height: 65px;
+  justify-content: center;
+  margin-right: 1.8px;
+  margin-top: 22px;
+  overflow: hidden;
+  padding: 0px 32px;
+  position: relative;
+  width: 424px;
+}
+
+.sign-in .text-6 {
+  color: var(--basewhite);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.sign-in .overlap-group {
+  align-self: flex-end;
+  border-radius: 4px;
+  height: 65px;
+  margin-top: 24px;
+  position: relative;
+  width: 425px;
+}
+
+.sign-in .button-primary-with-icon-2 {
+  background-color: var(--blue-gray50);
+  border-radius: 4px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 425px;
+}
+
+.sign-in .button-name-1 {
+  color: var(--blue-gray800);
+  font-weight: 600;
+  line-height: 28px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.sign-in .google-2 {
+  height: 23px;
+  left: 99px;
+  position: absolute;
+  top: 21px;
+  width: 22px;
+}
+
+.sign-in .text-5 {
+  color: transparent;
+  font-weight: 400;
+  height: 22px;
+  line-height: 22px;
+  margin-right: 0.9px;
+  margin-top: 24px;
+  text-align: center;
+  width: 400px;
+}
