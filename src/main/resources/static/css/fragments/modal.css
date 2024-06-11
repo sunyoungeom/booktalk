@@ -1,0 +1,138 @@
+.modal {
+    -webkit-backdrop-filter: blur(16px) brightness(100%);
+    backdrop-filter: blur(16px) brightness(100%);
+    background-color: #344053b2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-1 {
+    background-color: var(--basewhite);
+    border-radius: 12px;
+    box-shadow: 0px 8px 8px -4px #10182808, 0px 20px 24px -4px #10182814;
+    padding: 24px;
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.content-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.text-and-supporting-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.text-17 {
+    color: var(--gray900);
+    font-weight: 500;
+    line-height: 28px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.form-item {
+    width: 100%;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.label-1, .label-2 {
+    color: var(--gray700);
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.input-2, .input-3 {
+    display: flex;
+    align-items: center;
+    background-color: var(--basewhite);
+    border: 1px solid var(--gray300);
+    border-radius: 8px;
+    box-shadow: 0px 1px 2px #1018280d;
+    padding: 10px 14px;
+    width: 100%;
+}
+
+.content-1 {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: 8px;
+}
+
+.text-8 {
+    color: var(--gray900);
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.button-base {
+    background-color: var(--basewhite);
+    border: 1px solid var(--gray300);
+    box-shadow: 0px 1px 2px #1018280d;
+    padding: 10px 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.text-18 {
+    color: var(--gray700);
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.button-base-1 {
+    background-color: var(--black);
+    border: 1px solid var(--primary600);
+    box-shadow: 0px 1px 2px #1018280d;
+    padding: 10px 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: var(--basewhite);
+}
+
+.small-text {
+    white-space: nowrap;
+}

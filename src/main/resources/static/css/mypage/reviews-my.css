@@ -1,0 +1,512 @@
+/* screen - reviews-my */
+
+.reviews-my {
+  align-items: center;
+  background-color: var(--basewhite);
+  display: flex;
+  flex-direction: column;
+  height: 1191px;
+  width: 1440px;
+}
+
+.reviews-my .overlap-group2 {
+  height: 189px;
+  margin-right: 2.0px;
+  position: relative;
+  width: 1440px;
+}
+
+.reviews-my .text-62 {
+  left: 369px;
+  letter-spacing: 0;
+  line-height: 26.4px;
+  position: absolute;
+  top: 163px;
+  width: 755px;
+}
+
+.reviews-my .text-96 {
+  height: 36px;
+  letter-spacing: 0;
+  line-height: 36px;
+  margin-bottom: 2.0px;
+  margin-left: 10px;
+  min-width: 67px;
+  white-space: nowrap;
+}
+
+.reviews-my .text-9 {
+  color: var(--black);
+  font-weight: 500;
+  line-height: 30px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.reviews-my .text-94 {
+  -webkit-text-stroke: 1px var(--black);
+  color: var(--black);
+  font-weight: 500;
+  line-height: 30px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.reviews-my .text-95 {
+  color: var(--basewhite);
+  font-weight: 500;
+  line-height: 24px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.reviews-my .flex-row {
+  align-items: flex-start;
+  display: flex;
+  gap: 94px;
+  margin-top: 27px;
+  min-width: 214px;
+}
+
+.reviews-my .avatar {
+  height: 60px;
+  width: 60px;
+}
+
+.reviews-my .overlap-group1 {
+  align-items: center;
+  background-color: var(--gray);
+  border-radius: 200px;
+  display: flex;
+  height: 60px;
+  min-width: 60px;
+  padding: 0 15px;
+
+}
+
+.reviews-my .text-6 {
+  color: var(--black);
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  width: 60px;
+}
+
+.reviews-my .flex-row-1 {
+  align-items: center;
+  display: flex;
+  margin-right: 2.0px;
+  margin-top: 50px;
+  min-width: 702px;
+}
+
+.reviews-my .text-91 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: 1.0px;
+  min-height: 33px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 91px;
+}
+
+.reviews-my .search {
+  align-items: center;
+  background-color: var(--basewhite);
+  border: 1px solid;
+  border-color: var(--bon-jour);
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  height: 40px;
+  margin-left: 34px;
+  padding: 8px 16px 8px 12px;
+  position: relative;
+  width: 413px;
+}
+
+.reviews-my .label {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: var(--gray);
+  display: -webkit-box;
+  flex: 1;
+  font-weight: 400;
+  line-height: 24px;
+  margin-top: -1.00px;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+}
+
+.reviews-my .segmented-control {
+  align-items: flex-start;
+  background-color: var(--black-haze);
+  border-radius: 8px;
+  display: flex;
+  margin-left: 13px;
+  padding: 4px;
+  position: relative;
+  width: 151px;
+}
+
+.reviews-my .item-1 {
+  background-color: var(--basewhite);
+  box-shadow: 0px 1px 2px #0000000d;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.reviews-my .text-65 {
+  color: var(--black);
+  font-weight: 500;
+  line-height: 24px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.reviews-my .item-3 {
+  display: flex;
+  width: 71px;
+}
+
+.reviews-my .text-66 {
+  color: var(--black);
+  font-weight: 500;
+  line-height: 24px;
+  margin-right: -12.00px;
+  position: relative;
+  width: 59px;
+}
+
+.reviews-my .overlap-group {
+  height: 580px;
+  margin-top: 20px;
+  position: relative;
+  width: 706px;
+}
+
+.reviews-my .table {
+  align-items: flex-start;
+  background-color: var(--basewhite);
+  border-radius: 4px;
+  display: flex;
+  gap: 27px;
+  left: 1px;
+  position: absolute;
+  top: 0;
+  width: 704px;
+}
+
+.reviews-my .column {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: 511px;
+  position: relative;
+  width: 120px;
+}
+
+.reviews-my .head {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--neutral--100);
+  display: flex;
+  gap: 8px;
+  height: 59.33px;
+  padding: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.reviews-my .text-67 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-right: -8.00px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 112px;
+}
+
+.reviews-my .head-1 {
+  align-items: center;
+  background-color: var(--basewhite);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--neutral--100);
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 8px;
+  padding: 16px 8px;
+  width: 100%;
+}
+
+.reviews-my .frame-521 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin-right: -8.00px;
+  position: relative;
+  width: 112px;
+}
+
+.reviews-my .text {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: var(--neutral--800);
+  display: -webkit-box;
+  font-weight: 400;
+  height: 22px;
+  line-height: normal;
+  margin-top: -1.00px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 112px;
+}
+
+.reviews-my .text-7 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: var(--neutral--800);
+  display: -webkit-box;
+  font-weight: 400;
+  height: 22px;
+  line-height: normal;
+  margin-right: -5.00px;
+  margin-top: -1.00px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 117px;
+}
+
+.reviews-my .frame-521-1 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin-right: -13.00px;
+  position: relative;
+  width: 117px;
+}
+
+.reviews-my .text-72 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: var(--neutral--800);
+  display: -webkit-box;
+  font-weight: 400;
+  height: 22px;
+  line-height: normal;
+  margin-top: -1.00px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 117px;
+}
+
+.reviews-my .text-74 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: var(--neutral--800);
+  display: -webkit-box;
+  font-weight: 400;
+  height: 22px;
+  line-height: normal;
+  margin-right: -2.00px;
+  margin-top: -1.00px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 114px;
+}
+
+.reviews-my .column-1 {
+  width: 225px;
+}
+
+.reviews-my .head-title {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  flex: 1;
+  height: 19px;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+}
+
+.reviews-my .text-2 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  flex: 1;
+  height: 22px;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+}
+
+.reviews-my .column-2 {
+  width: 141px;
+}
+
+.reviews-my .date {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: var(--neutral--800);
+  display: -webkit-box;
+  flex: 1;
+  font-weight: 400;
+  height: 22px;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+}
+
+.reviews-my .column-3 {
+  width: 137px;
+}
+
+.reviews-my .head-3 {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--neutral--100);
+  height: 59.33px;
+  width: 100%;
+}
+
+.reviews-my .head-2 {
+  align-items: center;
+  background-color: var(--basewhite);
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 8px;
+  justify-content: center;
+  padding: 16px 40px;
+}
+
+.reviews-my .light-button {
+  align-items: center;
+  background-color: var(--neutral--100);
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 36px;
+  justify-content: center;
+  margin-bottom: -17.74px;
+  margin-left: -26.50px;
+  margin-right: -26.50px;
+  margin-top: -17.74px;
+  overflow: hidden;
+  padding: 0px 32px;
+  position: relative;
+}
+
+.reviews-my .text-3 {
+  color: var(--neutral--500);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.reviews-my .pagination {
+  align-items: center;
+  border-color: var(--gray200);
+  border-top-style: solid;
+  border-top-width: 1px;
+  display: flex;
+  height: 70px;
+  justify-content: center;
+  left: 0;
+  padding: 12px 24px 16px 0px;
+  position: absolute;
+  top: 510px;
+  width: 706px;
+}
+
+.reviews-my .content {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px 10px;
+  position: relative;
+}
+
+.reviews-my .text-5 {
+  color: var(--gray800);
+  font-weight: 500;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.reviews-my .divider {
+  height: 40px;
+  position: relative;
+  width: 1px;
+}
+
+.reviews-my .text-4 {
+  color: var(--gray700);
+  font-weight: 500;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.reviews-my .column-4 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: 511px;
+  position: relative;
+}
+
+.reviews-my .head-4 {
+  align-self: stretch;
+  position: relative;
+}
+
+.reviews-my .item {
+  align-items: center;
+  border-radius: 4px;
+  gap: 8px;
+  height: 32px;
+  padding: 0px 12px;
+  position: relative;
+}

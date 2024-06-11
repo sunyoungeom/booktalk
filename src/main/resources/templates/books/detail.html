@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
+    <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
+    <meta name="viewport" content="width=1440, maximum-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="css/detail.css"
+      th:href="@{/css/books/detail.css}"
+    />
+    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
+  </head>
+  <body style="margin: 0; background: #ffffff">
+    <input
+      type="hidden"
+      id="anPageName"
+      name="page"
+      value="detail"
+    />
+    <div class="container-center-horizontal">
+      <div
+        class="detail screen"
+      >
+        <div th:replace="fragments/navbar"></div>
+        <div class="flex-row">
+          <div class="image"></div>
+          <div class="overlap-group">
+            <div class="copy">
+              <div class="product-name inter-semi-bold-black-24px" th:text="${title}">미움받을 용기</div>
+              <div class="subheading-container small-text">
+                <div class="subheading-3 valign-text-middle small-text">카테고리</div>
+<!--                <div class="subheading valign-text-middle">카테고리</div>-->
+                <div class="subheading-1 valign-text-middle">교양심리</div>
+              </div>
+<!--              <div class="subheading-container small-text">-->
+              <div class="subheading-container-1 small-text">
+                <div class="subheading-3 valign-text-middle small-text">저자</div>
+<!--                <div class="subheading valign-text-middle">저자</div>-->
+                <div class="subheading-2 valign-text-middle">기시미 이치로, 고가 후미타케</div>
+              </div>
+<!--              <div class="flex-row-1">-->
+
+              <div class="subheading-container-1 small-text">
+<!--              <div class="subheading-container-1 small-text">-->
+                <div class="subheading-3 valign-text-middle small-text">발행</div>
+                <div class="price presetsbody2">2014-11-17</div>
+<!--                <div class="price presetsbody2">2014-11-17</div>-->
+              </div>
+                <a th:href="@{/reviews/list/{keyword}(keyword=${title})}" class="button-1 button-3">
+                    <div class="text-1 valign-text-middle small-text">리뷰 목록</div>
+                </a>
+
+            </div>
+              <a th:href="@{/reviews/write/{title}(title=${title})}" class="button-2 button-3">
+                  <div class="text-1 valign-text-middle small-text">리뷰 쓰기</div>
+              </a>
+          </div>
+        </div>
+        <h1 class="product-name-1 inter-semi-bold-black-24px">책소개</h1>
+        <p class="description valign-text-middle body-text">
+          인간은 변할 수 있고, 누구나 행복해 질 수 있다. 단 그러기 위해서는 ‘용기’가 필요하다고 말한 철학자가 있다. 바로
+          프로이트, 융과 함께 ‘심리학의 3대 거장’으로 일컬어지고 있는 알프레드 아들러다. 『미움받을 용기』는 아들러
+          심리학에 관한 일본의 1인자 철학자 기시미 이치로와 베스트셀러 작가인 고가 후미타케의 저서로, 아들러의 심리학을
+          ‘대화체’로 쉽고 맛깔나게 정리하고 있다. 아들러 심리학을 공부한 철학자와 세상에 부정적이고 열등감 많은..
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

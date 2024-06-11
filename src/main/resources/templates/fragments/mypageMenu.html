@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
+    <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
+    <meta name="viewport" content="width=1442, maximum-scale=1.0"/>
+    <link rel="shortcut icon" type="image/png" th:href="@{https://animaproject.s3.amazonaws.com/home/favicon.png}"/>
+    <meta name="og:type" content="website"/>
+    <meta name="twitter:card" content="photo"/>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" type="text/css"/>
+
+    <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/css/mypage/mypageMenu.css}"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}"/>
+</head>
+<body>
+
+<div th:fragment="mypageMenu">
+
+    <div class="flex-row">
+        <a th:href="@{/mypage/info}">
+            <img class="avatar" src="/img/avatar.svg" alt="Avatar"/>
+        </a>
+
+        <div class="overlap-group">
+            <a th:href="@{/mypage/reviews/my}">
+                <img class="icon" src="/img/-icon.svg" alt="Icon"/>
+            </a>
+        </div>
+    </div>
+    <div class="text-container small-text">
+
+        <div class="text-1-1">회원정보</div>
+        <div class="text-1-1">리뷰보기</div>
+    </div>
+</div>
+</body>
+</html>
