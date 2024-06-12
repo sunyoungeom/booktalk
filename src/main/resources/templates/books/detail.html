@@ -31,28 +31,21 @@
       >
         <div th:replace="fragments/navbar"></div>
         <div class="flex-row">
-          <div class="image"></div>
+            <div class="image" th:style="'background-image: url(' + ${detailBook.imgPath} + ');'"></div>
           <div class="overlap-group">
             <div class="copy">
-              <div class="product-name inter-semi-bold-black-24px" th:text="${title}">미움받을 용기</div>
+              <div class="product-name inter-semi-bold-black-24px" th:text="${detailBook.title}">미움받을 용기</div>
               <div class="subheading-container small-text">
                 <div class="subheading-3 valign-text-middle small-text">카테고리</div>
-<!--                <div class="subheading valign-text-middle">카테고리</div>-->
                 <div class="subheading-1 valign-text-middle">교양심리</div>
               </div>
-<!--              <div class="subheading-container small-text">-->
               <div class="subheading-container-1 small-text">
                 <div class="subheading-3 valign-text-middle small-text">저자</div>
-<!--                <div class="subheading valign-text-middle">저자</div>-->
-                <div class="subheading-2 valign-text-middle">기시미 이치로, 고가 후미타케</div>
+                <div class="subheading-2 valign-text-middle" th:text="${detailBook.author}">기시미 이치로, 고가 후미타케</div>
               </div>
-<!--              <div class="flex-row-1">-->
-
               <div class="subheading-container-1 small-text">
-<!--              <div class="subheading-container-1 small-text">-->
                 <div class="subheading-3 valign-text-middle small-text">발행</div>
-                <div class="price presetsbody2">2014-11-17</div>
-<!--                <div class="price presetsbody2">2014-11-17</div>-->
+                <div class="price presetsbody2" th:text="${detailBook.date}">2014-11-17</div>
               </div>
                 <a th:href="@{/reviews/list/{keyword}(keyword=${title})}" class="button-1 button-3">
                     <div class="text-1 valign-text-middle small-text">리뷰 목록</div>
@@ -65,7 +58,7 @@
           </div>
         </div>
         <h1 class="product-name-1 inter-semi-bold-black-24px">책소개</h1>
-        <p class="description valign-text-middle body-text">
+        <p class="description valign-text-middle body-text" th:text="${detailBook.content}">
           인간은 변할 수 있고, 누구나 행복해 질 수 있다. 단 그러기 위해서는 ‘용기’가 필요하다고 말한 철학자가 있다. 바로
           프로이트, 융과 함께 ‘심리학의 3대 거장’으로 일컬어지고 있는 알프레드 아들러다. 『미움받을 용기』는 아들러
           심리학에 관한 일본의 1인자 철학자 기시미 이치로와 베스트셀러 작가인 고가 후미타케의 저서로, 아들러의 심리학을

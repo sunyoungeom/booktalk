@@ -22,25 +22,6 @@ import java.util.Map;
 @Slf4j
 public class bookController {
 
-//    @GetMapping("/search")
-//    public String search(Model model) {
-//        // 베스트 셀러 리스트
-//        model.addAttribute("title", "미움받을 용기");
-//        return "books/search";
-//    }
-
-//    @RequestMapping("/search/{keyword}")
-//    public String searchBooks(@PathVariable String keyword, Model model) {
-//        model.addAttribute("keyword", keyword);
-//        System.out.println(keyword);
-//        return "books/search";
-//    }
-
-    @GetMapping("/detail/{title}")
-    public String detail(@PathVariable String title, Model model) {
-        model.addAttribute("title", title);
-        return "books/detail";
-    }
 
     @GetMapping("/search")
     public String getBooksSearch(Model model) {
@@ -55,14 +36,12 @@ public class bookController {
         }
     }
 
-
     private List<Map<String, String>> fetchBestSellers() throws IOException {
-//        List<String> elementList = new ArrayList<>();
         List<Map<String, String>> elementList = new ArrayList<>();
         String url = "https://www.yes24.com/Product/Category/BestSeller?categoryNumber=001&pageNumber=1&pageSize=24";
         Document doc = Jsoup.connect(url).get();
         Elements elements = doc.select(".img_bdr .lazy");
-        Elements elements1 = doc.select("span.authPub.info_auth a[href]");
+        Elements elements1 = doc.select("span.authPub.info_auth");
         Elements elements2 = doc.select("span.authPub.info_date");
 
         for (int i = 0; i < elements.size(); i++) {
@@ -75,14 +54,12 @@ public class bookController {
             String author = element1.text();
             String date = element2.text().replace("년 ", "-").replace("월", "");
 
-
             Map<String, String> elementMap = new HashMap<>();
             elementMap.put("title", title);
             elementMap.put("imgPath", imgPath);
             elementMap.put("author", author);
             elementMap.put("date", date);
 
-            // 리스트에 맵 추가
             elementList.add(elementMap);
         }
         log.info(elementList.toString());

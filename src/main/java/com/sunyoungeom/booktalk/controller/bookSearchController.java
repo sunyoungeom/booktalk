@@ -12,6 +12,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@RequestMapping("/books")
 public class bookSearchController {
 
     private final SearchService searchService;
@@ -21,16 +22,23 @@ public class bookSearchController {
         this.searchService = searchService;
     }
 
-    @GetMapping("/books/search/{query}/{page}")
+    @GetMapping("/search/{query}/{page}")
     public String searchBook(@PathVariable String query, @PathVariable Integer page, Model model) {
-//        return searchService.search(query);
         List<Book> books = searchService.search(query, page);
         model.addAttribute("bookList", books);
-        model.addAttribute("query", "🔎 " +query);
-        System.out.println("bookloist: " + books.toString());
+        model.addAttribute("query", "🔎 " + query);
         return "books/search";
     }
+
+    @GetMapping("/detail/{title}")
+    public String detail(@PathVariable String title, Model model) {
+        List<Book> detailBooks = searchService.search(title, 1);
+        Book detailBook = detailBooks.get(0);
+        model.addAttribute("detailBook", detailBook);
+        return "books/detail";
+    }
 }
+
 /*
  @RequestMapping("/search/{keyword}")
     public String searchBooks(@PathVariable String keyword, Model model) {
