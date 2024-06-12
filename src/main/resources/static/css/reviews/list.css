@@ -68,7 +68,6 @@
   display: flex;
   gap: 12px;
   margin-left: 1.0px;
-  margin-top: 47px;
   padding: 8px 16px 8px 12px;
   position: relative;
   width: 689px;
@@ -89,7 +88,7 @@
   display: flex;
   margin-left: 3.0px;
   margin-top: 30px;
-  min-width: 691px;
+  width: 689px;
 }
 
 .list .text-114 {
@@ -108,10 +107,10 @@
   display: flex;
   gap: 16px;
   height: 40px;
-  margin-left: 72px;
+  margin-left: 102px;
   padding: 8px 16px;
   position: relative;
-  width: 208px;
+  width: 250px;
 }
 
 .list .label-1 {
@@ -126,18 +125,39 @@
 
 .list .segmented-control {
   align-items: flex-start;
-  background-color: var(--black-haze);
-  border-radius: 8px;
-  display: inline-flex;
-  margin-left: 21px;
-  padding: 4px;
-  position: relative;
+   background-color: var(--black-haze);
+   border-radius: 8px;
+   display: inline-flex;
+   margin-left: 9px;
+   padding: 4px;
+   position: relative;
 }
 
 .list .item-1 {
   background-color: var(--basewhite);
   box-shadow: 0px 1px 2px #0000000d;
 }
+
+.list .item {
+  align-items: center;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 32px;
+  padding: 0px 12px;
+  position: relative;
+}
+
+.list .text-1-1 {
+  color: var(--black);
+  font-weight: 500;
+  line-height: 24px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
 
 .list .text-11 {
   color: var(--black);
@@ -150,50 +170,168 @@
 
 .list .feed {
   align-items: flex-end;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  gap: 32px;
-  margin-right: 1.0px;
-  margin-top: 10px;
-  overflow: hidden;
-  position: relative;
-  width: 689px;
+  height: 1753px;
+
 }
 
-.list .post-1 {
-  margin-left: -1.00px;
-  width: 690px;
-}
-
-.list .avatar {
-  background-color: var(--black-haze);
-  border-radius: 1000px;
-  height: 48px;
-  overflow: hidden;
-  position: relative;
-  width: 48px;
-}
-
-.list .rectangle-1 {
-  height: 48px;
-  left: 0;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  width: 48px;
-}
-
-.list .content {
+.list .review {
   align-items: flex-start;
+  background-color: var(--basewhite);
+  border-radius: 4px;
   display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 26px;
+  padding: 16px;
+  position: relative;
+  width: 670px;
+}
+
+.list .top {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 15px;
+  position: relative;
+  width: 100%;
+}
+
+.list .image {
+   height: 40px;
+   object-fit: cover;
+   position: relative;
+   width: 40px;
+   border-radius: 1000px;
+
+}
+
+
+
+
+.list .name {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.list .first-last {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.list .username {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: 15.6px;
+  margin-top: 8px;
+  position: relative;
+}
+
+.list .component-13 {
+  flex: 0 0 auto;
+  position: relative;
+  width: 124px;
+}
+
+.list .container-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
   gap: 16px;
-  justify-content: center;
   position: relative;
-  width: 600px;
+  width: 100%;
+  margin-left: 30px;
 }
 
-.list .text-102 {
+.list .paragraph {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.list .text-3 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  align-self: stretch;
+  display: -webkit-box;
+  height: 88px;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+}
+
+.list .dropdown {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.list .text-4 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -0.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.list .date {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+}
+
+.list .icons {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+  margin-left:30px;
+}
+
+.list .frame-2610462-1 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  position: relative;
+  width: 403px;
+}
+
+.list .heart {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.list .address {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   color: var(--black);
@@ -208,35 +346,46 @@
   width: fit-content;
 }
 
-.list .text-1 {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  color: var(--gray);
-  display: -webkit-box;
-  font-weight: 400;
-  line-height: 24px;
-  margin-top: -1.00px;
-  overflow: hidden;
+.list .head {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--basewhite);
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 16px 8px;
   position: relative;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  width: 108px;
+}
+
+.list .light-button-1 {
+  background-color: var(--neutral--100);
+  margin-left: -1.00px;
+  margin-right: -1.00px;
+}
+
+.list .text-5 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  text-align: center;
   width: fit-content;
 }
 
-.list .text-1-1 {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  color: var(--gray);
-  display: -webkit-box;
-  font-weight: 400;
-  line-height: 24px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.list .light-button-2 {
+  background-color: #991b1b;
+  margin-left: -1.00px;
+  margin-right: -1.00px;
 }
 
-.list .text-1-2 {
-  letter-spacing: 0;
-  line-height: 30px;
+.list .text-6 {
+  color: var(--basewhite);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
 }
 
 .list .divider {
@@ -247,41 +396,7 @@
   width: 100%;
 }
 
-.list .post {
-  width: 689px;
-}
-
-.list .text-106 {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  color: var(--black);
-  display: -webkit-box;
-  font-weight: 500;
-  line-height: 24px;
-  margin-top: -1.00px;
-  overflow: hidden;
-  position: relative;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: fit-content;
-}
-
-.list .text-110 {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  color: var(--black);
-  display: -webkit-box;
-  font-weight: 500;
-  line-height: 24px;
-  margin-top: -1.00px;
-  overflow: hidden;
-  position: relative;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: fit-content;
-}
-
-.list .frame-2610462-1 {
+.list .frame-2610462 {
   align-items: center;
   display: inline-flex;
   flex: 0 0 auto;
@@ -289,61 +404,46 @@
   position: relative;
 }
 
-.list .address-3 {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  color: var(--black);
-  display: -webkit-box;
-  font-weight: 500;
-  line-height: 24px;
-  margin-top: -1.00px;
-  overflow: hidden;
-  position: relative;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: fit-content;
-}
-
-.list .heart-3 {
-  height: 24px;
-  position: relative;
-  width: 24px;
-}
-
-.list .item-2 {
-  align-items: center;
-  border-radius: 4px;
-  display: inline-flex;
-  flex: 0 0 auto;
-  gap: 8px;
-  height: 32px;
-  padding: 0px 12px;
-  position: relative;
-}
-
-.list .label-2 {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  color: var(--gray);
-  display: -webkit-box;
-  font-weight: 400;
-  line-height: 24px;
-  margin-top: -1.00px;
-  overflow: hidden;
-  position: relative;
-  text-overflow: ellipsis;
-}
-
-.list .post-2 {
+.list .review-1 {
   align-items: flex-start;
+  background-color: var(--basewhite);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  height: 329px;
+  padding: 16px;
+  position: relative;
+  width: 691px;
+}
+
+.list .divider-2 {
+  align-self: stretch;
+  background-color: var(--bon-jour);
+  height: 1px;
+  margin-bottom: -16.00px;
+  position: relative;
+  width: 100%;
+}
+
+.list .paragraph-5 {
+  align-items: flex-start;
+  align-self: stretch;
   display: flex;
   flex: 0 0 auto;
-  gap: 16px;
-  padding: 8px;
+  flex-direction: column;
+  gap: 4px;
   position: relative;
 }
 
-.list .text-1-3 {
+.list .top-5 {
+  align-items: flex-start;
   align-self: stretch;
+  display: flex;
+
+  gap: 15px;
   position: relative;
+  width: 100%;
 }
+
+

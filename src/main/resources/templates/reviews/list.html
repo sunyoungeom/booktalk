@@ -1,108 +1,117 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
-    <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
-    <meta name="viewport" content="width=1442, maximum-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
-    <meta name="og:type" content="website" />
-    <meta name="twitter:card" content="photo" />
-    <link rel="stylesheet" type="text/css" href="/css/reviews/list.css" />
-    <link rel="stylesheet" type="text/css" href="/css/styleguide.css" />
-    <link rel="stylesheet" type="text/css" href="/css/globals.css" />
-  </head>
-  <body style="margin: 0; background: #ffffff">
-    <input type="hidden" id="anPageName" name="page" value="list" />
-    <div class="container-center-horizontal">
-      <div class="list screen">
-        <div class="navigation">
-          <h1 class="text-101 valign-text-middle inter-semi-bold-black-24px">북토크</h1>
-          <div class="items">
-            <div class="text-9 valign-text-middle body-text">도서검색</div>
-            <div class="text-98 valign-text-middle body-text">리뷰목록</div>
-            <div class="text-9 valign-text-middle body-text">마이페이지</div>
-            <div class="button"><div class="text-100 valign-text-middle small-text">로그인</div></div>
-          </div>
-        </div>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=1442, maximum-scale=1.0"/>
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png"/>
+    <meta name="og:type" content="website"/>
+    <meta name="twitter:card" content="photo"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reviews/list.css}"/>
+    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}"/>
+</head>
+<body style="margin: 0; background: #ffffff">
+<input type="hidden" id="anPageName" name="page" value="list"/>
+<div class="container-center-horizontal">
+    <div class="list screen">
+        <div th:replace="fragments/navbar"></div>
+
         <div class="x04-search-input">
-          <img class="search" src="img/search.svg" alt="search" />
-          <div class="label label-2 presetsbody2">Search</div>
+            <img class="search" src="/img/search.svg" alt="search"/>
+            <div class="label label-2 presetsbody2">Search</div>
         </div>
+
         <div class="group-11">
-          <div class="text-114 inter-semi-bold-black-24px">국내도서</div>
-          <div class="x04-dropdown">
-            <div class="label-1 label-2 presetsbody2">카테고리</div>
-            <img class="chevron-down" src="img/chevron-down.svg" alt="chevron-down" />
-          </div>
-          <div class="segmented-control">
-            <div class="item-1 item-2"><div class="text-11 valign-text-middle small-text">인기순</div></div>
-            <div class="item-2"><div class="text-11 valign-text-middle small-text">조회순</div></div>
-            <div class="item-2"><div class="text-11 valign-text-middle small-text">최신순</div></div>
-          </div>
+            <div class="text-114 inter-semi-bold-black-24px">리뷰 목록</div>
+            <div class="x04-dropdown">
+                <div class="label-1 label-2 presetsbody2">카테고리</div>
+                <img class="chevron-down" src="/img/chevron-down.svg" alt="chevron-down"/>
+            </div>
+            <div class="segmented-control">
+                <div class="item-1 item">
+                    <div class="text-1-1 valign-text-middle small-text">인기순</div>
+                </div>
+                <div class="item">
+                    <div class="text-1-1 valign-text-middle small-text">최신순</div>
+                </div>
+            </div>
         </div>
+
+
         <div class="feed">
-          <div class="post-1 post-2">
-            <div class="avatar"><img class="rectangle-1" src="img/rectangle-1-1.png" alt="Rectangle 1" /></div>
-            <div class="content">
-              <div class="person">
-                <div class="frame-2610450 frame">
-                  <div class="text-102 small-text">유저 닉네임1</div>
-                  <div class="text-1 presetsbody2">미움받을 용기</div>
+            <div class="review">
+                <div class="top-5">
+                    <img class="image rectangle-1" src="/img/rectangle-1.png" alt="Image"/>
+                    <div class="container">
+                        <div class="name-5">
+                            <div class="first-last manrope-semi-bold-mirage-16px">미움받을 용기</div>
+                            <div class="username manrope-normal-storm-gray-14px">@유저 닉네임</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-1-1 text-1-3 presetsbody2">2시간 전</div>
-              </div>
-              <div class="text-1-2 text-1-3 inter-normal-black-20px">리뷰 내용1</div>
-              <div class="icons">
-                <div class="likes">
-                  <img class="heart-3" src="img/heart.svg" alt="heart" />
-                  <div class="address-3 small-text">6 likes</div>
+                <div class="container-1">
+                    <div class="paragraph-5">
+                        <p class="text-3 manrope-normal-mirage-16px">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus
+                            venenatis,
+                            lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum
+                            facilisis
+                            leo, vel
+                        </p>
+                        <div class="dropdown">
+                            <div class="text-4 manrope-semi-bold-mirage-14px">더보기</div>
+                            <img class="icons-6" src="/img/icons.svg" alt="Icons"/>
+                        </div>
+                    </div>
+                    <div class="date manrope-normal-storm-gray-12px">2024-01-01</div>
                 </div>
-              </div>
+                <div class="icons">
+                    <div class="frame-2610462">
+                        <img class="heart-5" src="/img/heart-3.svg" alt="heart"/>
+                        <div class="address-5 small-text">4 좋아요</div>
+                    </div>
+                </div>
+                <div class="divider"></div>
             </div>
-          </div>
-          <div class="divider"></div>
-          <div class="post post-2">
-            <div class="avatar"><img class="rectangle-1-1" src="img/rectangle-1-2@2x.png" alt="Rectangle 1" /></div>
-            <div class="content">
-              <div class="person">
-                <div class="frame-2610450 frame">
-                  <div class="text-106 small-text">유저 닉네임2</div>
-                  <div class="text-1 presetsbody2">미움받을 용기</div>
+
+
+            <div class="review">
+                <div class="top-5">
+                    <img class="image rectangle-1" src="/img/rectangle-1.png" alt="Image"/>
+                    <div class="container">
+                        <div class="name-5">
+                            <div class="first-last manrope-semi-bold-mirage-16px">미움받을 용기</div>
+                            <div class="username manrope-normal-storm-gray-14px">@유저 닉네임</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-1-1 text-1-3 presetsbody2">3시간 전</div>
-              </div>
-              <div class="text-1-2 text-1-3 inter-normal-black-20px">리뷰 내용2</div>
-              <div class="icons">
-                <div class="frame-2610462 frame">
-                  <img class="heart-3" src="img/heart.svg" alt="heart" />
-                  <div class="address-3 small-text">4 likes</div>
+                <div class="container-1">
+                    <div class="paragraph-5">
+                        <p class="text-3 manrope-normal-mirage-16px">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus
+                            venenatis,
+                            lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum
+                            facilisis
+                            leo, vel
+                        </p>
+                        <div class="dropdown">
+                            <div class="text-4 manrope-semi-bold-mirage-14px">더보기</div>
+                            <img class="icons-6" src="/img/icons.svg" alt="Icons"/>
+                        </div>
+                    </div>
+                    <div class="date manrope-normal-storm-gray-12px">2024-01-01</div>
                 </div>
-              </div>
+                <div class="icons">
+                    <div class="frame-2610462">
+                        <img class="heart-5" src="/img/heart.svg" alt="heart"/>
+                        <div class="address-5 small-text">4 좋아요</div>
+                    </div>
+                </div>
+                <div class="divider"></div>
             </div>
-          </div>
-          <div class="divider"></div>
-          <div class="post post-2">
-            <div class="avatar"><img class="rectangle-1" src="img/rectangle-1-3@2x.png" alt="Rectangle 1" /></div>
-            <div class="content">
-              <div class="person">
-                <div class="frame-2610450 frame">
-                  <div class="text-110 small-text">유저 닉네임3</div>
-                  <div class="text-1 presetsbody2">미움받을 용기</div>
-                </div>
-                <div class="text-1-1 text-1-3 presetsbody2">6시간 전</div>
-              </div>
-              <div class="text-1-2 text-1-3 inter-normal-black-20px">리뷰 내용3</div>
-              <div class="icons">
-                <div class="frame-2610462-1">
-                  <img class="heart-3" src="img/heart.svg" alt="heart" />
-                  <div class="address-3 small-text">85 likes</div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </body>
+</div>
+</body>
 </html>

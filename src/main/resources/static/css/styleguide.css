@@ -149,6 +149,37 @@
   font-weight: 700;
 }
 
+.manrope-semi-bold-mirage-16px {
+  color: var(--neutral--800);
+  font-family: var(--font-family-manrope);
+  font-size: var(--font-size-m);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.manrope-normal-storm-gray-14px {
+  color: var(--neutral--500);
+  font-family: var(--font-family-manrope);
+  font-size: var(--font-size-s);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.manrope-semi-bold-mirage-14px {
+  color: var(--neutral--800);
+  font-family: var(--font-family-manrope);
+  font-size: var(--font-size-s);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.manrope-normal-storm-gray-12px {
+  color: var(--neutral--500);
+  font-family: var(--font-family-manrope);
+  font-size: var(--font-size-xs);
+  font-style: normal;
+  font-weight: 400;
+}
 .inter-semi-bold-storm-gray-14px {
   color: var(--neutral--500);
   font-family: var(--font-family-inter);
