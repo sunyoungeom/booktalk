@@ -53,11 +53,11 @@
 
             <div style="width:100%;">
 
-                <a th:href="@{/reviews/list/{keyword}(keyword=${title})}" class="button-3">
+                <a th:href="@{/books/detail/{title}(title=${title})}" class="button-3">
                     <div class="text-126 valign-text-middle small-text">이전으로</div>
                 </a>
 
-                <a th:href="@{/reviews/write}" class="button-1">
+                <a th:href="@{/reviews/list/{title}/popular(title=${title})}" class="button-1">
                     <div class="text-126 valign-text-middle small-text">작성 완료</div>
                 </a>
             </div>
