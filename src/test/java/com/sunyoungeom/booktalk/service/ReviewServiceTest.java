@@ -2,7 +2,6 @@ package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.repository.MemoryReviewRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,7 @@ class ReviewServiceTest {
     @BeforeEach
     public void beforeEach() {
         repository = new MemoryReviewRepository();
-        service = new ReviewService(repository);
+        service = new ReviewService(repository, session);
     }
 
     @AfterEach
