@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=1440, maximum-scale=1.0"/>
+    <meta name="og:type" content="website"/>
+    <meta name="twitter:card" content="photo"/>
+    <link th:href="@{/css/fragments/spinner.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/styleguide.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/globals.css}" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<div th:fragment="spinner">
+    <div class="spinner" id="spinner">
+        <img src="/img/loading.svg" alt="Loading...">
+    </div>
+</div>
+</body>
+</html>

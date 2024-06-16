@@ -1,67 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="utf-8" />
-  <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
-  <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
   <meta name="viewport" content="width=1440, maximum-scale=1.0" />
-  <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
   <meta name="og:type" content="website" />
   <meta name="twitter:card" content="photo" />
   <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/css/styleguide.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/css/globals.css}" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
-<div th:fragment="navbar">
+  <div th:fragment="navbar">
     <div class="navigation">
-      <div class="text-152 valign-text-middle inter-semi-bold-black-24px"><a th:href="@{/}" class="nav-link">북토크</a></div>
+      <div class="text-152 valign-text-middle inter-semi-bold-black-24px"><a th:href="@{/}" class="nav-link">북토크</a>
+      </div>
       <div class="items">
 
         <div class="nav-text valign-text-middle body-text"><a th:href="@{/books/search}" class="nav-link">도서검색</a></div>
         <div class="nav-text valign-text-middle body-text"><a th:href="@{/reviews/list}" class="nav-link">리뷰목록</a></div>
         <div class="nav-text valign-text-middle body-text"><a th:href="@{/mypage/info}" class="nav-link">마이페이지</a></div>
-        <div class="button"><div class="nav-button-text valign-text-middle small-text">로그인</div></div>
+        <div class="button">
+          <div class="nav-button-text valign-text-middle small-text">로그인</div>
+        </div>
       </div>
     </div>
-</div>
+  </div>
 
-<div id="notification-container"></div>
+  <div id="notification-container"></div>
 
 </body>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // 기본 알림 목록
-    const notifications = [
-        "새로운 메시지가 도착했습니다.",
-        "회원님의 리뷰에 새로운 댓글이 달렸습니다.",
-        "북토크 이벤트가 곧 시작됩니다."
-    ];
-
-    const notificationContainer = document.getElementById('notification-container');
-
-    // 알림 추가 함수
-    function addNotification(message) {
-        const notification = document.createElement('div');
-        notification.classList.add('notification');
-        notification.innerText = message;
-        notificationContainer.appendChild(notification);
-
-        // 일정 시간 후 알림 제거
-        setTimeout(() => {
-            notificationContainer.removeChild(notification);
-        }, 5000); // 5초 후 제거
-    }
-
-    // 초기 알림 표시
-    notifications.forEach(addNotification);
-
-    // 새로운 알림을 주기적으로 추가 (테스트용)
-    setInterval(() => {
-        const newNotification = "새로운 알림: " + new Date().toLocaleTimeString();
-        addNotification(newNotification);
-    }, 10000); // 10초마다 새로운 알림 추가
-});
-
-</script>
 </html>

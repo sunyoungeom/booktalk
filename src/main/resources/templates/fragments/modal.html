@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1440, maximum-scale=1.0">
@@ -11,43 +12,55 @@
     <link rel="stylesheet" type="text/css" href="/css/styleguide.css">
     <link rel="stylesheet" type="text/css" href="/css/globals.css">
 </head>
+
 <body style="margin: 0; background: #ffffff">
-<div class="modal">
-    <div class="modal-1 modal-2">
-        <div class="content-2 content-3">
-            <div class="text-and-supporting-text"><div class="text-17 text-lgmedium">닉네임 변경</div></div>
-            <div class="form">
-                <div class="form-item form-2">
-                    <div class="input-field input-4">
-                        <div class="input">
+    <div class="modal">
+        <div class="modal-1 modal-2">
+            <div class="content-2 content-3">
+                <div class="text-and-supporting-text">
+                    <div class="text-17 text-lgmedium">닉네임 변경</div>
+                </div>
+                <div class="form">
+                    <div class="form-item form-2">
+                        <div class="input-field input-4">
                             <div class="input">
-                                <div class="label-1 label-5 text-smmedium">현재 닉네임</div>
-                                <div class="input-2 input-4">
-                                    <div class="content-1 content-3"><div class="text-8 presetsbody2" th:text="${currentNickname}">유저1</div></div>
+                                <div class="input">
+                                    <div class="label-1 label-5 text-smmedium">현재 닉네임</div>
+                                    <div class="input-2 input-4">
+                                        <div class="content-1 content-3">
+                                            <div class="text-8 presetsbody2" th:text="${currentNickname}">유저1</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-item form-2">
-                    <div class="input-field input-4">
-                        <div class="input">
+                    <div class="form-item form-2">
+                        <div class="input-field input-4">
                             <div class="input">
-                                <div class="label-2 label-5 text-smmedium">변경할 닉네임</div>
-                                <div class="input-3 input-4">
-                                    <div class="content-1 content-3"><div class="text-8 presetsbody2" th:text="${newNickname}">유저2</div></div>
+                                <div class="input">
+                                    <div class="label-2 label-5 text-smmedium">변경할 닉네임</div>
+                                    <div class="input-3 input-4">
+                                        <div class="content-1 content-3">
+                                            <div class="text-8 presetsbody2" th:text="${newNickname}">유저2</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-actions modal-2">
-            <div class="button-base" th:onclick="|window.location.href='@{/cancel}'|"><div class="text-18 small-text">취소</div></div>
-            <div class="button-base-1" th:onclick="|window.location.href='@{/submit}'|"><div class="text-2 small-text">수정</div></div>
+            <div class="modal-actions modal-2">
+                <div class="button-base" th:onclick="|window.location.href='@{/cancel}'|">
+                    <div class="text-18 small-text">취소</div>
+                </div>
+                <div class="button-base-1" th:onclick="|window.location.href='@{/submit}'|">
+                    <div class="text-2 small-text">수정</div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </body>
+
 </html>
