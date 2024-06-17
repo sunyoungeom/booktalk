@@ -1,68 +1,128 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=1440, maximum-scale=1.0"/>
-    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png"/>
-    <meta name="og:type" content="website"/>
-    <meta name="twitter:card" content="photo"/>
-    <link
-            rel="stylesheet"
-            type="text/css"
-            href="/css/reviews/review-write.css"
-            th:href="@{/css/reviews/review-write.css}"
-    />
-    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="/css/styleguide.css" th:href="@{/css/styleguide.css}"/>
-    <link rel="stylesheet" type="text/css" href="/css/globals.css" th:href="@{/css/globals.css}"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1440, maximum-scale=1.0" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <link rel="stylesheet" type="text/css" href="/css/reviews/review-write.css"
+        th:href="@{/css/reviews/review-write.css}" />
+    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/css/styleguide.css" th:href="@{/css/styleguide.css}" />
+    <link rel="stylesheet" type="text/css" href="/css/globals.css" th:href="@{/css/globals.css}" />
 </head>
+
 <body style="margin: 0; background: #ffffff">
-<input
-        type="hidden"
-        id="anPageName"
-        name="page"
-        value="review-write"
-/>
-<div class="container-center-horizontal">
-    <div
-            class="review-write screen"
-    >
-        <div th:replace="fragments/navbar"></div>
+    <input type="hidden" id="anPageName" name="page" value="review-write" />
+    <div class="container-center-horizontal">
+        <div class="review-write screen">
 
-        <div class="form">
-            <div class="profile">
-                <div class="avatar"><img class="rectangle-1" src="/img/rectangle-1.png" alt="Rectangle 1"/></div>
-                <div class="frame-2610465">
-                    <div class="text-123 small-text">유저 닉네임</div>
-                    <div class="date presetsbody2">2024-01-01</div>
-                </div>
-            </div>
-            <div class="input">
-                <div class="text-124 small-text">책 제목</div>
-                <div class="field" style="background-color: #f2f2f2;">
-                    <div class="label presetsbody2" th:text="${title}">미움받을 용기</div>
-                </div>
-            </div>
-            <div class="x04-multi-line-paragraph-input small-text">
-                <div class="text-125">내용</div>
-                <div class="field-1">
-                    <textarea type="text" id="reviewContent" name="reviewContent" class="label-1"
-                              style="height:100%; border:none" placeholder="리뷰를 작성하세요."></textarea>
-                </div>
-            </div>
+            <!-- nav -->
+            <div th:replace="fragments/navbar"></div>
 
-            <div style="width:100%;">
+            <!-- 리뷰 작성 폼 -->
+            <div class="form">
+                <form onsubmit="submitForm(event)">
 
-                <a th:href="@{/books/detail/{title}(title=${title})}" class="button-3">
-                    <div class="text-126 valign-text-middle small-text">이전으로</div>
-                </a>
+                    <div class="profile">
+                        <div class="avatar"><img class="rectangle-1" src="/img/rectangle-1.png" alt="Rectangle 1" />
+                        </div>
+                        <div class="frame-2610465">
+                            <div class="text-123 small-text" th:text="${session.username}">유저 닉네임</div>
+                            <div id="currentDate" class="date presetsbody2">2024-01-01</div>
+                        </div>
+                    </div>
 
-                <a th:href="@{/reviews/list/{title}/popular(title=${title})}" class="button-1">
-                    <div class="text-126 valign-text-middle small-text">작성 완료</div>
-                </a>
+                    <div class="input">
+                        <div class="text-124 small-text">책 제목</div>
+                        <div class="field" style="background-color: #f2f2f2;">
+                            <div id="title" class="label presetsbody2" th:text="${title}">미움받을 용기</div>
+                        </div>
+                    </div>
+
+                    <div class="x04-multi-line-paragraph-input small-text">
+                        <div class="text-125">내용</div>
+                        <div class="field-1">
+                            <textarea type="text" id="reviewContent" name="reviewContent" class="label-1"
+                                style="height:100%; border:none" placeholder="리뷰를 작성하세요."></textarea>
+                        </div>
+                    </div>
+
+                    <div style="width:100%; margin-top: 10px;">
+                        <a th:href="@{/books/detail/{title}(title=${title})}" class="button-3">
+                            <div class="text-126 valign-text-middle small-text">이전으로</div>
+                        </a>
+                        <button type="submit" class="button-1">
+                            <div class="text-126 valign-text-middle small-text">작성 완료</div>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
 </body>
+<script th:inline="javascript">
+    // 오늘 날짜
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var currentDate = formatDate(new Date());
+        document.getElementById("currentDate").textContent = currentDate;
+    });
+
+    // 리뷰 등록
+    function submitForm(event) {
+        event.preventDefault();
+
+        var title = /*[[@{${title}}]]*/ ''
+        var author = /*[[@{${session.username}}]]*/ ''
+        var currentDate = formatDate(new Date());
+        var reviewContent = document.getElementById("reviewContent").value;
+
+        if (!reviewContent) {
+            alert("리뷰 내용을 입력하세요.");
+            return;
+        }
+
+        var data = {
+            "title": title,
+            "author": author,
+            "date": currentDate,
+            "content": reviewContent,
+            "likes": 0
+        };
+
+        fetch('/api/reviews', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log(data)
+                    alert("리뷰가 등록되었습니다.");
+                    window.location.href = '/reviews/search?title=' + title;
+                } else {
+                    console.error('리뷰 등록에 실패하였습니다.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+</script>
+
 </html>
