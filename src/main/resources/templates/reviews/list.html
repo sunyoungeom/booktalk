@@ -45,13 +45,15 @@
                 </div>
             </div>
 
-
+            <!-- 스피너 -->
             <div th:replace="~{fragments/spinner :: spinner}"></div>
-            <div id="feed" class="feed">
-                <!-- 리뷰 -->
 
-                <!-- 에러 메시지 -->
-                <div id="errorContainer" style="display:none;"></div>
+            <!-- 에러 메시지 -->
+            <div id="errorContainer" style="display:none;"></div>
+
+            <div id="feed" class="feed">
+                <!-- 리뷰 추가 -->
+
             </div>
         </div>
     </div>
@@ -60,7 +62,7 @@
         let currentTitle = /*[[${title}]]*/ '';
 
         function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
-            let url = 'http://localhost:8080/api/reviews?';
+            let url = '/api/reviews?';
             const params = new URLSearchParams();
 
             if (title) params.append('title', title);
@@ -75,14 +77,15 @@
                         if (response.status === 404) {
                             return response.json().then(json => {
                                 const errorMessage = json.message;
-                                console.error('서버에서 반환한 오류 메시지:', errorMessage);
+                                console.error(errorMessage);
+                                clearContentsAddSpinner();
 
                                 setTimeout(() => {
                                     removeSpinner();
                                     displayErrorMessage(errorMessage);
-
                                 }, 500);
 
+                                throw new Error(errorMessage);
                             });
                         }
                         throw new Error('서버에서 오류 응답을 받았습니다.');
@@ -90,9 +93,13 @@
                     return response.json();
                 })
                 .then((json) => {
+                    clearContentsAddSpinner();
+                    if (!json.reviews || json.reviews.length === 0) {
+                        throw new Error('리뷰 검색결과가 없습니다.');
+                    }
+
                     const reviews = json.reviews;
                     const container = document.getElementById('feed');
-                    container.innerHTML = '';
 
                     setTimeout(() => {
                         removeSpinner();
@@ -100,24 +107,38 @@
                             container.innerHTML += createReviewHTML(review);
                         });
                     }, 500);
-
                 })
                 .catch(error => {
                     console.error(error);
                 });
         }
 
+        // 컨텐츠 초기화 & 스피너 추가
+        function clearContentsAddSpinner() {
+            const reviewContainer = document.getElementById('feed');
+            const errorContainer = document.getElementById('errorContainer');
+            reviewContainer.innerHTML = '';
+            errorContainer.innerHTML = '';
+            addSpinner();
+
+        }
+
+        // 스피너 추가
+        function addSpinner() {
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'block';
+        }
+
         // 스피너 제거
         function removeSpinner() {
             const spinner = document.getElementById('spinner');
-            if (spinner) {
-                spinner.style.display = 'none';
-            }
+            spinner.style.display = 'none';
         }
 
         // 오류 메시지 출력
         function displayErrorMessage(message) {
             const container = document.getElementById('errorContainer');
+
             container.innerHTML = `
                 <div class="inter-normal-black-20px" style="margin-top:100px">
                     ${message}
