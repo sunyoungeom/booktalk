@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1440, maximum-scale=1.0">
@@ -7,97 +8,105 @@
     <meta name="twitter:card" content="photo">
     <title>북토크</title>
     <link rel="shortcut icon" type="image/png" th:href="@{https://animaproject.s3.amazonaws.com/home/favicon.png}">
-    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/books/book-search.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}">
 </head>
+
 <body style="margin: 0; background: #ffffff">
 
-<input type="hidden" id="anPageName" name="page" value="book-search">
-<div class="container-center-horizontal">
-    <div class="book-search screen">
-        <div th:replace="fragments/navbar :: navbar"></div>
+    <input type="hidden" id="anPageName" name="page" value="book-search">
+    <div class="container-center-horizontal">
+        <div class="book-search screen">
+            <div th:replace="fragments/navbar :: navbar"></div>
 
 
-        <!-- 검색 -->
-        <div class="x04-search-input">
-            <img class="search" src="/img/search.svg" alt="search">
-            <input type="text" class="label presetsbody2" style="border:none; width: 100%;" placeholder="제목/작가 등을 검색해보세요...">
-        </div>
+            <!-- 검색 -->
+            <div class="x04-search-input">
+                <img class="search" src="/img/search.svg" alt="search">
+                <input type="text" class="label presetsbody2" style="border:none; width: 100%;"
+                    placeholder="제목/작가 등을 검색해보세요...">
+            </div>
 
 
-        <div class="overlap-group">
-            <div class="group-12">
-                <div class="text-139" th:text="${query}">베스트 셀러 TOP20</div>
+            <div class="overlap-group">
+                <div class="group-12">
+                    <div class="text-139" th:text="${query}">베스트 셀러 TOP20</div>
 
-                <div th:if="${not #lists.isEmpty(bookList)}">
-                <!-- 책 카드 -->
-                <a th:href="@{/books/detail/{title}(title=${book.current.title})}" class="cards"
-                   th:each="bookList, book : ${bookList}">
-                    <div class="flex-row">
-                        <div class="image" th:style="'background-image: url(' + ${book.current.imgPath} + ');'"></div>
-                        <div class="overlap-group2">
-                            <div class="copy">
-                                <div class="product-name overflow-text inter-semi-bold-black-24px" th:text="${book.current.title}">
-                                    미움받을 용기
+                    <div th:if="${not #lists.isEmpty(bookList)}">
+                        <!-- 책 카드 -->
+                        <a th:href="@{/books/detail/{title}(title=${book.current.title})}" class="cards"
+                            th:each="bookList, book : ${bookList}">
+                            <div class="flex-row">
+                                <div class="image" th:style="'background-image: url(' + ${book.current.imgPath} + ');'">
                                 </div>
-                                <div class="subheading-container-1 small-text">
-                                    <div class="subheading-3 valign-text-middle small-text">저자</div>
-                                    <div class="subheading-2 valign-text-middle" th:text="${book.current.author}">기시미
-                                        이치로, 고가 후미타케
+                                <div class="overlap-group2">
+                                    <div class="copy">
+                                        <div class="product-name overflow-text inter-semi-bold-black-24px"
+                                            th:text="${book.current.title}">
+                                            미움받을 용기
+                                        </div>
+                                        <div class="subheading-container-1 small-text">
+                                            <div class="subheading-3 valign-text-middle small-text">저자</div>
+                                            <div class="subheading-2 valign-text-middle"
+                                                th:text="${book.current.author}">
+                                                기시미
+                                                이치로, 고가 후미타케
+                                            </div>
+                                        </div>
+                                        <div class="subheading-container-1 small-text">
+                                            <div class="subheading-3 valign-text-middle small-text">발행</div>
+                                            <div class="price presetsbody2" th:text="${book.current.date}">2014-11-17
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="subheading-container-1 small-text">
-                                    <div class="subheading-3 valign-text-middle small-text">발행</div>
-                                    <div class="price presetsbody2" th:text="${book.current.date}">2014-11-17</div>
-                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-                </div>
 
-                <div th:unless="${not #lists.isEmpty(bookList)}">
-                    <!-- 검색 결과가 없는 경우 -->
-                    <div class="inter-normal-black-20px" style="margin-top:20px">검색 결과가 없습니다.</div>
-                </div>
+                    <div th:unless="${not #lists.isEmpty(bookList)}">
+                        <!-- 검색 결과가 없는 경우 -->
+                        <div class="inter-normal-black-20px" style="margin-top:20px">검색 결과가 없습니다.</div>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-<div id="notification-container"></div>
+    </div>
+    <div id="notification-container"></div>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var inputField = document.querySelector('.x04-search-input input');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var inputField = document.querySelector('.x04-search-input input');
 
- inputField.addEventListener('keypress', function(event) {
-        var inputValue = inputField.value;
-        if (!/^[a-zA-Z0-9가-힣\s]*$/.test(inputValue + event.key)) {
-            event.preventDefault();
-        }
-    });
+            inputField.addEventListener('keypress', function (event) {
+                var inputValue = inputField.value;
+                if (!/^[a-zA-Z0-9가-힣\s]*$/.test(inputValue + event.key)) {
+                    event.preventDefault();
+                }
+            });
 
-    inputField.addEventListener('input', function(event) {
-        var inputValue = inputField.value;
-        inputField.value = inputValue.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    });
+            inputField.addEventListener('input', function (event) {
+                var inputValue = inputField.value;
+                inputField.value = inputValue.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+            });
 
 
-    inputField.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-    var inputValue = inputField.value;
-           if (inputValue.trim() !== '') {
-                window.location.href = '/books/search/' + inputValue + '/1';
-            }
-        }
-    });
-});
-</script>
+            inputField.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    var inputValue = inputField.value;
+                    if (inputValue.trim() !== '') {
+                        window.location.href = '/books/search/' + inputValue + '/1';
+                    }
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

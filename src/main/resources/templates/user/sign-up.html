@@ -1,67 +1,67 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <!--<meta name=description content="This site was generated with Anima. www.animaapp.com"/>-->
-    <!-- <link rel="shortcut icon" type=image/png href="https://animaproject.s3.amazonaws.com/home/favicon.png" /> -->
-    <meta name="viewport" content="width=1442, maximum-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
-    <meta name="og:type" content="website" />
-    <meta name="twitter:card" content="photo" />
-    <link rel="stylesheet" type="text/css" href="css/user/sign-up.css" />
-    <link rel="stylesheet" type="text/css" href="css/styleguide.css" />
-    <link rel="stylesheet" type="text/css" href="css/globals.css" />
-  </head>
-  <body style="margin: 0; background: #ffffff">
-    <input type="hidden" id="anPageName" name="page" value="sign-up" />
-    <div class="container-center-horizontal">
-      <div class="sign-up screen">
-        <div class="signup">
-          <h1 class="text-7">회원가입</h1>
-          <div class="overlap-group1">
-            <div class="button-primary-with-icon-1 button-primary-with-icon-3">
-              <div class="frame-1">
-                <div class="button-name valign-text-middle regular16px">닉네임을 입력해 주세요</div>
-              </div>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1442, maximum-scale=1.0" />
+  <meta name="og:type" content="website" />
+  <meta name="twitter:card" content="photo" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/user/sign-up.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
+</head>
+
+<body style="margin: 0; background: #ffffff">
+  <input type="hidden" id="anPageName" name="page" value="sign-up" />
+  <div class="container-center-horizontal">
+    <div class="sign-up screen">
+      <div class="signup">
+        <h1 class="text-7">회원가입</h1>
+        <div class="overlap-group1">
+          <div class="button-primary-with-icon-1 button-primary-with-icon-3">
+            <div class="frame-1">
+              <div class="button-name valign-text-middle regular16px">닉네임을 입력해 주세요</div>
             </div>
-            <div class="button-primary-with-icon">
-              <div class="frame-1">
-                <div class="button-name valign-text-middle regular16px">이메일을 입력해 주세요</div>
-              </div>
-            </div>
-            <div class="button-primary-with-icon">
-              <div class="frame-1">
-                <div class="button-name valign-text-middle regular16px">비밀번호를 입력해 주세요</div>
-              </div>
-            </div>
-            <div class="button-primary-with-icon">
-              <div class="frame-1">
-                <div class="button-name valign-text-middle regular16px">비밀번호를 다시 입력해 주세요</div>
-              </div>
-            </div>
-            <div class="text-8 valign-text-middle regular13px">비밀번호가 일치하지 않습니다</div>
-            <div class="text">
-              <div class="shape"></div>
-              <div class="text-10 regular13px">가입에 동의합니다</div>
-            </div>
-            <div class="light-button"><div class="text-11 valign-text-middle presetsbody2">회원가입</div></div>
-            <div class="overlap-group">
-              <div class="button-primary-with-icon-2 button-primary-with-icon-3">
-                <div class="frame-1">
-                  <div class="button-name-1 valign-text-middle bold16px">Google 계정으로 회원가입</div>
-                </div>
-              </div>
-              <img class="google-2" src="img/google-2@2x.png" alt="google 2" />
-            </div>
-            <p class="text-9 valign-text-middle regular13px">
-              <span
-                ><span class="span0 regular13px">이미 가입한 계정이 있으신가요? </span
-                ><span class="span1 bold13px">로그인</span>
-              </span>
-            </p>
           </div>
+          <div class="button-primary-with-icon">
+            <div class="frame-1">
+              <div class="button-name valign-text-middle regular16px">이메일을 입력해 주세요</div>
+            </div>
+          </div>
+          <div class="button-primary-with-icon">
+            <div class="frame-1">
+              <div class="button-name valign-text-middle regular16px">비밀번호를 입력해 주세요</div>
+            </div>
+          </div>
+          <div class="button-primary-with-icon">
+            <div class="frame-1">
+              <div class="button-name valign-text-middle regular16px">비밀번호를 다시 입력해 주세요</div>
+            </div>
+          </div>
+          <div class="text-8 valign-text-middle regular13px">비밀번호가 일치하지 않습니다</div>
+          <div class="text">
+            <div class="shape"></div>
+            <div class="text-10 regular13px">가입에 동의합니다</div>
+          </div>
+          <div class="light-button">
+            <div class="text-11 valign-text-middle presetsbody2">회원가입</div>
+          </div>
+          <div class="overlap-group">
+            <div class="button-primary-with-icon-2 button-primary-with-icon-3">
+              <div class="frame-1">
+                <div class="button-name-1 valign-text-middle bold16px">Google 계정으로 회원가입</div>
+              </div>
+            </div>
+            <img class="google-2" src="/img/google-2@2x.png" alt="google 2" />
+          </div>
+          <p class="text-9 valign-text-middle regular13px">
+            <span><span class="span0 regular13px">이미 가입한 계정이 있으신가요? </span><span class="span1 bold13px">로그인</span>
+            </span>
+          </p>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
