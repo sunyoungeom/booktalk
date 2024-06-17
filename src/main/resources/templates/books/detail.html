@@ -47,12 +47,12 @@
                 <div class="subheading-3 valign-text-middle small-text">발행</div>
                 <div class="price presetsbody2" th:text="${detailBook.date}">2014-11-17</div>
               </div>
-                <a th:href="@{/reviews/list/{keyword}(keyword=${title})}" class="button-1 button-3">
+                <a th:href="@{/reviews/search(title=${title})}" class="button-1 button-3">
                     <div class="text-1 valign-text-middle small-text">리뷰 목록</div>
                 </a>
 
             </div>
-              <a th:href="@{/reviews/write/{title}(title=${title})}" class="button-2 button-3">
+              <a th:href="@{/reviews/write}" class="button-2 button-3">
                   <div class="text-1 valign-text-middle small-text">리뷰 쓰기</div>
               </a>
           </div>
