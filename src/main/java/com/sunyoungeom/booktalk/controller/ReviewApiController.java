@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -28,7 +29,7 @@ public class ReviewApiController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Review>> getReviews(
+    public ResponseEntity<Object> getReviews(
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "author", required = false) String author,
             @RequestParam(name = "sortBy", required = false) String sortBy) {
@@ -49,16 +50,17 @@ public class ReviewApiController {
             // 모든 글 조회
             if ("popularity".equalsIgnoreCase(sortBy)) {
                 reviews = reviewService.findAllSortedByLikes();
-                log.info("test"+reviews.toString());
+                log.info("test" + reviews.toString());
             } else {
                 reviews = reviewService.findAllSortedBydate();
-                log.info("test2"+reviews.toString());
+                log.info("test2" + reviews.toString());
             }
         }
+
         if (!reviews.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(reviews); // HttpStatus.OK (200)
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // HttpStatus.NOT_FOUND (404)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
         }
     }
 
@@ -68,9 +70,9 @@ public class ReviewApiController {
         return ResponseEntity.status(HttpStatus.FOUND).body(updatedReview);
     }
 
-@DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteReview(@PathVariable(name = "id") Long id) {
         reviewService.deleteReview(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));
     }
 }
