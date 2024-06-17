@@ -19,6 +19,7 @@
         <div class="list screen">
             <div th:replace="~{fragments/navbar}"></div>
 
+            <!-- 검색 입력 필드 -->
             <div class="x04-search-input">
                 <img class="search" src="/img/search.svg" alt="search">
                 <input type="text" class="label label-2 presetsbody2" style="border:none; width: 100%;"
@@ -106,6 +107,7 @@
                 });
         }
 
+        // 스피너 제거
         function removeSpinner() {
             const spinner = document.getElementById('spinner');
             if (spinner) {
@@ -113,14 +115,14 @@
             }
         }
 
-        // 오류 메시지를 화면에 출력하는 함수
+        // 오류 메시지 출력
         function displayErrorMessage(message) {
             const container = document.getElementById('errorContainer');
             container.innerHTML = `
-        <div class="inter-normal-black-20px" style="margin-top:100px">
-            ${message}
-        </div>
-    `;
+                <div class="inter-normal-black-20px" style="margin-top:100px">
+                    ${message}
+                </div>
+            `;
 
             setTimeout(() => {
                 container.style.display = 'block';
@@ -128,6 +130,7 @@
 
         }
 
+        // 리뷰 생성
         function createReviewHTML(review) {
             return `
                         <div class="review">
@@ -162,18 +165,18 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-
+            // 검색한 제목으로 리뷰 로드
             fetchAndRenderReviews(currentTitle, '', '');
 
-            // '인기순' div 클릭 시 리뷰 다시 로드
+            // '인기순' 리뷰 로드
             const popularityDiv = document.getElementById('popularity');
             popularityDiv.addEventListener('click', () => fetchAndRenderReviews(currentTitle, '', 'popularity'));
 
-            // '최신순' div 클릭 시 리뷰 다시 로드
+            // '최신순' 리뷰 로드
             const latestDiv = document.getElementById('latest');
             latestDiv.addEventListener('click', () => fetchAndRenderReviews(currentTitle, '', ''));
 
-            // 검색 입력 필드와 관련된 이벤트 설정
+            // 검색 입력 필드
             const inputField = document.querySelector('.x04-search-input input');
 
             inputField.addEventListener('keypress', function (event) {

@@ -1,5 +1,7 @@
 package com.sunyoungeom.booktalk.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -94,9 +96,12 @@ public class SearchService {
 
                 log.info("title: {}, author: {}, date: {}, content: {}, imgPath: {}", title, authors, date, contents, imgPath);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            return bookList;
+        } catch (JsonMappingException e) {
+            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        return bookList;
     }
 }
