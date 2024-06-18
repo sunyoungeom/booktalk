@@ -21,10 +21,12 @@ import java.util.Map;
 public class ReviewApiController {
 
     private final ReviewService reviewService;
+    private final HttpSession session;
 
     @PostMapping
     public ResponseEntity<Object> createReview(@RequestBody Review review) {
-        Review createdReview = reviewService.createReview(review);
+        String author = (String) session.getAttribute("currentUser");
+        Review createdReview = reviewService.createReview(review, author);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
     }
 
@@ -66,13 +68,15 @@ public class ReviewApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(@PathVariable(name = "id") Long id, @RequestBody String content) {
-        Review updatedReview = reviewService.updateReview(id, content);
+        String author = (String) session.getAttribute("currentUser");
+        Review updatedReview = reviewService.updateReview(id, content, author);
         return ResponseEntity.status(HttpStatus.FOUND).body(updatedReview);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteReview(@PathVariable(name = "id") Long id) {
-        reviewService.deleteReview(id);
+        String author = (String) session.getAttribute("currentUser");
+        reviewService.deleteReview(id, author);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));
     }
 }

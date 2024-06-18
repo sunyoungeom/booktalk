@@ -15,20 +15,19 @@ import java.util.List;
 public class ReviewService {
     
     private final ReviewRepository repository;
-    private final HttpSession session;
 
-    public Review createReview(Review review) {
+    public Review createReview(Review review, String currentUser) {
         // 중복 리뷰 검증
-        validateDuplicateReview(review);
-        session.setAttribute("currentUser", "작성자");
+        validateDuplicateReview(review, currentUser);
 
         // 리뷰 저장
+        review.setAuthor(currentUser);
         repository.save(review);
         return review;
     }
 
-    private void validateDuplicateReview(Review review) {
-        repository.findByTitleAndAuthor(review.getTitle(), review.getAuthor())
+    private void validateDuplicateReview(Review review, String currentUser) {
+        repository.findByTitleAndAuthor(review.getTitle(), currentUser)
                 .ifPresent(m -> {
                     throw new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage());
                 });
@@ -58,11 +57,11 @@ public class ReviewService {
         return repository.findByAuthor(author);
     }
 
-    public Review updateReview(Long id, String content) {
+    public Review updateReview(Long id, String content, String currentUser) {
         // 리뷰 존재 확인
         Review review = existsById(id);
         // 작성자 확인
-        checkAuthorMatch(review);
+        checkAuthorMatch(review, currentUser);
 
         review.setContent(content);
         repository.update(review.getId(), content);
@@ -70,18 +69,17 @@ public class ReviewService {
         return review;
     }
 
-    private void checkAuthorMatch(Review review) {
-        String currentUsername = (String) session.getAttribute("currentUser");
-        if (currentUsername == null || !review.getAuthor().equals(currentUsername)) {
+    private void checkAuthorMatch(Review review, String currentUser) {
+        if (currentUser == null || !review.getAuthor().equals(currentUser)) {
             throw new ReviewException(ReviewErrorCode.INACTIVE_USER_ERROR.getMessage());
         }
     }
 
-    public void deleteReview(Long id) {
+    public void deleteReview(Long id, String currentUser) {
         // 리뷰 존재 확인
         Review review = existsById(id);
         // 작성자 확인
-        checkAuthorMatch(review);
+        checkAuthorMatch(review, currentUser);
 
         repository.deleteById(id);
     }
