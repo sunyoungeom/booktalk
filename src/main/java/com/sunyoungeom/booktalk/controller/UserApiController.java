@@ -20,7 +20,7 @@ public class UserApiController {
 
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+        User createdUser = userService.join(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
@@ -32,7 +32,7 @@ public class UserApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
-        User updatedUser = userService.updateReview(id, updates);
+        User updatedUser = userService.updateUser(id, updates);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 

@@ -1,5 +1,6 @@
 package com.sunyoungeom.booktalk.service;
 
+import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -17,7 +19,7 @@ public class UserService {
 
     private final UserRepository repository;
 
-    public User createUser(User user) {
+    public User join(User user) {
         // 중복 유저 검증
         validateDuplicateUser(user);
 
@@ -39,11 +41,28 @@ public class UserService {
         return user;
     }
 
-    public User updateReview(Long id, Map<String, Object> updates) {
+    public List<User> findAll() {
+        return repository.findAll();
+    }
+
+    public User updateUser(Long id, Map<String, Object> updates) {
         // 사용자 존재 확인
         User user = getUserById(id);
 
-        repository.update(id, updates);
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "nickname":
+                    user.setNickname((String) value);
+                    break;
+                case "password":
+                    user.setPassword((String) value);
+                    break;
+                default:
+                    throw new UserException(UserErrorCode.IMMUTABLE_USER_FIELD.getMessage());
+            }
+        });
+
+        repository.update(id, user);
         return user;
     }
 

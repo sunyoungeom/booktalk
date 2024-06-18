@@ -11,6 +11,6 @@ public interface UserRepository {
     User save(User user);
     Optional<User> findById(Long id);
     List<User> findAll();
-    User update(Long id, Map<String, Object> updates);
+    User update(Long id, User updatedUser);
     void delete(Long id);
 }

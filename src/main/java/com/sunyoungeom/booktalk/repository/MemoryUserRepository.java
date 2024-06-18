@@ -1,6 +1,8 @@
 package com.sunyoungeom.booktalk.repository;
 
 import com.sunyoungeom.booktalk.domain.User;
+import com.sunyoungeom.booktalk.exception.UserErrorCode;
+import com.sunyoungeom.booktalk.exception.UserException;
 
 import java.util.*;
 
@@ -27,22 +29,10 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public User update(Long id, Map<String, Object> updates) {
+    public User update(Long id, User updatedUser) {
         User user = findById(id).orElseThrow(() ->
-                new IllegalStateException("해당 ID의 유저를 찾을 수 없습니다."));
-        updates.forEach((key, value) -> {
-            switch (key) {
-                case "ninkname":
-                    user.setNickname((String) value);
-                    break;
-                case "password":
-                    user.setPassword((String) value);
-                    break;
-                default:
-                    throw new IllegalStateException("해당 키는 업데이트 할 수 없습니다.");
-            }
-        });
-        return user;
+                new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
+        return updatedUser;
     }
 
     @Override
