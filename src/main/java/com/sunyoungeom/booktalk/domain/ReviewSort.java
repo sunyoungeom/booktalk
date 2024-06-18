@@ -1,6 +1,6 @@
 package com.sunyoungeom.booktalk.domain;
 
-public enum Sort {
+public enum ReviewSort {
     POPULAR,
     LATEST
 }

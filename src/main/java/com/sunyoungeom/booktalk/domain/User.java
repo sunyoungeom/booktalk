@@ -12,12 +12,12 @@ public class User {
     private String nickname;
     private String email;
     private String password;
-    private Role role;
+    private UserRole userRole;
 
-    public User(String nickname, String email, String password, Role role) {
+    public User(String nickname, String email, String password, UserRole userRole) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.userRole = userRole;
     }
 }

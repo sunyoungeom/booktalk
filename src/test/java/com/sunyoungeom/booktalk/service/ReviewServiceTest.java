@@ -20,7 +20,7 @@ class ReviewServiceTest {
     @BeforeEach
     public void beforeEach() {
         repository = new MemoryReviewRepository();
-        service = new ReviewService(repository, session);
+        service = new ReviewService(repository);
     }
 
     @AfterEach

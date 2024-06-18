@@ -3,8 +3,6 @@ package com.sunyoungeom.booktalk.exception;
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.exception.common.ErrorCode;
 import com.sunyoungeom.booktalk.exception.common.ErrorResponse;
-import com.sunyoungeom.booktalk.exception.review.ReviewException;
-import com.sunyoungeom.booktalk.exception.review.ReviewErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

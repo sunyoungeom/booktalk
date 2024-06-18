@@ -1,6 +1,6 @@
 package com.sunyoungeom.booktalk.domain;
 
-public enum Role {
+public enum UserRole {
     USER,
     ADMIN
 }

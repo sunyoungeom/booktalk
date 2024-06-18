@@ -1,8 +1,8 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
-import com.sunyoungeom.booktalk.exception.user.UserException;
-import com.sunyoungeom.booktalk.exception.user.UserErrorCode;
+import com.sunyoungeom.booktalk.exception.UserException;
+import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

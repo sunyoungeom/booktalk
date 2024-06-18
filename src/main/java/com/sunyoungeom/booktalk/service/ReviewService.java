@@ -1,8 +1,8 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.Review;
-import com.sunyoungeom.booktalk.exception.review.ReviewException;
-import com.sunyoungeom.booktalk.exception.review.ReviewErrorCode;
+import com.sunyoungeom.booktalk.exception.ReviewException;
+import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
 import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

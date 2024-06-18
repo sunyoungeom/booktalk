@@ -1,4 +1,4 @@
-package com.sunyoungeom.booktalk.exception.review;
+package com.sunyoungeom.booktalk.exception;
 
 import lombok.Getter;
 
