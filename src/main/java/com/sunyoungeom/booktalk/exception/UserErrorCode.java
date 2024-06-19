@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 public enum UserErrorCode implements ErrorCode {
     USER_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND,404,"존재하지 않는 사용자입니다."),
     USER_ALREADY_EXISTS_ERROR(HttpStatus.CONFLICT,409, "이미 가입한 사용자입니다."),
-    INACTIVE_USER_ERROR(HttpStatus.FORBIDDEN, 403,"권한이 없는 사용자입니다."),
     IMMUTABLE_USER_FIELD(HttpStatus.BAD_REQUEST, 400, "해당 키는 업데이트 할 수 없습니다.");
 
     private final HttpStatus httpStatus;

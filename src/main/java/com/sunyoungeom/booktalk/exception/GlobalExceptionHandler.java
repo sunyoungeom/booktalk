@@ -29,9 +29,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
     }
 
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ErrorResponse> handleUserException(UserException ex) {
+        ErrorCode errorCode = determineErrorCode(ex.getMessage());
+        ErrorResponse errorResponse = makeErrorResponse(errorCode);
+        log.warn("handleUserException: code = {}, message = {}", errorCode.getCode(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
 
     private ErrorCode determineErrorCode(String message) {
         for (ReviewErrorCode errorCode : ReviewErrorCode.values()) {
+            if (errorCode.getMessage().equals(message)) {
+                return errorCode;
+            }
+        }
+
+        for (UserErrorCode errorCode : UserErrorCode.values()) {
             if (errorCode.getMessage().equals(message)) {
                 return errorCode;
             }

@@ -128,4 +128,15 @@ class ReviewServiceTest {
         assertThat(e.getMessage()).isEqualTo("존재하지 않는 리뷰입니다.");
     }
 
+    @Test
+    void 권한없는_리뷰_삭제() {
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
+        service.createReview(review, (String) session.getAttribute("currentUser"));
+
+        ReviewException e = assertThrows(ReviewException.class, () -> service.deleteReview(review.getId(), "작성자가_아닌_사용자"));
+        assertThat(e.getMessage()).isEqualTo("권한이 없습니다.");
+    }
+
+
+
 }

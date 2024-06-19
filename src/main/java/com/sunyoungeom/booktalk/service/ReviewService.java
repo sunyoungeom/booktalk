@@ -1,8 +1,11 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.Review;
+import com.sunyoungeom.booktalk.exception.GlobalExceptionHandler;
 import com.sunyoungeom.booktalk.exception.ReviewException;
 import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
+import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
+import com.sunyoungeom.booktalk.exception.common.CommonException;
 import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +74,7 @@ public class ReviewService {
 
     private void checkAuthorMatch(Review review, String currentUser) {
         if (currentUser == null || !review.getAuthor().equals(currentUser)) {
-            throw new ReviewException(ReviewErrorCode.INACTIVE_USER_ERROR.getMessage());
+            throw new ReviewException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
         }
     }
 
