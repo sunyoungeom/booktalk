@@ -2,6 +2,7 @@ package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserRole;
+import com.sunyoungeom.booktalk.dto.LoginDto;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.repository.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -42,13 +43,49 @@ class UserServiceTest {
     }
 
     @Test
-    void 중복_유저_가입_예외() {
-        User user = new User("닉네임", "@email", "pw1234", UserRole.USER);
-        service.join(user);
-        System.out.println(user.toString());
+    void 중복_닉네임_가입_예외() {
+        User user1 = new User("닉네임", "1@email", "pw1234", UserRole.USER);
+        User user2 = new User("닉네임", "2@email", "pw1234", UserRole.USER);
+        service.join(user1);
 
-        UserException e = assertThrows(UserException.class, () -> service.join(user));
-        assertThat(e.getMessage()).isEqualTo("이미 가입한 사용자입니다.");
+        UserException e = assertThrows(UserException.class, () -> service.join(user2));
+        assertThat(e.getMessage()).isEqualTo("사용중인 닉네임입니다.");
+    }
+    @Test
+    void 중복_이메일_가입_예외() {
+        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
+        User user2 = new User("닉네임2", "@email", "pw1234", UserRole.USER);
+        service.join(user1);
+
+        UserException e = assertThrows(UserException.class, () -> service.join(user2));
+        assertThat(e.getMessage()).isEqualTo("사용중인 이메일입니다.");
+    }
+
+    @Test
+    void 로그인_성공() {
+        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
+        service.join(user1);
+
+        long result = service.login(new LoginDto("@email", "pw1234"));
+
+        assertThat(result).isEqualTo(user1.getId());
+    }
+    @Test
+    void 로그인_실패() {
+        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
+        service.join(user1);
+
+        long result = service.login(new LoginDto("@email", ""));
+
+        assertThat(result).isEqualTo(-1);
+    }
+    @Test
+    void 없는_아이디로_로그인() {
+        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
+        service.join(user1);
+
+        UserException e = assertThrows(UserException.class, () -> service.login(new LoginDto("test1@email", "pw12341")));
+        assertThat(e.getMessage()).isEqualTo("존재하지 않는 사용자입니다.");
     }
 
     @Test

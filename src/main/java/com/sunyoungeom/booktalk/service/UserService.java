@@ -1,6 +1,7 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
+import com.sunyoungeom.booktalk.dto.LoginDto;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.repository.UserRepository;
@@ -36,6 +37,14 @@ public class UserService {
         } else if (emailExists) {
             throw new UserException(UserErrorCode.EMAIL_ALREADY_EXISTS_ERROR.getMessage());
         }
+    }
+
+    public Long login(LoginDto loginDto) {
+        User user = repository.findIdByEmail(loginDto.getEmail()).orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
+        if (user.getPassword().equals(loginDto.getPassword())) {
+        return user.getId();
+        }
+        return -1L;
     }
 
     public User findById(Long id) {

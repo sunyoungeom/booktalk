@@ -38,8 +38,7 @@ public class BookSearchController {
         model.addAttribute("detailBook", detailBook);
         model.addAttribute("title", title);
         session.setAttribute("title", title);
-        log.info("테스트용 유저아이디");
-        session.setAttribute("currentUser", "테스트용");
+        log.info("title: {}", title);
         return "books/detail";
     }
 }

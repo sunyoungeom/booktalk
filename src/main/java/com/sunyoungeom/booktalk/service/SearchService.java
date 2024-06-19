@@ -67,7 +67,7 @@ public class SearchService {
 
                 // 출간일 형식: XXXX-XX-XX으로 변경
                 StringBuilder stringBuilder = new StringBuilder(date);
-                stringBuilder.delete(10, stringBuilder.length()); // 11번째 자리부터 끝까지 삭제합니다.
+                stringBuilder.delete(10, stringBuilder.length());
                 String modifiedDate = stringBuilder.toString();
 
                 // 저자 부분
