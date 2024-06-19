@@ -17,35 +17,44 @@
     <div class="sign-up screen">
       <div class="signup">
         <h1 class="text-7">회원가입</h1>
+
         <div class="overlap-group1">
-          <div class="button-primary-with-icon-1 button-primary-with-icon-3">
-            <div class="frame-1">
-              <div class="button-name valign-text-middle regular16px">닉네임을 입력해 주세요</div>
+          <form onsubmit="submitForm(event)">
+            <div class="button-primary-with-icon-1 button-primary-with-icon-3">
+              <div class="frame-1">
+                <input type="text" id="nickname" class="button-name valign-text-middle regular16px"
+                  style="border:none; width: 390px;" placeholder="닉네임을 입력해 주세요">
+              </div>
             </div>
-          </div>
-          <div class="button-primary-with-icon">
-            <div class="frame-1">
-              <div class="button-name valign-text-middle regular16px">이메일을 입력해 주세요</div>
+            <div class="button-primary-with-icon">
+              <div class="frame-1">
+                <input type="email" id="email" class="button-name valign-text-middle regular16px"
+                  style="border:none; width: 390px;" placeholder="이메일을 입력해 주세요">
+              </div>
             </div>
-          </div>
-          <div class="button-primary-with-icon">
-            <div class="frame-1">
-              <div class="button-name valign-text-middle regular16px">비밀번호를 입력해 주세요</div>
+            <div class="button-primary-with-icon">
+              <div class="frame-1">
+                <input type="password" id="password" class="button-name valign-text-middle regular16px"
+                  style="border:none; width: 390px;" placeholder="비밀번호를 입력해 주세요">
+              </div>
             </div>
-          </div>
-          <div class="button-primary-with-icon">
-            <div class="frame-1">
-              <div class="button-name valign-text-middle regular16px">비밀번호를 다시 입력해 주세요</div>
+            <div class="button-primary-with-icon">
+              <div class="frame-1">
+                <input type="password" id="passwordConfirm" class="button-name valign-text-middle regular16px"
+                  style="border:none; width: 390px;" placeholder="비밀번호를 다시 입력해 주세요">
+              </div>
             </div>
-          </div>
-          <div class="text-8 valign-text-middle regular13px">비밀번호가 일치하지 않습니다</div>
-          <div class="text">
-            <div class="shape"></div>
-            <div class="text-10 regular13px">가입에 동의합니다</div>
-          </div>
-          <div class="light-button">
-            <div class="text-11 valign-text-middle presetsbody2">회원가입</div>
-          </div>
+            <div id="passwordError" class="text-8 valign-text-middle regular13px" style="display:none;">비밀번호가 일치하지 않습니다
+            </div>
+            <div class="text">
+              <input type="checkbox" id="agreeCheckbox" class="text-10 regular13px">가입에 동의합니다
+            </div>
+            <button type="submit" class="light-button" style="cursor: pointer;">
+              <div class="text-11 valign-text-middle presetsbody2">회원가입</div>
+            </button>
+          </form>
+
+
           <div class="overlap-group">
             <div class="button-primary-with-icon-2 button-primary-with-icon-3">
               <div class="frame-1">
@@ -54,14 +63,110 @@
             </div>
             <img class="google-2" src="/img/google-2@2x.png" alt="google 2" />
           </div>
+
+
           <p class="text-9 valign-text-middle regular13px">
-            <span><span class="span0 regular13px">이미 가입한 계정이 있으신가요? </span><span class="span1 bold13px">로그인</span>
+            <span><span class="span0 regular13px">이미 가입한 계정이 있으신가요? </span><a th:href="@{/user/login}"><span
+                  class="span1 bold13px">로그인</span></a>
             </span>
           </p>
         </div>
       </div>
     </div>
   </div>
+  </div>
+
+  <script>
+    // 비밀번호 일치 여부 확인
+    function checkPasswordMatch() {
+      var password = document.getElementById('password').value;
+      var passwordConfirm = document.getElementById('passwordConfirm').value;
+      var passwordError = document.getElementById('passwordError');
+
+      if (password === passwordConfirm) {
+        passwordError.style.display = 'none';
+        return true;
+      } else {
+        passwordError.style.display = 'block';
+        return false;
+      }
+    }
+
+    // 회원 가입
+    function submitForm(event) {
+      event.preventDefault();
+
+      var nickname = document.getElementById('nickname').value;
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+      var password = document.getElementById('password').value;
+      var checkBox = document.getElementById("agreeCheckbox");
+
+      if (!nickname) {
+        alert("닉네임을 입력하세요.");
+        return;
+      }
+      if (!email) {
+        alert("이메일을 입력하세요.");
+        return;
+      }
+      if (!password) {
+        alert("비밀번호를 입력하세요.");
+        return;
+      }
+      if (!checkPasswordMatch()) {
+        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        return;
+      }
+      if (!checkBox.checked) {
+        alert("가입에 동의해주세요.");
+        return;
+      }
+
+      var data = {
+        "nickname": nickname,
+        "email": email,
+        "password": password,
+        "userRole": "USER"
+      };
+
+      fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 409) {
+              return response.json().then(json => {
+                const errorMessage = json.message;
+                alert(errorMessage)
+
+                throw new Error(errorMessage);
+              });
+            }
+            throw new Error('서버에서 오류 응답을 받았습니다.');
+          }
+          alert("가입이 완료되었습니다.");
+          window.location.href = '/user/login';
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const password = document.getElementById('password');
+      const passwordConfirm = document.getElementById('passwordConfirm');
+      const passwordError = document.getElementById('passwordError');
+
+      password.addEventListener('input', checkPasswordMatch);
+      passwordConfirm.addEventListener('input', checkPasswordMatch);
+    });
+
+  </script>
 </body>
 
 </html>

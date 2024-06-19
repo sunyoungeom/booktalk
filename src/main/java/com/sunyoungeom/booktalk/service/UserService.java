@@ -31,8 +31,10 @@ public class UserService {
         boolean nicknameExists = repository.existsByNickname(user.getNickname());
         boolean emailExists = repository.existsByEmail(user.getEmail());
 
-        if (nicknameExists || emailExists) {
-            throw new UserException(UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
+        if (nicknameExists) {
+            throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
+        } else if (emailExists) {
+            throw new UserException(UserErrorCode.EMAIL_ALREADY_EXISTS_ERROR.getMessage());
         }
     }
 
