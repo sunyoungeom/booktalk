@@ -10,6 +10,8 @@ public interface UserRepository {
 
     User save(User user);
     Optional<User> findById(Long id);
+    boolean existsByNickname(String nickname);
+    boolean existsByEmail(String email);
     List<User> findAll();
     User update(Long id, User updatedUser);
     void delete(Long id);

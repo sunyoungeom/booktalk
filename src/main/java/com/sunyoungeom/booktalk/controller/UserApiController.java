@@ -14,6 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+
 public class UserApiController {
 
     private final UserService userService;
@@ -25,20 +26,21 @@ public class UserApiController {
     }
 
     @GetMapping("/{id}")
-        public ResponseEntity<Object> getUser(@PathVariable Long id) {
-        User user = userService.getUserById(id);
+        public ResponseEntity<Object> getUser(@PathVariable(name = "id") Long id) {
+        User user = userService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<Object> updateUser(@PathVariable(name = "id") Long id, @RequestBody Map<String, Object> updates) {
         User updatedUser = userService.updateUser(id, updates);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "회원탈퇴가 성공하였습니다."));
+        System.out.println("dfsfsdf");
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "회원탈퇴가 성공하였습니다."));
     }
 }

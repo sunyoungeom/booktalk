@@ -1,6 +1,7 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
+import com.sunyoungeom.booktalk.domain.UserRole;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.repository.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -35,15 +36,16 @@ class UserServiceTest {
         User user = new User();
         service.join(user);
 
-        User result = service.getUserById(user.getId());
+        User result = service.findById(user.getId());
 
         assertThat(result).isEqualTo(user);
     }
 
     @Test
     void 중복_유저_가입_예외() {
-        User user = new User();
+        User user = new User("닉네임", "@email", "pw1234", UserRole.USER);
         service.join(user);
+        System.out.println(user.toString());
 
         UserException e = assertThrows(UserException.class, () -> service.join(user));
         assertThat(e.getMessage()).isEqualTo("이미 가입한 사용자입니다.");
@@ -71,7 +73,7 @@ class UserServiceTest {
         result.put("nickname", "방가");
         service.updateUser(user.getId(), result);
 
-        assertThat(result.get("nickname")).isEqualTo(service.getUserById(user.getId()).getNickname());
+        assertThat(result.get("nickname")).isEqualTo(service.findById(user.getId()).getNickname());
     }
 
     @Test
@@ -106,7 +108,7 @@ class UserServiceTest {
 
         service.deleteUser(user.getId());
 
-        UserException e = assertThrows(UserException.class, () -> service.getUserById(user.getId()));
+        UserException e = assertThrows(UserException.class, () -> service.findById(user.getId()));
         assertThat(e.getMessage()).isEqualTo("존재하지 않는 사용자입니다.");
     }
 

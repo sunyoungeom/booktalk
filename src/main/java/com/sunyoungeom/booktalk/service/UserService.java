@@ -1,6 +1,5 @@
 package com.sunyoungeom.booktalk.service;
 
-import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
@@ -29,13 +28,15 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        repository.findById(user.getId())
-                .ifPresent(m -> {
-                    throw new UserException(UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
-                });
+        boolean nicknameExists = repository.existsByNickname(user.getNickname());
+        boolean emailExists = repository.existsByEmail(user.getEmail());
+
+        if (nicknameExists || emailExists) {
+            throw new UserException(UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
+        }
     }
 
-    public User getUserById(Long id) {
+    public User findById(Long id) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
         return user;
@@ -47,7 +48,7 @@ public class UserService {
 
     public User updateUser(Long id, Map<String, Object> updates) {
         // 사용자 존재 확인
-        User user = getUserById(id);
+        User user = findById(id);
 
         updates.forEach((key, value) -> {
             switch (key) {
@@ -68,7 +69,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         // 사용자 존재 확인
-        User user = getUserById(id);
+        User user = findById(id);
 
         repository.delete(id);
     }

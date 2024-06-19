@@ -24,6 +24,17 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
+    public boolean existsByNickname(String nickname) {
+        return store.values().stream().anyMatch(user -> user.getNickname().equals(nickname));
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return store.values().stream().anyMatch(user -> user.getEmail().equals(email));
+    }
+
+
+    @Override
     public List<User> findAll() {
         return new ArrayList<>(store.values());
     }
