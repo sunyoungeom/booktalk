@@ -7,12 +7,11 @@
     <meta name="og:type" content="website">
     <meta name="twitter:card" content="photo">
     <title>북토크</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{https://animaproject.s3.amazonaws.com/home/favicon.png}">
     <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css" th:href="@{/css/books/book-search.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}">
+    <script th:src="@{/js/book-search.js}" defer></script>
 </head>
 
 <body style="margin: 0; background: #ffffff">
@@ -77,36 +76,6 @@
         </div>
     </div>
     </div>
-    <div id="notification-container"></div>
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var inputField = document.querySelector('.x04-search-input input');
-
-            inputField.addEventListener('keypress', function (event) {
-                var inputValue = inputField.value;
-                if (!/^[a-zA-Z0-9가-힣\s]*$/.test(inputValue + event.key)) {
-                    event.preventDefault();
-                }
-            });
-
-            inputField.addEventListener('input', function (event) {
-                var inputValue = inputField.value;
-                inputField.value = inputValue.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-            });
-
-
-            inputField.addEventListener('keypress', function (event) {
-                if (event.key === 'Enter') {
-                    var inputValue = inputField.value;
-                    if (inputValue.trim() !== '') {
-                        window.location.href = '/books/search/' + inputValue + '/1';
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

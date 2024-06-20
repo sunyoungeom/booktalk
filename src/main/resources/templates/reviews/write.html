@@ -11,6 +11,8 @@
     <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/css/styleguide.css" th:href="@{/css/styleguide.css}" />
     <link rel="stylesheet" type="text/css" href="/css/globals.css" th:href="@{/css/globals.css}" />
+    <script th:src="@{/js/reviews-write.js}" defer></script>
+
 </head>
 
 <body style="margin: 0; background: #ffffff">
@@ -29,7 +31,9 @@
                         <div class="avatar"><img class="rectangle-1" src="/img/rectangle-1.png" alt="Rectangle 1" />
                         </div>
                         <div class="frame-2610465">
-                            <div class="text-123 small-text" th:text="${session.currentUser}">유저 닉네임</div>
+                            <input type="hidden" id="currentUser" th:value="${session.currentUser}">
+                            <div id="author" class="text-123 small-text" th:text="${session.currentUser}">유저 닉네임</div>
+
                             <div id="currentDate" class="date presetsbody2">2024-01-01</div>
                         </div>
                     </div>
@@ -37,6 +41,7 @@
                     <div class="input">
                         <div class="text-124 small-text">책 제목</div>
                         <div class="field" style="background-color: #f2f2f2;">
+                            <input type="hidden" id="currentTitle" th:value="${title}">
                             <div id="title" class="label presetsbody2" th:text="${title}">미움받을 용기</div>
                         </div>
                     </div>
@@ -62,67 +67,5 @@
         </div>
     </div>
 </body>
-<script th:inline="javascript">
-    // 오늘 날짜
-    function formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var currentDate = formatDate(new Date());
-        document.getElementById("currentDate").textContent = currentDate;
-    });
-
-    // 리뷰 등록
-    function submitForm(event) {
-        event.preventDefault();
-
-        var title = /*[[@{${title}}]]*/ ''
-        var author = /*[[@{${session.username}}]]*/ ''
-        var currentDate = formatDate(new Date());
-        var reviewContent = document.getElementById("reviewContent").value;
-
-        if (!reviewContent) {
-            alert("리뷰 내용을 입력하세요.");
-            return;
-        }
-
-        var data = {
-            "title": title,
-            "author": author,
-            "date": currentDate,
-            "content": reviewContent,
-            "likes": 0
-        };
-
-        fetch('/api/reviews', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (response.ok) {
-                    console.log(data)
-                    alert("리뷰가 등록되었습니다.");
-                    window.location.href = '/reviews/search?title=' + title;
-                } else {
-                    console.error('리뷰 등록에 실패하였습니다.');
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
-</script>
 
 </html>

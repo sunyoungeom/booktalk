@@ -27,7 +27,7 @@
         <div class="nav-text valign-text-middle body-text">
           <a th:href="@{/mypage/info}" class="nav-link">마이페이지</a>
         </div>
-        
+
         <div th:if="${session.currentUser == null}">
           <a th:href="@{/user/login}">
             <div class="button">
