@@ -49,7 +49,6 @@ public class UserApiController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id) {
         userService.deleteUser(id);
-        System.out.println("dfsfsdf");
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "회원탈퇴가 성공하였습니다."));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "회원탈퇴가 완료되었습니다."));
     }
 }

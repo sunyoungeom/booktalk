@@ -101,7 +101,7 @@
           <div class="head-2 head-3"></div>
           <div class="head-2 head-3">
 
-            <div class="light-button-3 light-button-4">
+            <div id="withdraw" class="light-button-3 light-button-4" style="cursor: pointer;" onclick="withdrawal()">
               <div class="text-6 valign-text-middle presetsbody2">탈퇴</div>
             </div>
           </div>
@@ -109,9 +109,11 @@
       </div>
 
       <script th:inline="javascript">
+        // 유저 id
+        let id = /*[[${session.id}]]*/ '';
+
         // 유저 정보 로드
         function loadUserInfo() {
-          let id = /*[[${session.id}]]*/ '';
 
           fetch('/api/user/' + id, {
           })
@@ -137,6 +139,29 @@
             .catch(error => {
               console.error(error);
             });
+        }
+
+        // 회원 탈퇴
+        function withdrawal() {
+          if (confirm("정말로 탈퇴하시겠습니까?")) {
+            fetch('/api/user/' + id, {
+              method: 'DELETE'
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('탈퇴시 오류 응답을 받았습니다.');
+                }
+                return response.json();
+              })
+              .then(data => {
+                alert(data.message)
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          } else {
+            console.log("탈퇴가 취소되었습니다.");
+          }
         }
 
         document.addEventListener("DOMContentLoaded", () => {
