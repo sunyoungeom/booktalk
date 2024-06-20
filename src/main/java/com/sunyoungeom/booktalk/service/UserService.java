@@ -1,7 +1,7 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
-import com.sunyoungeom.booktalk.dto.LoginDto;
+import com.sunyoungeom.booktalk.dto.LoginDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.repository.UserRepository;
@@ -39,7 +39,7 @@ public class UserService {
         }
     }
 
-    public Long login(LoginDto loginDto) {
+    public Long login(LoginDTO loginDto) {
         User user = repository.findIdByEmail(loginDto.getEmail()).orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
         if (user.getPassword().equals(loginDto.getPassword())) {
         return user.getId();

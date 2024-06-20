@@ -2,7 +2,7 @@ package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserRole;
-import com.sunyoungeom.booktalk.dto.LoginDto;
+import com.sunyoungeom.booktalk.dto.LoginDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.repository.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -66,7 +66,7 @@ class UserServiceTest {
         User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
         service.join(user1);
 
-        long result = service.login(new LoginDto("@email", "pw1234"));
+        long result = service.login(new LoginDTO("@email", "pw1234"));
 
         assertThat(result).isEqualTo(user1.getId());
     }
@@ -75,7 +75,7 @@ class UserServiceTest {
         User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
         service.join(user1);
 
-        long result = service.login(new LoginDto("@email", ""));
+        long result = service.login(new LoginDTO("@email", ""));
 
         assertThat(result).isEqualTo(-1);
     }
@@ -84,7 +84,7 @@ class UserServiceTest {
         User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
         service.join(user1);
 
-        UserException e = assertThrows(UserException.class, () -> service.login(new LoginDto("test1@email", "pw12341")));
+        UserException e = assertThrows(UserException.class, () -> service.login(new LoginDTO("test1@email", "pw12341")));
         assertThat(e.getMessage()).isEqualTo("존재하지 않는 사용자입니다.");
     }
 

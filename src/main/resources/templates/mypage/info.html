@@ -23,6 +23,7 @@
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="text-12 inter-semi-bold-black-24px">마이페이지</div>
 
+        <input type="hidden" th:value="${session.currentUser}">
       </div>
       <!-- mypageMenu -->
       <div th:replace="fragments/mypageMenu :: mypageMenu"></div>
@@ -64,10 +65,10 @@
         <div class="column-1 column-3">
           <div class="head-1 head-3"><img class="image-3" src="/img/rectangle-1.png" alt="Image" /></div>
           <div class="head-1 head-3">
-            <div class="text-32 manrope-normal-mirage-16px">유저1</div>
+            <div id="nickname" class="text-32 manrope-normal-mirage-16px">유저1</div>
           </div>
           <div class="head-1 head-3">
-            <div class="user1gmailcom manrope-normal-mirage-16px">user1@gmail.com</div>
+            <div id="email" class="user1gmailcom manrope-normal-mirage-16px">user1@gmail.com</div>
           </div>
           <div class="head-1 head-3">
             <div class="text-33 manrope-normal-mirage-16px">********</div>
@@ -105,7 +106,34 @@
         </div>
       </div>
 
+      <script th:inline="javascript">
+        // 유저 정보 로드
+        function loadUserInfo() {
+          let id = /*[[${session.id}]]*/ '';
 
+          fetch('/api/user/' + id, {
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('조회시 오류 응답을 받았습니다.');
+              }
+              return response.json();
+            })
+            .then(data => {
+              const nickname = document.getElementById('nickname');
+              const email = document.getElementById('email');
+              nickname.textContent = data.nickname;
+              email.textContent = data.email;
+            })
+            .catch(error => {
+              console.error('데이터를 가져오는 동안 오류 발생:', error);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          loadUserInfo();
+        });
+      </script>
 </body>
 
 </html>

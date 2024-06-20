@@ -1,6 +1,7 @@
 package com.sunyoungeom.booktalk.controller;
 
 import com.sunyoungeom.booktalk.domain.User;
+import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,12 @@ public class UserApiController {
     @GetMapping("/{id}")
         public ResponseEntity<Object> getUser(@PathVariable(name = "id") Long id) {
         User user = userService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setNickname(user.getNickname());
+        userDTO.setEmail(user.getEmail());
+
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
     @PutMapping("/{id}")
