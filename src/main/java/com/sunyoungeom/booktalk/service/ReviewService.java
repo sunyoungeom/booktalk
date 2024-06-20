@@ -25,6 +25,7 @@ public class ReviewService {
 
         // 리뷰 저장
         review.setAuthor(currentUser);
+        review.setLikes(0);
         repository.save(review);
         return review;
     }

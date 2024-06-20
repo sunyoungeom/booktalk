@@ -36,7 +36,7 @@ class MemoryReviewRepositoryTest {
 
     @Test
     void 수정() {
-        Review review = new Review("리뷰제목", "리뷰작성자", String.valueOf(LocalDate.now()), "리뷰내용", 0);
+        Review review = new Review("리뷰제목", "리뷰작성자", String.valueOf(LocalDate.now()), "리뷰내용");
         repository.save(review);
 
         String 수정전내용 = review.getContent();
@@ -50,8 +50,8 @@ class MemoryReviewRepositoryTest {
 
     @Test
     void 전체조회() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
         repository.save(review);
         repository.save(review2);
 
@@ -62,8 +62,10 @@ class MemoryReviewRepositoryTest {
 
     @Test
     void 전체리뷰_인기순_정렬() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        review.setLikes(1);
+        review2.setLikes(0);
         repository.save(review);
         repository.save(review2);
 
@@ -73,8 +75,8 @@ class MemoryReviewRepositoryTest {
     }
     @Test
     void 전체리뷰_최신순_정렬() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
         repository.save(review);
         repository.save(review2);
 
@@ -84,9 +86,12 @@ class MemoryReviewRepositoryTest {
     }
     @Test
     void 제목_검색_리뷰_인기순_정렬() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
-        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 1);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        review.setLikes(1);
+        review2.setLikes(0);
+        review3.setLikes(1);
         repository.save(review);
         repository.save(review2);
         repository.save(review3);
@@ -97,9 +102,9 @@ class MemoryReviewRepositoryTest {
     }
     @Test
     void 제목_검색_리뷰_최신순_정렬() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
-        Review review3 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용2", 0);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        Review review3 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용2");
         repository.save(review);
         repository.save(review2);
         repository.save(review3);
@@ -111,9 +116,9 @@ class MemoryReviewRepositoryTest {
 
     @Test
     void 작성자별_리뷰조회() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
-        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
         repository.save(review);
         repository.save(review2);
         repository.save(review3);
@@ -124,7 +129,7 @@ class MemoryReviewRepositoryTest {
     }
     @Test
     void 존재하는_리뷰_삭제() {
-        Review review = new Review("리뷰제목", "리뷰작성자", String.valueOf(LocalDate.now()), "리뷰내용", 0);
+        Review review = new Review("리뷰제목", "리뷰작성자", String.valueOf(LocalDate.now()), "리뷰내용");
         repository.save(review);
 
         Long reviewId = review.getId();

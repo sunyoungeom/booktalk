@@ -1,4 +1,4 @@
-package com.sunyoungeom.booktalk.domain;
+package com.sunyoungeom.booktalk.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,18 +9,11 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class Review {
+public class ReviewDTO {
     private Long id;
     private String title;
     private String author;
     private String date;
     private String content;
     private int likes;
-
-    public Review(String title, String author, String date, String content) {
-        this.title = title;
-        this.author = author;
-        this.date = date;
-        this.content = content;
-    }
 }

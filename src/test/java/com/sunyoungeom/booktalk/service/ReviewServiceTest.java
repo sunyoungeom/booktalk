@@ -63,9 +63,9 @@ class ReviewServiceTest {
 
     @Test
     void 전체조회() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
-        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 1);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
         service.createReview(review, review.getAuthor());
         service.createReview(review2, review2.getAuthor());
         service.createReview(review3, review3.getAuthor());
@@ -77,9 +77,12 @@ class ReviewServiceTest {
 
     @Test
     void 인기순_조회() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
-        Review review2 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 0);
-        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2", 1);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
+        Review review2 = new Review("리뷰제목2", "리뷰작성자1", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        Review review3 = new Review("리뷰제목2", "리뷰작성자2", String.valueOf(LocalDate.now().minusDays(1)), "리뷰내용2");
+        review.setLikes(1);
+        review2.setLikes(0);
+        review3.setLikes(1);
         service.createReview(review, review.getAuthor());
         service.createReview(review2, review2.getAuthor());
         service.createReview(review3, review3.getAuthor());
@@ -92,7 +95,7 @@ class ReviewServiceTest {
 
     @Test
     void 존재하는_리뷰_수정() {
-        Review review = new Review("리뷰제목1", "test1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
+        Review review = new Review("리뷰제목1", "test1", String.valueOf(LocalDate.now()), "리뷰내용1");
         service.createReview(review, (String) session.getAttribute("currentUser"));
 
         service.updateReview(review.getId(), "수정내용", (String) session.getAttribute("currentUser"));
@@ -111,7 +114,7 @@ class ReviewServiceTest {
 
     @Test
     void 존재하는_리뷰_삭제() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
         service.createReview(review, (String) session.getAttribute("currentUser"));
 
         service.deleteReview(review.getId(), (String) session.getAttribute("currentUser"));
@@ -130,7 +133,7 @@ class ReviewServiceTest {
 
     @Test
     void 권한없는_리뷰_삭제() {
-        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1", 1);
+        Review review = new Review("리뷰제목1", "리뷰작성자1", String.valueOf(LocalDate.now()), "리뷰내용1");
         service.createReview(review, (String) session.getAttribute("currentUser"));
 
         ReviewException e = assertThrows(ReviewException.class, () -> service.deleteReview(review.getId(), "작성자가_아닌_사용자"));
