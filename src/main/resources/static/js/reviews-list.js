@@ -98,6 +98,7 @@ function createReviewHTML(review) {
                         <img class="image rectangle-1" src="/img/rectangle-1.png" alt="Image" />
                         <div class="container">
                             <div class="name-5">
+                                <input type="hidden" id="currentReview" th:value="${review.id}">
                                 <div class="book-title first-last manrope-semi-bold-mirage-16px">${review.title}</div>
                                 <div class="username manrope-normal-storm-gray-14px">${review.author}</div>
                             </div>

@@ -35,7 +35,6 @@ function submitForm(event) {
         "author": author,
         "date": currentDate,
         "content": reviewContent,
-        "likes": 0
     };
 
     fetch('/api/reviews', {
