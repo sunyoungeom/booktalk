@@ -5,9 +5,12 @@ import com.sunyoungeom.booktalk.dto.LoginDto;
 import com.sunyoungeom.booktalk.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -35,7 +38,7 @@ public class UserController {
         session.setAttribute("id", userId);
         session.setAttribute("currentUser", user.getNickname());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/logout")

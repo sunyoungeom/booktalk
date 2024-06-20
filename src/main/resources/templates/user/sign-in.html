@@ -74,7 +74,8 @@
       event.preventDefault();
 
       var email = document.getElementById('email').value;
-      var password = document.getElementById('password').value;
+      var passwordField = document.getElementById('password');
+  var password = passwordField.value;
 
       if (!email) {
         alert("이메일을 입력하세요.");
@@ -99,10 +100,22 @@
       })
         .then(response => {
           if (!response.ok) {
+            // 존재하지 않는 사용자
             if (response.status === 404) {
               return response.json().then(json => {
                 const errorMessage = json.message;
                 alert(errorMessage)
+
+                throw new Error(errorMessage);
+              });
+            }
+            // 비밀번호 오류
+            if (response.status === 400) {
+              return response.json().then(json => {
+                const errorMessage = json.message;
+                alert(errorMessage)
+                // 비밀번호 필드 값 비우기
+                passwordField.value = '';
 
                 throw new Error(errorMessage);
               });

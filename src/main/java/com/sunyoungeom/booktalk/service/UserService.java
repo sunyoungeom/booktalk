@@ -43,6 +43,8 @@ public class UserService {
         User user = repository.findIdByEmail(loginDto.getEmail()).orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
         if (user.getPassword().equals(loginDto.getPassword())) {
         return user.getId();
+        } else if (!user.getPassword().equals(loginDto.getPassword())) {
+            throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
         }
         return -1L;
     }
