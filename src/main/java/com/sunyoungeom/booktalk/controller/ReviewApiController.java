@@ -1,7 +1,6 @@
 package com.sunyoungeom.booktalk.controller;
 
 import com.sunyoungeom.booktalk.domain.Review;
-import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -79,12 +78,5 @@ public class ReviewApiController {
         String author = (String) session.getAttribute("currentUser");
         reviewService.deleteReview(id, author);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));
-    }
-
-    @PatchMapping("/like/{id}")
-    public ResponseEntity<Object> likeReview(@PathVariable(name = "id") Long reviewId) {
-        String userId = (String) session.getAttribute("id");
-        ReviewLikesDTO likedReview = reviewService.likeReview(reviewId, userId);
-        return ResponseEntity.status(HttpStatus.OK).body(likedReview);
     }
 }

@@ -116,7 +116,7 @@ function createReviewHTML(review) {
                     </div>
                     <div class="icons">
                         <div class="frame-2610462">
-                            <img class="heart-5" src="/img/heart-3.svg" alt="heart" onclick="likeFunction(${review.id})"/>
+                            <img class="heart-5" src="/img/heart-3.svg" alt="heart" />
                             <div class="address-5 small-text">${review.likes} 좋아요</div>
                         </div>
                     </div>
@@ -124,13 +124,6 @@ function createReviewHTML(review) {
                 </div>
             `;
 }
-
-function likeFunction(id) {
-    console.log(id)
-}
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
     // 검색한 제목으로 리뷰 로드
