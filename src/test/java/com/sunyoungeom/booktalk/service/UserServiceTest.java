@@ -3,6 +3,7 @@ package com.sunyoungeom.booktalk.service;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserRole;
 import com.sunyoungeom.booktalk.dto.LoginDTO;
+import com.sunyoungeom.booktalk.dto.UpdateDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.repository.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -75,9 +76,8 @@ class UserServiceTest {
         User user1 = new User("닉네임1", "@email", "pw1234");
         service.join(user1);
 
-        long result = service.login(new LoginDTO("@email", ""));
-
-        assertThat(result).isEqualTo(-1);
+        UserException e = assertThrows(UserException.class, () -> service.login(new LoginDTO("@email", "")));
+        assertThat(e.getMessage()).isEqualTo("비밀번호를 다시 확인하세요.");
     }
     @Test
     void 없는_아이디로_로그인() {
@@ -91,8 +91,14 @@ class UserServiceTest {
     @Test
     void 전체조회() {
         User user1 = new User();
+        user1.setNickname("유저1");
+        user1.setEmail("이메일1");
+        user1.setPassword("pw1");
         service.join(user1);
         User user2 = new User();
+        user2.setNickname("유저2");
+        user2.setEmail("이메일2");
+        user2.setPassword("pw2");
         service.join(user2);
 
         List<User> result = service.findAll();
@@ -108,7 +114,9 @@ class UserServiceTest {
 
         Map<String, Object> result = new HashMap<>();
         result.put("nickname", "방가");
-        service.updateUser(user.getId(), result);
+        UpdateDTO updateDTO = new UpdateDTO();
+        updateDTO.setNickname("방가");
+        service.updateUser(user.getId(), updateDTO);
 
         assertThat(result.get("nickname")).isEqualTo(service.findById(user.getId()).getNickname());
     }
@@ -119,22 +127,12 @@ class UserServiceTest {
 
         Map<String, Object> result = new HashMap<>();
         result.put("nickname", "방가");
+        UpdateDTO updateDTO = new UpdateDTO();
+        updateDTO.setNickname("방가");
+//        service.updateUser(user.getId(), updateDTO);
 
-        UserException e = assertThrows(UserException.class, () -> service.updateUser(userId, result));
+        UserException e = assertThrows(UserException.class, () -> service.updateUser(userId, updateDTO));
         assertThat(e.getMessage()).isEqualTo("존재하지 않는 사용자입니다.");
-    }
-
-    @Test
-    void 닉네임_패스워드_이외의_키_수정() {
-        User user = new User();
-        user.setEmail("안녕");
-        service.join(user);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("email", "방가");
-
-        UserException e = assertThrows(UserException.class, () -> service.updateUser(user.getId(), result));
-        assertThat(e.getMessage()).isEqualTo("해당 키는 업데이트 할 수 없습니다.");
     }
 
     @Test

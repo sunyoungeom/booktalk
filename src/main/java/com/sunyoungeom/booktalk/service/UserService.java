@@ -4,6 +4,7 @@ import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserRole;
 import com.sunyoungeom.booktalk.domain.UserSignupType;
 import com.sunyoungeom.booktalk.dto.LoginDTO;
+import com.sunyoungeom.booktalk.dto.UpdateDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.repository.UserRepository;
@@ -65,24 +66,23 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User updateUser(Long id, Map<String, Object> updates) {
+    public User updateUser(Long id, UpdateDTO updateDTO) {
         // 사용자 존재 확인
         User user = findById(id);
 
-        updates.forEach((key, value) -> {
-            switch (key) {
-                case "nickname":
-                    user.setNickname((String) value);
-                    break;
-                case "password":
-                    user.setPassword((String) value);
-                    break;
-                default:
-                    throw new UserException(UserErrorCode.IMMUTABLE_USER_FIELD.getMessage());
+        if (updateDTO.getNickname() != null) {
+            user.setNickname(updateDTO.getNickname());
+        }
+        if (updateDTO.getCurrentPassword() != null && updateDTO.getNewPassword() != null) {
+            if (user.getPassword().equals(updateDTO.getCurrentPassword())) {
+            user.setPassword(updateDTO.getNewPassword());
+            } else {
+                throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
             }
-        });
+        }
 
         repository.update(id, user);
+        System.out.println(user.toString());
         return user;
     }
 

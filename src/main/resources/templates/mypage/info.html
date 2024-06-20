@@ -7,6 +7,7 @@
   <meta name="og:type" content="website" />
   <meta name="twitter:card" content="photo" />
   <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/css/fragments/modal.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/css/mypage/mypageMenu.css}" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/mypage/info.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
@@ -83,18 +84,18 @@
         </div>
         <div class="column-2 column-3">
           <div class="head-2 head-3">
-            <div class="light-button">
+            <div class="light-button" onclick="modifyUserInfo('profileImgPath')">
               <div class="text-5 valign-text-middle manrope-normal-storm-gray-16px">변경</div>
             </div>
           </div>
           <div class="head-2 head-3">
-            <div class="light-button">
+            <div class="light-button" onclick="modifyUserInfo('nickname')">
               <div class="text-5 valign-text-middle manrope-normal-storm-gray-16px">변경</div>
             </div>
           </div>
           <div class="head-2 head-3"></div>
           <div class="head-2 head-3">
-            <div class="light-button">
+            <div class="light-button" onclick="modifyUserInfo('password')">
               <div class="text-5 valign-text-middle manrope-normal-storm-gray-16px">변경</div>
             </div>
           </div>
@@ -108,9 +109,11 @@
         </div>
       </div>
 
+      <!-- 모달 표시 -->
+      <div id="editModal" style="display: none;"></div>
+
       <script th:inline="javascript">
-        // 유저 id
-        let id = /*[[${session.id}]]*/ '';
+        const id = /*[[${session.id}]]*/ '';
 
         // 유저 정보 로드
         function loadUserInfo() {
@@ -139,6 +142,103 @@
             .catch(error => {
               console.error(error);
             });
+        }
+
+        // 회원 정보 수정
+        function modifyUserInfo(field) {
+          openModal(field);
+        }
+
+        function cancelModal() {
+          closeModal();
+
+          window.postMessage({ type: 'closeModal', payload: '취소되었습니다.' }, '*');
+        }
+
+        // 비밀번호 유효성 검사
+        function validatePassword(password) {
+          return /^[a-zA-Z0-9]+$/.test(password);
+        }
+
+        function confirmEdit() {
+          const id = /*[[@{${session.id}}]]*/ ''
+          const fieldValue = document.getElementById('fieldValue').value;
+          const currentValue = document.getElementById('currentValue').value;
+          const newValue = document.getElementById('newValue').value;
+
+          let data = {};
+
+          if (fieldValue === 'password') {
+            if (!validatePassword(newValue)) {
+              alert("비밀번호는 영어와 숫자로만 구성되어야 합니다.");
+              return;
+            }
+            data = {
+              currentPassword: currentValue,
+              newPassword: newValue
+            };
+            console.log(data)
+          }
+
+          if (fieldValue === 'nickname') {
+            data = {
+              nickname: newValue
+            };
+          }
+
+          fetch(`/api/user/` + id, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+
+            .then(response => {
+              if (!response.ok) {
+                if (response.status === 400) {
+                  return response.json().then(json => {
+                    const errorMessage = json.message;
+                    alert(errorMessage)
+
+                    throw new Error(errorMessage);
+                  });
+                }
+                throw new Error('서버에서 오류 응답을 받았습니다.');
+              }
+              return response.json();
+            })
+            .then(data => {
+              // 닉네임 수정 성공
+              if (data.nickname) {
+                const nickname = document.getElementById('nickname');
+                nickname.textContent = data.nickname;
+              }
+              // 비밀번호 수정 성공
+              if (data.message) {
+                alert(data.message);
+              }
+              closeModal();
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
+
+        function openModal(field) {
+          const modal = document.getElementById('editModal');
+          fetch('/edit/' + field)
+            .then(response => response.text())
+            .then(html => {
+              modal.style.display = 'block';
+              modal.innerHTML = html;
+            });
+        }
+
+        function closeModal() {
+          const modal = document.getElementById('editModal');
+          modal.innerHTML = "";
+          modal.style.display = 'none';
         }
 
         // 회원 탈퇴

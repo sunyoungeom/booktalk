@@ -1,6 +1,7 @@
 package com.sunyoungeom.booktalk.controller;
 
 import com.sunyoungeom.booktalk.domain.User;
+import com.sunyoungeom.booktalk.dto.UpdateDTO;
 import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +41,15 @@ public class UserApiController {
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable(name = "id") Long id, @RequestBody Map<String, Object> updates) {
-        User updatedUser = userService.updateUser(id, updates);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable(name = "id") Long id, @RequestBody UpdateDTO updateDTO) {
+        User updatedUser = userService.updateUser(id, updateDTO);
+         if (updateDTO.getNickname() != null) {
+             return ResponseEntity.status(HttpStatus.OK).body(Map.of("nickname", updatedUser.getNickname()));
+         } else if (updateDTO.getCurrentPassword() != null && updateDTO.getNewPassword() != null) {
+             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "비밀번호가 수정되었습니다."));
+         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "잘못된 요청입니다."));
     }
 
     @DeleteMapping("/{id}")
