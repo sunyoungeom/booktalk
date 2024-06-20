@@ -1,6 +1,7 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.Review;
+import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.exception.GlobalExceptionHandler;
 import com.sunyoungeom.booktalk.exception.ReviewException;
 import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
@@ -92,5 +93,18 @@ public class ReviewService {
         Review review = repository.findById(id)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
         return review;
+    }
+
+    public ReviewLikesDTO likeReview(Long reviewId, String userId) {
+        Review review = existsById(reviewId);
+
+        int currentLikes = review.getLikes();
+        int newLikes = currentLikes + 1;
+
+        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
+        reviewLikesDTO.setLikes(newLikes);
+        review.setLikes(newLikes);
+
+        return reviewLikesDTO;
     }
 }
