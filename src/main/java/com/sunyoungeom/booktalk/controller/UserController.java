@@ -37,4 +37,10 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 }

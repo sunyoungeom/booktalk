@@ -18,12 +18,30 @@
       </div>
       <div class="items">
 
-        <div class="nav-text valign-text-middle body-text"><a th:href="@{/books/search}" class="nav-link">도서검색</a></div>
-        <div class="nav-text valign-text-middle body-text"><a th:href="@{/reviews/list}" class="nav-link">리뷰목록</a></div>
-        <div class="nav-text valign-text-middle body-text"><a th:href="@{/mypage/info}" class="nav-link">마이페이지</a></div>
-        <div class="button">
-<!--          TODO: 로그아웃 추가 필요-->
-          <a th:href="@{/user/login}"><div class="nav-button-text valign-text-middle small-text">로그인</div></a>
+        <div class="nav-text valign-text-middle body-text">
+          <a th:href="@{/books/search}" class="nav-link">도서검색</a>
+        </div>
+        <div class="nav-text valign-text-middle body-text">
+          <a th:href="@{/reviews/list}" class="nav-link">리뷰목록</a>
+        </div>
+        <div class="nav-text valign-text-middle body-text">
+          <a th:href="@{/mypage/info}" class="nav-link">마이페이지</a>
+        </div>
+        
+        <div th:if="${session.currentUser == null}">
+          <a th:href="@{/user/login}">
+            <div class="button">
+              <div class="nav-button-text valign-text-middle small-text">로그인</div>
+            </div>
+          </a>
+        </div>
+
+        <div th:if="${session.currentUser != null}">
+          <a th:href="@{/user/logout}">
+            <div class="button">
+              <div class="nav-button-text valign-text-middle small-text">로그아웃</div>
+            </div>
+          </a>
         </div>
       </div>
     </div>
