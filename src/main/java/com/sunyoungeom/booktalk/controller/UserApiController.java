@@ -31,8 +31,11 @@ public class UserApiController {
         User user = userService.findById(id);
 
         UserDTO userDTO = new UserDTO();
+        userDTO.setProfileImgPath(user.getProfileImgPath());
         userDTO.setNickname(user.getNickname());
         userDTO.setEmail(user.getEmail());
+        userDTO.setSignUpType(user.getSignUpType());
+        userDTO.setSignUpDate(user.getSignUpDate());
 
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }

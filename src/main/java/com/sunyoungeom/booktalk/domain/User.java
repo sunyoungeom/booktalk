@@ -5,21 +5,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 public class User {
     private Long id;
+    private String profileImgPath;
     private String nickname;
     private String email;
     private String password;
+    private String signUpType;
+    private LocalDate signUpDate;
     private UserRole userRole;
 
-    public User(String nickname, String email, String password, UserRole userRole) {
+    public User(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.userRole = userRole;
+
     }
 }

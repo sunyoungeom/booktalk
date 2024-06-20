@@ -44,8 +44,8 @@ class UserServiceTest {
 
     @Test
     void 중복_닉네임_가입_예외() {
-        User user1 = new User("닉네임", "1@email", "pw1234", UserRole.USER);
-        User user2 = new User("닉네임", "2@email", "pw1234", UserRole.USER);
+        User user1 = new User("닉네임", "1@email", "pw1234");
+        User user2 = new User("닉네임", "2@email", "pw1234");
         service.join(user1);
 
         UserException e = assertThrows(UserException.class, () -> service.join(user2));
@@ -53,8 +53,8 @@ class UserServiceTest {
     }
     @Test
     void 중복_이메일_가입_예외() {
-        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
-        User user2 = new User("닉네임2", "@email", "pw1234", UserRole.USER);
+        User user1 = new User("닉네임1", "@email", "pw1234");
+        User user2 = new User("닉네임2", "@email", "pw1234");
         service.join(user1);
 
         UserException e = assertThrows(UserException.class, () -> service.join(user2));
@@ -63,7 +63,7 @@ class UserServiceTest {
 
     @Test
     void 로그인_성공() {
-        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
+        User user1 = new User("닉네임1", "@email", "pw1234");
         service.join(user1);
 
         long result = service.login(new LoginDTO("@email", "pw1234"));
@@ -72,7 +72,7 @@ class UserServiceTest {
     }
     @Test
     void 로그인_실패() {
-        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
+        User user1 = new User("닉네임1", "@email", "pw1234");
         service.join(user1);
 
         long result = service.login(new LoginDTO("@email", ""));
@@ -81,7 +81,7 @@ class UserServiceTest {
     }
     @Test
     void 없는_아이디로_로그인() {
-        User user1 = new User("닉네임1", "@email", "pw1234", UserRole.USER);
+        User user1 = new User("닉네임1", "@email", "pw1234");
         service.join(user1);
 
         UserException e = assertThrows(UserException.class, () -> service.login(new LoginDTO("test1@email", "pw12341")));

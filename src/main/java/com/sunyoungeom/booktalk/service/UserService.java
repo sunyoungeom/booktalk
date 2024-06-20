@@ -1,6 +1,8 @@
 package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
+import com.sunyoungeom.booktalk.domain.UserRole;
+import com.sunyoungeom.booktalk.domain.UserSignupType;
 import com.sunyoungeom.booktalk.dto.LoginDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +27,9 @@ public class UserService {
         validateDuplicateUser(user);
 
         // 가입
+        user.setUserRole(UserRole.USER);
+        user.setSignUpType(UserSignupType.EMAIL.getTypeName());
+        user.setSignUpDate(LocalDate.now());
         repository.save(user);
         return user;
     }
