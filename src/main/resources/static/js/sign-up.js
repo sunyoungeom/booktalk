@@ -13,6 +13,11 @@
     }
   }
 
+  // 비밀번호 유효성 검사
+function validatePassword(password) {
+  return /^[a-zA-Z0-9]+$/.test(password);
+}
+
   // 회원 가입
   function submitForm(event) {
     event.preventDefault();
@@ -40,6 +45,10 @@
     }
     if (!checkBox.checked) {
       alert("가입에 동의해주세요.");
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert("비밀번호는 영어와 숫자로만 구성되어야 합니다.");
       return;
     }
 
