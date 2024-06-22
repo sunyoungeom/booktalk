@@ -25,7 +25,7 @@
         <div th:replace="fragments/navbar :: navbar"></div>
         <div class="text-12 inter-semi-bold-black-24px">마이페이지</div>
 
-        <input type="hidden" th:value="${session.currentUser}">
+        <input type="hidden" th:value="${session.username}">
       </div>
       <!-- mypageMenu -->
       <div th:replace="fragments/mypageMenu :: mypageMenu"></div>

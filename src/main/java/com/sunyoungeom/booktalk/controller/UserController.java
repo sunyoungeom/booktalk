@@ -34,7 +34,7 @@ public class UserController {
 
         User user = service.findById(userId);
         session.setAttribute("id", userId);
-        session.setAttribute("currentUser", user.getNickname());
+        session.setAttribute("username", user.getNickname());
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
