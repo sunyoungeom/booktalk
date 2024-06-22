@@ -1,12 +1,14 @@
 package com.sunyoungeom.booktalk.repository;
 
 import com.sunyoungeom.booktalk.domain.Review;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-//@Repository
+@Repository
+@RequiredArgsConstructor
 public class MemoryReviewRepository implements ReviewRepository {
 
     private static Map<Long, Review> store = new HashMap<>();

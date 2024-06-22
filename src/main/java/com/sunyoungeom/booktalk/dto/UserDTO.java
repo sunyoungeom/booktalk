@@ -17,5 +17,5 @@ public class UserDTO {
     private String nickname;
     private String email;
     private String signUpType;
-    private LocalDate signUpDate;
+    private String signUpDate;
 }

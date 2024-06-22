@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UpdateDTO {
-    private String nickname;
+    private String newNickname;
     private String currentPassword;
     private String newPassword;
 }

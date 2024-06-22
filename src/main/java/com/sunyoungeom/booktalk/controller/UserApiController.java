@@ -19,17 +19,17 @@ import java.util.Map;
 
 public class UserApiController {
 
-    private final UserService userService;
+    private final UserService service;
 
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody User user) {
-        User createdUser = userService.join(user);
+        User createdUser = service.join(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping("/{id}")
         public ResponseEntity<Object> getUser(@PathVariable(name = "id") Long id) {
-        User user = userService.findById(id);
+        User user = service.findById(id);
 
         UserDTO userDTO = new UserDTO();
         userDTO.setProfileImgPath(user.getProfileImgPath());
@@ -43,8 +43,9 @@ public class UserApiController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(name = "id") Long id, @RequestBody UpdateDTO updateDTO) {
-        User updatedUser = userService.updateUser(id, updateDTO);
-         if (updateDTO.getNickname() != null) {
+        log.info("api = {}", updateDTO.toString());
+        User updatedUser = service.updateUser(id, updateDTO);
+         if (updateDTO.getNewNickname() != null) {
              return ResponseEntity.status(HttpStatus.OK).body(Map.of("nickname", updatedUser.getNickname()));
          } else if (updateDTO.getCurrentPassword() != null && updateDTO.getNewPassword() != null) {
              return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "비밀번호가 수정되었습니다."));
@@ -54,7 +55,7 @@ public class UserApiController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id) {
-        userService.deleteUser(id);
+        service.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "회원탈퇴가 완료되었습니다."));
     }
 }

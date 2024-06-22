@@ -1,9 +1,6 @@
 package com.sunyoungeom.booktalk.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -18,7 +15,7 @@ public class User {
     private String email;
     private String password;
     private String signUpType;
-    private LocalDate signUpDate;
+    private String signUpDate;
     private UserRole userRole;
 
     public User(String nickname, String email, String password) {

@@ -61,12 +61,11 @@ function confirmEdit() {
       currentPassword: currentValue,
       newPassword: newValue
     };
-    console.log(data)
   }
 
   if (fieldValue === 'nickname') {
     data = {
-      nickname: newValue
+      newNickname: newValue
     };
   }
 
