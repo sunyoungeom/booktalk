@@ -2,7 +2,7 @@ package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.dto.LoginDTO;
-import com.sunyoungeom.booktalk.dto.UpdateDTO;
+import com.sunyoungeom.booktalk.dto.UserUpdateDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.repository.UserRepository;
 import com.sunyoungeom.booktalk.repository.UserRepositoryMemory;
@@ -122,7 +122,7 @@ class UserServiceTest {
         String newNickname = "방가";
         Map<String, Object> result = new HashMap<>();
         result.put("nickname", newNickname);
-        UpdateDTO updateDTO = new UpdateDTO();
+        UserUpdateDTO updateDTO = new UserUpdateDTO();
         updateDTO.setNewNickname(newNickname);
         User joined = service.findIdByEmail(user.getEmail());
         service.updateUser(joined.getId(), updateDTO);
@@ -136,7 +136,7 @@ class UserServiceTest {
 
         Map<String, Object> result = new HashMap<>();
         result.put("nickname", "방가");
-        UpdateDTO updateDTO = new UpdateDTO();
+        UserUpdateDTO updateDTO = new UserUpdateDTO();
         updateDTO.setNewNickname("방가");
 
         UserException e = assertThrows(UserException.class, () -> service.updateUser(userId, updateDTO));
