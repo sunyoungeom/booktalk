@@ -3,7 +3,7 @@ package com.sunyoungeom.booktalk.service;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserSignupType;
 import com.sunyoungeom.booktalk.dto.LoginDTO;
-import com.sunyoungeom.booktalk.dto.UpdateDTO;
+import com.sunyoungeom.booktalk.dto.UserUpdateDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.repository.UserRepository;
@@ -62,7 +62,7 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User updateUser(Long id, UpdateDTO updateDTO) {
+    public User updateUser(Long id, UserUpdateDTO updateDTO) {
         User user = findById(id);
         if (updateDTO.getNewNickname() != null) {
             if (repository.existsByNickname(updateDTO.getNewNickname())) {

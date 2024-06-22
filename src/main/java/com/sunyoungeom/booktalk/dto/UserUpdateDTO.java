@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class UpdateDTO {
+public class UserUpdateDTO {
     private String newNickname;
     private String currentPassword;
     private String newPassword;
