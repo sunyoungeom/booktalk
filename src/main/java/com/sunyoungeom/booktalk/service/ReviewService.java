@@ -7,104 +7,83 @@ import com.sunyoungeom.booktalk.exception.ReviewException;
 import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.exception.common.CommonException;
+import com.sunyoungeom.booktalk.exception.common.ErrorCode;
 import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    
+
     private final ReviewRepository repository;
 
-    public Review createReview(Review review, String currentUser) {
+    public Review createReview(Review review, Long userId, String username) {
         // 중복 리뷰 검증
-        validateDuplicateReview(review, currentUser);
-
+        validateDuplicateReview(review.getTitle(), userId);
         // 리뷰 저장
-        review.setAuthor(currentUser);
-        review.setLikes(0);
         repository.save(review);
         return review;
     }
 
-    private void validateDuplicateReview(Review review, String currentUser) {
-        repository.findByTitleAndAuthor(review.getTitle(), currentUser)
-                .ifPresent(m -> {
-                    throw new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage());
-                });
+    private void validateDuplicateReview(String title, Long userId) {
+        if (repository.existsByTitleAndUserId(title, userId)) {
+            throw new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage());
+        }
     }
 
-    public List<Review> findAll() {
-        return repository.findAll();
+    public List<Review> findAllOrderByDateDesc() {
+        return repository.findAllOrderByDateDesc();
     }
 
-    public List<Review> findAllSortedBydate() {
-        return repository.findAllSortedBydate();
+    public List<Review> findAllOrderByLikesDesc() {
+        return repository.findAllOrderByLikesDesc();
     }
 
-    public List<Review> findAllSortedByLikes() {
-        return repository.findAllSortedByLikes();
+    public List<Review> findByTitleOrderByLikesDesc(String title) {
+        return repository.findByTitleOrderByLikesDesc(title);
     }
 
-    public List<Review> findByTitleSortedByLikes(String title) {
-        return repository.findByTitleSortedByLikes(title);
+    public List<Review> findByTitleOrderByDateDesc(String title) {
+        return repository.findByTitleOrderByDateDesc(title);
     }
 
-    public List<Review> findByTitleSortedByDate(String title) {
-        return repository.findByTitleSortedByDate(title);
+    public List<Review> findByUserId(Long userId) {
+        return repository.findByUserId(userId);
     }
 
-    public List<Review> findByAuthor(String author) {
-        return repository.findByAuthor(author);
-    }
-
-    public Review updateReview(Long id, String content, String currentUser) {
+    public void update(Long reviewId, Long userId, String content) {
         // 리뷰 존재 확인
-        Review review = existsById(id);
-        // 작성자 확인
-        checkAuthorMatch(review, currentUser);
+        Review review = existsById(reviewId);
+        // 작성자 일치 확인
+        checkAuthorMatch(userId, review);
 
         review.setContent(content);
         repository.update(review.getId(), content);
-
-        return review;
     }
 
-    private void checkAuthorMatch(Review review, String currentUser) {
-        if (currentUser == null || !review.getAuthor().equals(currentUser)) {
+    private void checkAuthorMatch(Long userId, Review review) {
+        if (review.getUserId() != userId) {
             throw new ReviewException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
         }
     }
 
-    public void deleteReview(Long id, String currentUser) {
+    public void deleteReview(Long reviewId, Long userId) {
         // 리뷰 존재 확인
-        Review review = existsById(id);
-        // 작성자 확인
-        checkAuthorMatch(review, currentUser);
+        Review review = existsById(reviewId);
+        // 작성자 일치 확인
+        checkAuthorMatch(userId, review);
 
-        repository.deleteById(id);
+        repository.deleteById(reviewId);
     }
 
     private Review existsById(Long id) {
         Review review = repository.findById(id)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
         return review;
-    }
-
-    public ReviewLikesDTO likeReview(Long reviewId, String userId) {
-        Review review = existsById(reviewId);
-
-        int currentLikes = review.getLikes();
-        int newLikes = currentLikes + 1;
-
-        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
-        reviewLikesDTO.setLikes(newLikes);
-        review.setLikes(newLikes);
-
-        return reviewLikesDTO;
     }
 }

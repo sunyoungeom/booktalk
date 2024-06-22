@@ -11,16 +11,17 @@ import lombok.ToString;
 @ToString
 public class Review {
     private Long id;
+    private Long userId;
     private String title;
     private String author;
     private String date;
     private String content;
     private int likes;
 
-    public Review(String title, String author, String date, String content) {
+    public Review(Long userId, String title, String author, String content) {
+        this.userId = userId;
         this.title = title;
         this.author = author;
-        this.date = date;
         this.content = content;
     }
 }

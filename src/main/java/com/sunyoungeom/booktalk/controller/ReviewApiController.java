@@ -6,11 +6,8 @@ import com.sunyoungeom.booktalk.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +23,9 @@ public class ReviewApiController {
 
     @PostMapping
     public ResponseEntity<Object> createReview(@RequestBody Review review) {
-        String author = (String) session.getAttribute("currentUser");
-        Review createdReview = reviewService.createReview(review, author);
+        Long userId = (Long) session.getAttribute("id");
+        String author = (String) session.getAttribute("username");
+        Review createdReview = reviewService.createReview(review, userId, author);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
     }
 
@@ -37,27 +35,31 @@ public class ReviewApiController {
             @RequestParam(name = "author", required = false) String author,
             @RequestParam(name = "sortBy", required = false) String sortBy) {
 
+        Long userId = (Long) session.getAttribute("id");
         List<Review> reviews;
 
+        // 리뷰 검색
         if (title != null) {
             // 제목별 조회
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = reviewService.findByTitleSortedByLikes(title);
+                reviews = reviewService.findByTitleOrderByLikesDesc(title);
             } else {
-                reviews = reviewService.findByTitleSortedByDate(title);
+                reviews = reviewService.findByTitleOrderByDateDesc(title);
             }
-        } else if (author != null) {
-            // 작성자별 조회
-            reviews = reviewService.findByAuthor(author);
         } else {
             // 모든 글 조회
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = reviewService.findAllSortedByLikes();
+                reviews = reviewService.findAllOrderByLikesDesc();
                 log.info("test" + reviews.toString());
             } else {
-                reviews = reviewService.findAllSortedBydate();
+                reviews = reviewService.findAllOrderByDateDesc();
                 log.info("test2" + reviews.toString());
             }
+        }
+
+        // 로그인한 유저 작성 리뷰 조회
+        if (author != null) {
+            reviews = reviewService.findByUserId(userId);
         }
 
         if (!reviews.isEmpty()) {
@@ -68,23 +70,18 @@ public class ReviewApiController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateReview(@PathVariable(name = "id") Long id, @RequestBody String content) {
-        String author = (String) session.getAttribute("currentUser");
-        Review updatedReview = reviewService.updateReview(id, content, author);
-        return ResponseEntity.status(HttpStatus.FOUND).body(updatedReview);
+    public ResponseEntity<Object> updateReview(@PathVariable(name = "id") Long reviewId, @RequestBody String content) {
+        Long userId = Long.valueOf((String) session.getAttribute("id"));
+        String author = (String) session.getAttribute("username");
+        reviewService.update(reviewId, userId, author);
+        return ResponseEntity.status(HttpStatus.FOUND).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteReview(@PathVariable(name = "id") Long id) {
-        String author = (String) session.getAttribute("currentUser");
-        reviewService.deleteReview(id, author);
+    public ResponseEntity<Object> deleteReview(@PathVariable(name = "id") Long reviewId) {
+        Long userId = Long.valueOf((String) session.getAttribute("id"));
+        String author = (String) session.getAttribute("username");
+        reviewService.deleteReview(reviewId, userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));
-    }
-
-    @PatchMapping("/like/{id}")
-    public ResponseEntity<Object> likeReview(@PathVariable(name = "id") Long reviewId) {
-        String userId = (String) session.getAttribute("id");
-        ReviewLikesDTO likedReview = reviewService.likeReview(reviewId, userId);
-        return ResponseEntity.status(HttpStatus.OK).body(likedReview);
     }
 }

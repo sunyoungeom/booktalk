@@ -9,15 +9,13 @@ public interface ReviewRepository {
 
     Review save(Review review);
     Optional<Review> findById(Long id);
-    Optional<Review> findByTitleAndAuthor(String title, String author);
-    List<Review> findAll();
-    List<Review> findAllSortedBydate();
-    List<Review> findAllSortedByLikes();
-    List<Review> findByTitle(String title);
-    List<Review> findByTitleSortedByLikes(String title);
-    List<Review> findByTitleSortedByDate(String title);
-    List<Review> findByAuthor(String author);
-    Review update(Long id, String content);
+    boolean existsByTitleAndUserId(String title, Long userId);
+    List<Review> findAllOrderByDateDesc();
+    List<Review> findAllOrderByLikesDesc();
+    List<Review> findByTitleOrderByDateDesc(String title);
+    List<Review> findByTitleOrderByLikesDesc(String title);
+    List<Review> findByUserId(Long userId);
+    void update(Long id, String content);
     void deleteById(Long id);
 
 }
