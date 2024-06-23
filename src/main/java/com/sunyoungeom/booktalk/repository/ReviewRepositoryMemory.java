@@ -94,11 +94,12 @@ public class ReviewRepositoryMemory implements ReviewRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         store.remove(id);
     }
 
-    public void clearStore() {
+    @Override
+    public void clearStroe() {
         store.clear();
     }
 }
