@@ -6,10 +6,12 @@ import com.sunyoungeom.booktalk.domain.ReviewLikes;
 import com.sunyoungeom.booktalk.repository.ReviewLikesRepository;
 import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 @RequiredArgsConstructor
 public class ReviewFacade {
     private final ReviewRepository reviewRepository;
