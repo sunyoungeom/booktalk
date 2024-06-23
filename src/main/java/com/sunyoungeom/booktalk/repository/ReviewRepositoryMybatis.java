@@ -63,6 +63,16 @@ public class ReviewRepositoryMybatis implements ReviewRepository {
     }
 
     @Override
+    public void increaseLikes(Long id) {
+        sql.update("Review.increaseLikes", id);
+    }
+
+    @Override
+    public void decreaseLikes(Long id) {
+        sql.update("Review.decreaseLikes", id);
+    }
+
+    @Override
     public void update(Long id, String content) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);

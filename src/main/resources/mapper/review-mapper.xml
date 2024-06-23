@@ -51,6 +51,18 @@
         ORDER BY id DESC
     </select>
 
+    <update id="increaseLikes" parameterType="Long">
+        UPDATE reviews
+        SET likes = likes + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decreaseLikes" parameterType="Long">
+        UPDATE reviews
+        SET likes = likes - 1
+        WHERE id = #{id}
+    </update>
+
     <update id="update" parameterType="map">
         UPDATE reviews
         SET content = #{content}

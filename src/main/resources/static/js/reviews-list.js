@@ -126,8 +126,33 @@ function createReviewHTML(review) {
 }
 
 function likeFunction(id) {
-    console.log(id)
-}
+    var userId = document.getElementById('userId').value;
+    var reviewId = id;
+
+    var data = {
+        userId: userId,
+        reviewId: reviewId
+    }
+
+    fetch(`/api/reviews/` + id + `/likes`, {
+        method: 'POST',
+        headers: {
+              'Content-Type': 'application/json'
+            },
+        body: JSON.stringify(data)
+        })
+     .then(response => {
+          if (!response.ok) {
+            }
+            throw new Error('서버에서 오류 응답을 받았습니다.');
+          }
+        })
+        .then(data => {
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
 
 document.addEventListener("DOMContentLoaded", () => {
     // 검색한 제목으로 리뷰 로드

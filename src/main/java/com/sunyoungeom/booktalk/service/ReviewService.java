@@ -100,10 +100,10 @@ public class ReviewService {
         }
         boolean alreadyLiked = reviewFacade.findByUserIdAndReviewId(userId, reviewId);
         if (alreadyLiked) {
-            review.setLikes(review.getLikes() - 1);
+            reviewFacade.decreaseLikes(reviewId);
             reviewFacade.deleteReviewLikes(userId, reviewId);
         } else {
-            review.setLikes(review.getLikes() + 1);
+            reviewFacade.increaseLikes(reviewId);
             ReviewLikes reviewLikes = new ReviewLikes(userId, reviewId);
             reviewFacade.saveReviewLikes(reviewLikes);
         }

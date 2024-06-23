@@ -49,6 +49,14 @@ public class ReviewFacade {
         return reviewRepository.findByUserId(userId);
     }
 
+    public void increaseLikes(Long id) {
+        reviewRepository.increaseLikes(id);
+    }
+
+    public void decreaseLikes(Long id) {
+        reviewRepository.decreaseLikes(id);
+    }
+
     public void updateReviewContent(Long id, String content) {
         reviewRepository.update(id, content);
     }

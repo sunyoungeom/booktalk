@@ -88,6 +88,16 @@ public class ReviewRepositoryMemory implements ReviewRepository {
     }
 
     @Override
+    public void increaseLikes(Long id) {
+
+    }
+
+    @Override
+    public void decreaseLikes(Long id) {
+
+    }
+
+    @Override
     public void update(Long id, String content) {
         Review review = store.get(id);
         review.setContent(content);

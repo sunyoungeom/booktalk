@@ -15,6 +15,8 @@ public interface ReviewRepository {
     List<Review> findByTitleOrderByDateDesc(String title);
     List<Review> findByTitleOrderByLikesDesc(String title);
     List<Review> findByUserId(Long userId);
+    void increaseLikes(Long id);
+    void decreaseLikes(Long id);
     void update(Long id, String content);
     void delete(Long id);
 

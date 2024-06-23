@@ -71,7 +71,7 @@ public class ReviewApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(@PathVariable(name = "id") Long reviewId, @RequestBody String content) {
-        Long userId = Long.valueOf((String) session.getAttribute("id"));
+        Long userId = (Long) session.getAttribute("id");
         String author = (String) session.getAttribute("username");
         reviewService.update(reviewId, userId, author);
         return ResponseEntity.status(HttpStatus.FOUND).build();
@@ -79,9 +79,16 @@ public class ReviewApiController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteReview(@PathVariable(name = "id") Long reviewId) {
-        Long userId = Long.valueOf((String) session.getAttribute("id"));
+        Long userId = (Long) session.getAttribute("id");
         String author = (String) session.getAttribute("username");
         reviewService.deleteReview(reviewId, userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));
+    }
+
+    @PostMapping("/{id}/likes")
+    public ResponseEntity<Object> likeReview(@PathVariable(name = "id") Long reviewId) {
+        Long userId = (Long) session.getAttribute("id");
+        reviewService.likeReview(reviewId, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
