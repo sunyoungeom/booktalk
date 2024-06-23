@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Review">
+    <insert id="save" parameterType="Review" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO reviews(userId, title, author, content)
+        VALUES (#{userId}, #{title}, #{author}, #{content})
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="Review">
+        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        FROM reviews
+        WHERE id = #{id}
+    </select>
+
+    <select id="existsByTitleAndUserId" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM reviews WHERE userId = #{userId} AND title = #{title}
+    </select>
+
+    <select id="findAllOrderByDateDesc" resultType="Review">
+        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        FROM reviews
+        ORDER BY id DESC
+    </select>
+
+    <select id="findAllOrderByLikesDesc" resultType="Review">
+        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        FROM reviews
+        ORDER BY likes DESC
+    </select>
+
+    <select id="findByTitleOrderByDateDesc" resultType="Review">
+        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        FROM reviews
+        WHERE title = #{title}
+        ORDER BY id DESC
+    </select>
+
+    <select id="findByTitleOrderByLikesDesc" resultType="Review">
+        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        FROM reviews
+        WHERE title = #{title}
+        ORDER BY likes DESC
+    </select>
+
+    <select id="findByUserId" resultType="Review">
+        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        FROM reviews
+        WHERE userId = #{userId}
+        ORDER BY id DESC
+    </select>
+
+    <update id="update" parameterType="map">
+        UPDATE reviews
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM reviews where id=#{id}
+    </delete>
+
+</mapper>

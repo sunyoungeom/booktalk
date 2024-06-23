@@ -4,5 +4,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.sunyoungeom.booktalk.domain.User" alias="user"></typeAlias>
+        <typeAlias type="com.sunyoungeom.booktalk.domain.Review" alias="review"></typeAlias>
     </typeAliases>
 </configuration>
