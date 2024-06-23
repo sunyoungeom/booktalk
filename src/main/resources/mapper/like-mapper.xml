@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReviewLikes">
+    <insert id="save" parameterType="ReviewLikes" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO likes(userId, reviewId)
+        VALUES (#{userId}, #{reviewId})
+    </insert>
+
+    <select id="findAll" resultType="ReviewLikes">
+        SELECT *
+        FROM likes
+    </select>
+
+    <select id="findById" resultType="ReviewLikes">
+        SELECT *
+        FROM likes
+        WHERE id = #{id}
+    </select>
+
+    <select id="findReviewLikesByUserId" resultType="ReviewLikes">
+        SELECT *
+        FROM likes
+        WHERE userId = #{userId}
+    </select>
+
+    <select id="findByUserIdAndReviewId" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM likes WHERE userId = #{userId} AND reviewId = #{reviewId}
+    </select>
+
+    <select id="findByUserId" parameterType="Long" resultType="int">
+        SELECT COUNT(*)
+        FROM likes
+        WHERE userId = #{userId}
+        ORDER BY id DESC
+    </select>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM likes WHERE userId = #{userId} AND reviewId = #{reviewId}
+    </delete>
+
+</mapper>

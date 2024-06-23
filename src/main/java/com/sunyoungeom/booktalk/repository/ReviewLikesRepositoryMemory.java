@@ -4,6 +4,7 @@ import com.sunyoungeom.booktalk.domain.ReviewLikes;
 
 import java.util.*;
 
+//@Repository
 public class ReviewLikesRepositoryMemory implements ReviewLikesRepository {
 
     private static Map<Long, ReviewLikes> store = new HashMap<>();

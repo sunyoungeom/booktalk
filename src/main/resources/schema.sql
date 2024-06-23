@@ -16,6 +16,14 @@ CREATE TABLE IF NOT EXISTS reviews (
     author VARCHAR(50) NOT NULL,
     date datetime default now(),
     content VARCHAR(255) NOT NULL,
-    liks INT DEFAULT 0,
+    likes INT DEFAULT 0,
     FOREIGN KEY (userId) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS likes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    userId BIGINT NOT NULL,
+    reviewId BIGINT NOT NULL,
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (reviewId) REFERENCES reviews(id)
 );
