@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Review">
-    <insert id="save" parameterType="Review" useGeneratedKeys="true" keyProperty="id" >
+    <insert id="save" parameterType="Review">
         INSERT INTO reviews(userId, title, author, content)
         VALUES (#{userId}, #{title}, #{author}, #{content})
     </insert>

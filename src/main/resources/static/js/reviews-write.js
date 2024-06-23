@@ -21,6 +21,7 @@ function submitForm(event) {
     event.preventDefault();
 
     var title = document.getElementById('currentTitle').value;
+    var userId = document.getElementById('userId').value;
     var author = document.getElementById('username').value;
     var currentDate = formatDate(new Date());
     var reviewContent = document.getElementById("reviewContent").value;
@@ -31,6 +32,7 @@ function submitForm(event) {
     }
 
     var data = {
+        "userId": userId,
         "title": title,
         "author": author,
         "date": currentDate,
