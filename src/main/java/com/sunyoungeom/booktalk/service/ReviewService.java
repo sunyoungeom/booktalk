@@ -2,6 +2,7 @@ package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.domain.ReviewLikes;
+import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.exception.ReviewException;
 import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
@@ -10,6 +11,7 @@ import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.facade.ReviewFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -89,23 +91,30 @@ public class ReviewService {
     }
 
 
-    public void likeReview(Long reviewId, Long userId) {
+    @Transactional
+    public ReviewLikesDTO likeReview(Long reviewId, Long userId) {
         Review review = reviewFacade.findReviewById(reviewId)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
+        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
         if (userId == null) {
             throw new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
         }
         if (review.getUserId().equals(userId)) {
-            throw new ReviewException("본인이 쓴 리뷰에는 좋아요를 누를 수 없습니다.");
+            throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR.getMessage());
         }
         boolean alreadyLiked = reviewFacade.findByUserIdAndReviewId(userId, reviewId);
         if (alreadyLiked) {
+            reviewLikesDTO.setLiked(false);
+            reviewLikesDTO.setLikes(review.getLikes() - 1);
             reviewFacade.decreaseLikes(reviewId);
             reviewFacade.deleteReviewLikes(userId, reviewId);
         } else {
+            reviewLikesDTO.setLiked(true);
+            reviewLikesDTO.setLikes(review.getLikes() + 1);
             reviewFacade.increaseLikes(reviewId);
             ReviewLikes reviewLikes = new ReviewLikes(userId, reviewId);
             reviewFacade.saveReviewLikes(reviewLikes);
         }
+        return reviewLikesDTO;
     }
 }

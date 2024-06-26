@@ -1,13 +1,13 @@
 package com.sunyoungeom.booktalk.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@ToString
 public class ReviewLikesDTO {
+    private boolean isLiked;
     private int likes;
-
 }

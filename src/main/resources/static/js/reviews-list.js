@@ -19,10 +19,10 @@ function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
                         console.error(errorMessage);
                         clearContentsAddSpinner();
 
-                        setTimeout(() => {
+                        // setTimeout(() => {
                             removeSpinner();
                             displayErrorMessage(errorMessage);
-                        }, 500);
+                        // }, 500);
 
                         throw new Error(errorMessage);
                     });
@@ -40,12 +40,12 @@ function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
             const reviews = json.reviews;
             const container = document.getElementById('feed');
 
-            setTimeout(() => {
+            // setTimeout(() => {
                 removeSpinner();
                 reviews.forEach(review => {
                     container.innerHTML += createReviewHTML(review);
                 });
-            }, 500);
+            // }, 500);
         })
         .catch(error => {
             console.error(error);
@@ -84,9 +84,9 @@ function displayErrorMessage(message) {
         </div>
     `;
 
-    setTimeout(() => {
+    // setTimeout(() => {
         container.style.display = 'block';
-    }, 500);
+    // }, 500);
 
 }
 
@@ -116,8 +116,8 @@ function createReviewHTML(review) {
                     </div>
                     <div class="icons">
                         <div class="frame-2610462">
-                        <img class="heart-5" src="/img/heart-3.svg" alt="heart" onclick="likeFunction(${review.id})"/>
-                        <div class="address-5 small-text">${review.likes} 좋아요</div>
+                        <img id="heartIcon${review.id}" class="heart-5" src="/img/heart.svg" alt="heart" onclick="likeFunction(${review.id})"/>
+                        <div id="likesCount${review.id}" class="address-5 small-text">${review.likes} 좋아요</div>
                         </div>
                     </div>
                     <div class="divider"></div>
@@ -137,22 +137,48 @@ function likeFunction(id) {
     fetch(`/api/reviews/` + id + `/likes`, {
         method: 'POST',
         headers: {
-              'Content-Type': 'application/json'
-            },
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(data)
-        })
-     .then(response => {
-          if (!response.ok) {
+    })
+        .then(response => {
+            if (!response.ok) {
+                // 비회원인 경우
+                if (response.status === 404) {
+                    return response.json().then(json => {
+                        alert("비회원은 좋아요를 누를 수 없습니다.")
+
+                        throw new Error(errorMessage);
+                    });
+                }
+                // 본인 작성글인 경우
+                if (response.status === 409) {
+                    return response.json().then(json => {
+                        const errorMessage = json.message;
+                        alert(errorMessage)
+
+                        throw new Error(errorMessage);
+                    });
+                }
+                throw new Error('서버에서 오류 응답을 받았습니다.');
             }
-            throw new Error('서버에서 오류 응답을 받았습니다.');
-          }
+            return response.json();
         })
         .then(data => {
+            const heartIcon = document.getElementById(`heartIcon${reviewId}`);
+            const likesCount = document.getElementById(`likesCount${reviewId}`);
+
+            if (data.liked) {
+                heartIcon.src = "/img/heart-liked.svg";
+            } else {
+                heartIcon.src = "/img/heart.svg";
+            }
+            likesCount.textContent = `${data.likes} 좋아요`;
         })
         .catch(error => {
-          console.error(error);
+            console.error(error);
         });
-    }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     // 검색한 제목으로 리뷰 로드

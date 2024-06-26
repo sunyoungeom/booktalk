@@ -88,7 +88,7 @@ public class ReviewApiController {
     @PostMapping("/{id}/likes")
     public ResponseEntity<Object> likeReview(@PathVariable(name = "id") Long reviewId) {
         Long userId = (Long) session.getAttribute("id");
-        reviewService.likeReview(reviewId, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(reviewId, userId);
+        return ResponseEntity.status(HttpStatus.OK).body(reviewLikesDTO);
     }
 }
