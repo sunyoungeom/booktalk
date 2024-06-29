@@ -2,10 +2,12 @@ package com.sunyoungeom.booktalk.scheduler;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,13 +24,20 @@ class BestsellerSchedulerTest {
     int count = 0;
     int lockCount = 0;
 
+    @Autowired
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @BeforeEach
     void setUp() throws IOException {
         // 초기 데이터 설정
-        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
-        reviewLikesDTO.setLikes(1);
-        reviewLikesDTO.setLiked(true);
-        save(reviewLikesDTO);
+        Best best = new Best();
+        best.setTitle("업데이트 전");
+        save(best);
+    }
+
+    @AfterEach
+    void reset() throws IOException {
+        delete(new File(FILE_PATH));
     }
 
     @Test
@@ -92,10 +101,9 @@ class BestsellerSchedulerTest {
         // 테스트 데이터 업데이트
         try {
             delete(new File(FILE_PATH));
-            ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
-            reviewLikesDTO.setLikes(2);
-            reviewLikesDTO.setLiked(false);
-            save(reviewLikesDTO);
+            Best best = new Best();
+            best.setTitle("업데이트 후");
+            save(best);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -110,10 +118,9 @@ class BestsellerSchedulerTest {
                  FileLock lock = channel.lock()) {
 
                 delete(new File(FILE_PATH));
-                ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
-                reviewLikesDTO.setLikes(2);
-                reviewLikesDTO.setLiked(false);
-                save(reviewLikesDTO);
+                Best best = new Best();
+                best.setTitle("업데이트 후");
+                save(best);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -134,16 +141,15 @@ class BestsellerSchedulerTest {
         }
     }
 
-    ReviewLikesDTO load() {
-        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
+    Best load() {
+        Best best = new Best();
         File file = new File(FILE_PATH);
         try {
             RandomAccessFile raf = new RandomAccessFile(file, "rw");
             if (file.exists()) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                reviewLikesDTO = objectMapper.readValue(file, new TypeReference<ReviewLikesDTO>() {
+                best = objectMapper.readValue(file, new TypeReference<Best>() {
                 });
-                System.out.println(reviewLikesDTO.toString());
+                System.out.println(best.toString());
                 count++;
             } else {
                 throw new RuntimeException("파일이 존재하지 않습니다.");
@@ -151,17 +157,16 @@ class BestsellerSchedulerTest {
         } catch (IOException | RuntimeException e) {
             e.printStackTrace();
         }
-        return reviewLikesDTO;
+        return best;
     }
 
-    void save(ReviewLikesDTO reviewLikesDTO) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    void save(Best best) throws IOException {
         File file = new File(FILE_PATH);
-        objectMapper.writeValue(file, reviewLikesDTO);
+        objectMapper.writeValue(file, best);
     }
 
-    ReviewLikesDTO loadWithLock() {
-        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
+    Best loadWithLock() {
+        Best best = new Best();
         File file = new File(FILE_PATH);
         synchronized (lockObject) {
             try (RandomAccessFile raf = new RandomAccessFile(file, "rw");
@@ -169,11 +174,10 @@ class BestsellerSchedulerTest {
                  FileLock lock = channel.lock()) {
 
                 if (file.exists() && lock != null) {
-                    ObjectMapper objectMapper = new ObjectMapper();
                     if (file.length() > 0) {
-                        reviewLikesDTO = objectMapper.readValue(file, new TypeReference<ReviewLikesDTO>() {
+                        best = objectMapper.readValue(file, new TypeReference<Best>() {
                         });
-                        System.out.println(reviewLikesDTO.toString());
+                        System.out.println(best.toString());
                         lockCount++;
                     } else {
                         throw new RuntimeException("파일이 비어 있습니다.");
@@ -185,6 +189,26 @@ class BestsellerSchedulerTest {
                 e.printStackTrace();
             }
         }
-        return reviewLikesDTO;
+        return best;
+    }
+}
+
+@Component
+class Best {
+    private String title;
+
+    public Best() {
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String toString() {
+        return "Best{ title= '" + title + "'}";
     }
 }
