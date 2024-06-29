@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -23,23 +26,34 @@ import java.util.*;
 public class BestsellerScheduler {
     private static final String FILE_DIRECTORY = "file/best";
     private static final String FILE_NAME = "bestseller_%s.json";
+    private final Object lockObject = new Object();
+
 
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 업데이트
-    public void updateBestsellers() throws IOException {
-        log.info("베스트셀러 업데이트 시작");
+    public void updateBestsellers() {
+        synchronized (lockObject) {
+            String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String fileName = String.format(FILE_NAME, formattedDate);
+            try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_DIRECTORY, fileName), "rw");
+                 FileChannel channel = raf.getChannel();
+                 FileLock lock = channel.lock()) {
+                log.info("베스트셀러 업데이트 시작");
 
-        // 기존 파일 삭제
-        deleteExistingFile();
+                // 기존 파일 삭제
+                deleteExistingFile();
 
-        // 베스트셀러 업데이트
-        List<Map<String, String>> bestsellers = fetchBestsellers();
-        saveBestsellersToFile(bestsellers);
+                // 베스트셀러 업데이트
+                List<Map<String, String>> bestsellers = fetchBestsellers();
+                saveBestsellersToFile(bestsellers);
 
-        log.info("베스트셀러 업데이트 완료");
+                log.info("베스트셀러 업데이트 완료");
+            } catch (IOException e) {
+                log.error("베스트셀러 업데이트 시 에러 발생", e);
+            }
+        }
     }
 
     private void deleteExistingFile() {
-
         try {
             File directory = new File(FILE_DIRECTORY);
             if (!directory.exists()) {
@@ -57,10 +71,10 @@ public class BestsellerScheduler {
                     }
                 }
             } else {
-                log.info("삭제할 파일이 없습니다.");
+                throw new RuntimeException();
             }
-        } catch (SecurityException e) {
-            log.error("파일 삭제 권한 부족", e);
+        } catch (RuntimeException e) {
+            log.info("삭제할 파일이 없습니다.", e);
         }
     }
 
@@ -109,9 +123,8 @@ public class BestsellerScheduler {
             System.out.println(filePath.toPath());
             objectMapper.writeValue(filePath, bestsellers);
 
-            log.info("베스트셀러 저장 완료: {}", filePath);
         } catch (IOException e) {
-            log.error("베스트셀러 저장시 에러 발생", e);
+            log.error("베스트셀러 저장 시 에러 발생", e);
         }
     }
 
@@ -120,18 +133,23 @@ public class BestsellerScheduler {
         ObjectMapper objectMapper = new ObjectMapper();
         String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String fileName = String.format(FILE_NAME, formattedDate);
+        File file = new File(FILE_DIRECTORY, fileName);
 
-        try {
-            File file = new File(FILE_DIRECTORY, fileName);
-            if (file.exists()) {
-                bestseller = objectMapper.readValue(file, new TypeReference<List<Map<String, String>>>() {
-                });
-            } else {
-                bestseller = fetchBestsellers();
+        synchronized (lockObject) {
+            try (RandomAccessFile raf = new RandomAccessFile(file, "rw");
+                 FileChannel channel = raf.getChannel();
+                 FileLock lock = channel.lock()) {
+
+                if (file.exists() && lock != null) {
+                    bestseller = objectMapper.readValue(file, new TypeReference<List<Map<String, String>>>() {
+                    });
+                } else {
+                    bestseller = fetchBestsellers();
+                }
+            } catch (IOException e) {
+                log.error("베스트셀러 로드 시 에러 발생", e);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            return bestseller;
         }
-        return bestseller;
     }
 }
