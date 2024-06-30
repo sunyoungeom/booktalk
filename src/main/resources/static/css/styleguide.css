@@ -93,6 +93,14 @@
   letter-spacing: 0;
 }
 
+.presetsbody3 {
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-m);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
 .text-smmedium {
   font-family: var(--font-family-inter-medium);
   font-size: var(--font-size-s);
@@ -161,6 +169,14 @@
   color: var(--neutral--500);
   font-family: var(--font-family-manrope);
   font-size: var(--font-size-s);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.manrope-normal-storm-gray-16px {
+  color: var(--neutral--500);
+  font-family: var(--font-family-manrope);
+  font-size: var(--font-size-m);
   font-style: normal;
   font-weight: 400;
 }

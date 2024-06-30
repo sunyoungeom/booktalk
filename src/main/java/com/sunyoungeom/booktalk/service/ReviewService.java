@@ -2,6 +2,7 @@ package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.domain.ReviewLikes;
+import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.exception.ReviewException;
 import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +22,45 @@ import java.util.List;
 public class ReviewService {
 
     private final ReviewFacade reviewFacade;
+    public List<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy) {
+        List<Review> reviews;
+
+        // 리뷰 검색 로직 (제목 및 정렬 기준에 따라 조회)
+        if (title != null) {
+            if ("popularity".equalsIgnoreCase(sortBy)) {
+                reviews = findByTitleOrderByLikesDesc(title);
+            } else {
+                reviews = findByTitleOrderByDateDesc(title);
+            }
+        } else {
+            if ("popularity".equalsIgnoreCase(sortBy)) {
+                reviews = findAllOrderByLikesDesc();
+            } else {
+                reviews = findAllOrderByDateDesc();
+            }
+        }
+
+        // 리뷰를 ReviewDTO로 변환하고 좋아요 상태 설정
+        List<ReviewDTO> reviewDTOs = new ArrayList<>();
+        for (Review review : reviews) {
+            ReviewDTO reviewDTO = new ReviewDTO();
+            reviewDTO.setId(review.getId());
+            reviewDTO.setUserId(review.getUserId());
+            reviewDTO.setTitle(review.getTitle());
+            reviewDTO.setAuthor(review.getAuthor());
+            reviewDTO.setDate(review.getDate());
+            reviewDTO.setContent(review.getContent());
+            reviewDTO.setLikes(review.getLikes());
+
+            boolean liked = reviewFacade.findByUserIdAndReviewId(userId, review.getId());
+            reviewDTO.setLiked(liked);
+
+            reviewDTOs.add(reviewDTO);
+        }
+
+        return reviewDTOs;
+    }
+
 
     public Review createReview(Review review, Long userId, String username) {
         // 중복 리뷰 검증

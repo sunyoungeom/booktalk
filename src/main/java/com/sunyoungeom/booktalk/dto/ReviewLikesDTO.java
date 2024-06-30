@@ -8,6 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ReviewLikesDTO {
-    private boolean isLiked;
+    private boolean liked;
     private int likes;
 }

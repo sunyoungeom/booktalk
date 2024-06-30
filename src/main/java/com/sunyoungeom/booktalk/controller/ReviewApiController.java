@@ -1,6 +1,7 @@
 package com.sunyoungeom.booktalk.controller;
 
 import com.sunyoungeom.booktalk.domain.Review;
+import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
@@ -36,36 +37,21 @@ public class ReviewApiController {
             @RequestParam(name = "sortBy", required = false) String sortBy) {
 
         Long userId = (Long) session.getAttribute("id");
-        List<Review> reviews;
-
-        // 리뷰 검색
-        if (title != null) {
-            // 제목별 조회
-            if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = reviewService.findByTitleOrderByLikesDesc(title);
+        if (author == null) {
+            List<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, sortBy);
+            if (!reviews.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
             } else {
-                reviews = reviewService.findByTitleOrderByDateDesc(title);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
             }
+
         } else {
-            // 모든 글 조회
-            if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = reviewService.findAllOrderByLikesDesc();
-                log.info("test" + reviews.toString());
+            List<Review> reviews = reviewService.findByUserId(userId);
+            if (!reviews.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
             } else {
-                reviews = reviewService.findAllOrderByDateDesc();
-                log.info("test2" + reviews.toString());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
             }
-        }
-
-        // 로그인한 유저 작성 리뷰 조회
-        if (author != null) {
-            reviews = reviewService.findByUserId(userId);
-        }
-
-        if (!reviews.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
         }
     }
 

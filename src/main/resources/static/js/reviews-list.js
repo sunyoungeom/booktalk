@@ -1,4 +1,5 @@
 let currentTitle = document.getElementById('currentTitle').value;
+let userId = document.getElementById('userId').value;
 
 function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
     let url = '/api/reviews?';
@@ -20,8 +21,8 @@ function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
                         clearContentsAddSpinner();
 
                         // setTimeout(() => {
-                            removeSpinner();
-                            displayErrorMessage(errorMessage);
+                        removeSpinner();
+                        displayErrorMessage(errorMessage);
                         // }, 500);
 
                         throw new Error(errorMessage);
@@ -33,6 +34,7 @@ function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
         })
         .then((json) => {
             clearContentsAddSpinner();
+            console.log(json)
             if (!json.reviews || json.reviews.length === 0) {
                 throw new Error('리뷰 검색결과가 없습니다.');
             }
@@ -41,10 +43,14 @@ function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
             const container = document.getElementById('feed');
 
             // setTimeout(() => {
-                removeSpinner();
-                reviews.forEach(review => {
-                    container.innerHTML += createReviewHTML(review);
-                });
+            removeSpinner();
+            reviews.forEach(review => {
+                container.innerHTML += createReviewHTML(review);
+                if (review.liked) {
+                    const heartIcon = document.getElementById(`heartIcon${review.id}`);
+                    heartIcon.src = "/img/heart-liked.svg";
+                }
+            });
             // }, 500);
         })
         .catch(error => {
@@ -85,48 +91,60 @@ function displayErrorMessage(message) {
     `;
 
     // setTimeout(() => {
-        container.style.display = 'block';
+    container.style.display = 'block';
     // }, 500);
 
 }
 
 // 리뷰 생성
 function createReviewHTML(review) {
-    return `
-                <div class="review">
-                    <div class="top-5">
-                        <img class="image rectangle-1" src="/img/rectangle-1.png" alt="Image" />
-                        <div class="container">
-                            <div class="name-5">
-                                <input type="hidden" id="currentReview" th:value="${review.id}">
-                                <div class="book-title first-last manrope-semi-bold-mirage-16px">${review.title}</div>
-                                <div class="username manrope-normal-storm-gray-14px">${review.author}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container-1">
-                        <div class="paragraph-5">
-                            <p class="text-3 manrope-normal-mirage-16px">${review.content}</p>
-                            <div class="dropdown">
-                                <div class="text-4 manrope-semi-bold-mirage-14px">더보기</div>
-                                <img class="icons-6" src="/img/icons.svg" alt="Icons" />
-                            </div>
-                        </div>
-                        <div class="date manrope-normal-storm-gray-12px">${review.date}</div>
-                    </div>
-                    <div class="icons">
-                        <div class="frame-2610462">
-                        <img id="heartIcon${review.id}" class="heart-5" src="/img/heart.svg" alt="heart" onclick="likeFunction(${review.id})"/>
-                        <div id="likesCount${review.id}" class="address-5 small-text">${review.likes} 좋아요</div>
-                        </div>
-                    </div>
-                    <div class="divider"></div>
+    let editAndDeleteButtons = '';
+    if (userId == review.userId) {
+        editAndDeleteButtons = `
+            <div class="head">
+                <div class="light-button-3 light-button-5">
+                    <div class="text-7 valign-text-middle manrope-normal-storm-gray-16px">수정</div>
                 </div>
-            `;
+            </div>
+            <div class="head">
+                <div class="light-button-4 light-button-5">
+                    <div class="text-8 valign-text-middle presetsbody3">삭제</div>
+                </div>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="review">
+            <div class="top-5">
+                <img class="image rectangle-1" src="/img/rectangle-1.png" alt="Image" />
+                <div class="container">
+                    <div class="name-5">
+                        <input type="hidden" id="currentReview" value="${review.id}">
+                        <div class="book-title first-last manrope-semi-bold-mirage-16px">${review.title}</div>
+                        <div class="username manrope-normal-storm-gray-14px">${review.author}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-1">
+                <div class="paragraph-5">
+                    <p class="text-3 manrope-normal-mirage-16px">${review.content}</p>
+                </div>
+                <div class="date manrope-normal-storm-gray-12px">${review.date}</div>
+            </div>
+            <div class="icons">
+                <div class="frame-2610462">
+                    <img id="heartIcon${review.id}" class="heart-5" src="/img/heart.svg" alt="heart" onclick="likeFunction(${review.id})"/>
+                    <div id="likesCount${review.id}" class="address-5 small-text">${review.likes} 좋아요</div>
+                </div>
+                ${editAndDeleteButtons}
+            </div>
+            <div class="divider"></div>
+        </div>
+    `;
 }
 
 function likeFunction(id) {
-    var userId = document.getElementById('userId').value;
     var reviewId = id;
 
     var data = {

@@ -37,6 +37,7 @@
         </div>
 
         <div th:if="${session.username != null}">
+          <input id="username" type="hidden" th:value="${session.username}">
           <a th:href="@{/user/logout}">
             <div class="button">
               <div class="nav-button-text valign-text-middle small-text">로그아웃</div>
