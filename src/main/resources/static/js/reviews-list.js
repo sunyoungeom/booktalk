@@ -102,12 +102,12 @@ function createReviewHTML(review) {
     if (userId == review.userId) {
         editAndDeleteButtons = `
             <div class="head">
-                <div class="light-button-3 light-button-5">
-                    <div class="text-7 valign-text-middle manrope-normal-storm-gray-16px" onclick="editFunction(${review.id})">수정</div>
+                <div class="light-button-3 light-button-5" style="cursor: pointer;" onclick="editFunction(${review.id})">
+                    <div class="text-7 valign-text-middle manrope-normal-storm-gray-16px">수정</div>
                 </div>
             </div>
             <div class="head">
-                <div class="light-button-4 light-button-5">
+                <div class="light-button-4 light-button-5" style="cursor: pointer;" onclick="deleteFunction(${review.id})">
                     <div class="text-8 valign-text-middle presetsbody3">삭제</div>
                 </div>
             </div>
@@ -146,6 +146,25 @@ function createReviewHTML(review) {
 
 function editFunction(id) {
     window.location.href = '/reviews/edit-init?id=' + id;
+}
+
+function deleteFunction(id) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        fetch(`/api/reviews/` + id, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("리뷰가 성공적으로 삭제되었습니다.");
+                    location.reload();
+                } else {
+                    console.error('리뷰 삭제에 실패하였습니다.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 }
 
 function likeFunction(id) {
