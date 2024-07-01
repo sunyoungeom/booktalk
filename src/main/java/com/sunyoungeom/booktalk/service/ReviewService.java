@@ -23,6 +23,7 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewFacade reviewFacade;
+
     public List<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy) {
         List<Review> reviews;
 
@@ -64,15 +65,20 @@ public class ReviewService {
 
     public Review createReview(Review review, Long userId, String username) {
         // 중복 리뷰 검증
-        validateDuplicateReview(review.getTitle(), userId);
-        // 리뷰 저장
-        reviewFacade.saveReview(review);
-        return review;
+        Optional<Review> result = validateDuplicateReview(review.getTitle(), userId);
+        if (result.isEmpty()) {
+            // 리뷰 저장
+            reviewFacade.saveReview(review);
+            return review;
+        } else {
+            // 중복 리뷰인 경우 예외
+            throw new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage());
+        }
     }
 
-    public Review validateDuplicateReview(String title, Long userId) {
+    public Optional<Review> validateDuplicateReview(String title, Long userId) {
         Optional<Review> review = reviewFacade.existsReviewByTitleAndUserId(title, userId);
-        return review.orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage()));
+        return review;
     }
 
     public List<Review> findAllOrderByDateDesc() {

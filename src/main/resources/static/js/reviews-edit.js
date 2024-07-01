@@ -30,6 +30,7 @@ function submitForm(event) {
                 alert("리뷰가 수정되었습니다.");
                 window.location.href = '/reviews/list';
             } else {
+                alert('리뷰 수정에 실패하였습니다.')
                 console.error('리뷰 수정에 실패하였습니다.');
             }
         })

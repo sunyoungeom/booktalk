@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/reviews")
 @Slf4j
@@ -45,12 +47,12 @@ public class ReviewController {
 
         if (title != null) {
             if (referer != null && referer.contains("books/detail")) {
-                try {
-                    Review existingReview = reviewService.validateDuplicateReview(title, userId);
-                    Long reviewId = existingReview.getId();
+                Optional<Review> existingReview = reviewService.validateDuplicateReview(title, userId);
+                if (existingReview.isPresent()) {
+                    Long reviewId = existingReview.get().getId();
                     redirectAttributes.addFlashAttribute("review", existingReview);
-                    return "redirect:/reviews/edit";
-                } catch (ReviewException e) {
+                    return "redirect:/reviews/edit-init?id=" + reviewId;
+                } else {
                     log.info("Review Write Title: {}", title);
                     model.addAttribute("title", title);
                     return "reviews/write";

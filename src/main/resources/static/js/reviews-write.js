@@ -52,6 +52,7 @@ function submitForm(event) {
                 alert("리뷰가 등록되었습니다.");
                 window.location.href = '/reviews/search?title=' + title;
             } else {
+                alert('리뷰 등록에 실패하였습니다.')
                 console.error('리뷰 등록에 실패하였습니다.');
             }
         })
