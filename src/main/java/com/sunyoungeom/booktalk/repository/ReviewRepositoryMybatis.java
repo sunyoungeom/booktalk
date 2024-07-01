@@ -29,12 +29,12 @@ public class ReviewRepositoryMybatis implements ReviewRepository {
     }
 
     @Override
-    public boolean existsByTitleAndUserId(String title, Long userId) {
+    public Optional<Review> existsByTitleAndUserId(String title, Long userId) {
         Map<String, Object> params = new HashMap<>();
         params.put("title", title);
         params.put("userId", userId);
-        Integer count = sql.selectOne("Review.existsByTitleAndUserId", params);
-        return count != null && count > 0;
+        Review review = sql.selectOne("Review.existsByTitleAndUserId", params);
+        return Optional.ofNullable(review);
     }
 
     @Override
@@ -83,10 +83,5 @@ public class ReviewRepositoryMybatis implements ReviewRepository {
     @Override
     public void delete(Long id) {
         sql.delete("Review.delete", id);
-    }
-
-    @Override
-    public void clearStroe() {
-
     }
 }

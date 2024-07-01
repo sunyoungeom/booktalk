@@ -103,7 +103,7 @@ function createReviewHTML(review) {
         editAndDeleteButtons = `
             <div class="head">
                 <div class="light-button-3 light-button-5">
-                    <div class="text-7 valign-text-middle manrope-normal-storm-gray-16px">수정</div>
+                    <div class="text-7 valign-text-middle manrope-normal-storm-gray-16px" onclick="editFunction(${review.id})">수정</div>
                 </div>
             </div>
             <div class="head">
@@ -142,6 +142,10 @@ function createReviewHTML(review) {
             <div class="divider"></div>
         </div>
     `;
+}
+
+function editFunction(id) {
+    window.location.href = '/reviews/edit-init?id=' + id;
 }
 
 function likeFunction(id) {

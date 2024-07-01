@@ -14,8 +14,10 @@
         WHERE id = #{id}
     </select>
 
-    <select id="existsByTitleAndUserId" parameterType="map" resultType="int">
-        SELECT COUNT(*) FROM reviews WHERE userId = #{userId} AND title = #{title}
+    <select id="existsByTitleAndUserId" parameterType="map" resultType="Review">
+        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content
+        FROM reviews
+        WHERE userId = #{userId} AND title = #{title}
     </select>
 
     <select id="findAllOrderByDateDesc" resultType="Review">

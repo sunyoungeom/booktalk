@@ -29,13 +29,13 @@ public class ReviewRepositoryMemory implements ReviewRepository {
     }
 
     @Override
-    public boolean existsByTitleAndUserId(String title, Long userId) {
+    public Optional<Review> existsByTitleAndUserId(String title, Long userId) {
         for (Review review : store.values()) {
             if (review.getTitle().equals(title) && review.getUserId().equals(userId)) {
-                return true;
+                return Optional.of(review);
             }
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -106,10 +106,5 @@ public class ReviewRepositoryMemory implements ReviewRepository {
     @Override
     public void delete(Long id) {
         store.remove(id);
-    }
-
-    @Override
-    public void clearStroe() {
-        store.clear();
     }
 }

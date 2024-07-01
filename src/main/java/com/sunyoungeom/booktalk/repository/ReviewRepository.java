@@ -9,7 +9,7 @@ public interface ReviewRepository {
 
     Review save(Review review);
     Optional<Review> findById(Long id);
-    boolean existsByTitleAndUserId(String title, Long userId);
+    Optional<Review> existsByTitleAndUserId(String title, Long userId);
     List<Review> findAllOrderByDateDesc();
     List<Review> findAllOrderByLikesDesc();
     List<Review> findByTitleOrderByDateDesc(String title);
@@ -20,5 +20,4 @@ public interface ReviewRepository {
     void update(Long id, String content);
     void delete(Long id);
 
-    void clearStroe();
 }

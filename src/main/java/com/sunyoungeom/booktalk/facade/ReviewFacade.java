@@ -25,7 +25,7 @@ public class ReviewFacade {
         return reviewRepository.findById(id);
     }
 
-    public boolean existsReviewByTitleAndUserId(String title, Long userId) {
+    public Optional<Review> existsReviewByTitleAndUserId(String title, Long userId) {
         return reviewRepository.existsByTitleAndUserId(title, userId);
     }
 
@@ -92,8 +92,5 @@ public class ReviewFacade {
         reviewLikesRepository.delete(userId, reviewId);
     }
 
-    public void clearStore() {
-        reviewRepository.clearStroe();
-    }
 }
 

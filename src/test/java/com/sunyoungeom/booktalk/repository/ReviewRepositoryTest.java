@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -69,10 +70,10 @@ class ReviewRepositoryTest {
 
         List<Review> byUserId = repository.findByUserId(review.getUserId());
         Review result = byUserId.get(0);
-        boolean b = repository.existsByTitleAndUserId(result.getTitle(), result.getUserId());
+        Review result2 = repository.existsByTitleAndUserId(result.getTitle(), result.getUserId()).get();
 
         assertThat(byUserId.size()).isEqualTo(1);
-        assertThat(b).isTrue();
+        assertThat(result.getId()).isEqualTo(result2.getId());
     }
 
     @Test

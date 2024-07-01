@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class ReviewService {
     public List<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy) {
         List<Review> reviews;
 
-        // 리뷰 검색 로직 (제목 및 정렬 기준에 따라 조회)
+        // 리뷰 검색
         if (title != null) {
             if ("popularity".equalsIgnoreCase(sortBy)) {
                 reviews = findByTitleOrderByLikesDesc(title);
@@ -40,7 +41,6 @@ public class ReviewService {
             }
         }
 
-        // 리뷰를 ReviewDTO로 변환하고 좋아요 상태 설정
         List<ReviewDTO> reviewDTOs = new ArrayList<>();
         for (Review review : reviews) {
             ReviewDTO reviewDTO = new ReviewDTO();
@@ -70,10 +70,9 @@ public class ReviewService {
         return review;
     }
 
-    private void validateDuplicateReview(String title, Long userId) {
-        if (reviewFacade.existsReviewByTitleAndUserId(title, userId)) {
-            throw new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage());
-        }
+    public Review validateDuplicateReview(String title, Long userId) {
+        Optional<Review> review = reviewFacade.existsReviewByTitleAndUserId(title, userId);
+        return review.orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage()));
     }
 
     public List<Review> findAllOrderByDateDesc() {
@@ -121,7 +120,7 @@ public class ReviewService {
         reviewFacade.deleteReviewById(reviewId);
     }
 
-    private Review existsById(Long id) {
+    public Review existsById(Long id) {
         Review review = reviewFacade.findReviewById(id)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
         return review;
