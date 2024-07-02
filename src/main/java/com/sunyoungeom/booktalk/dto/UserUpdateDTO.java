@@ -10,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UserUpdateDTO {
+    private String profileImgPath;
     private String newNickname;
     private String currentPassword;
     private String newPassword;

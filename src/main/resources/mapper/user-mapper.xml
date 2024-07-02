@@ -22,6 +22,7 @@
     <update id="update" parameterType="map">
         UPDATE users
         <set>
+            <if test="updatedUser.profileImgPath != null">profileImgPath = #{updatedUser.profileImgPath},</if>
             <if test="updatedUser.nickname != null">nickname = #{updatedUser.nickname},</if>
             <if test="updatedUser.password != null">password = #{updatedUser.password},</if>
         </set>

@@ -64,6 +64,9 @@ public class UserService {
 
     public User updateUser(Long id, UserUpdateDTO updateDTO) {
         User user = findById(id);
+        if (updateDTO.getProfileImgPath() != null) {
+            user.setProfileImgPath(updateDTO.getProfileImgPath());
+        }
         if (updateDTO.getNewNickname() != null) {
             if (repository.existsByNickname(updateDTO.getNewNickname())) {
                 throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());

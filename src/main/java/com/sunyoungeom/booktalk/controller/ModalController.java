@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class ModalController {
     @GetMapping("/edit/{field}")
-    public String getModal(Model model, @PathVariable(name = "field")  String field) {
+    public String getModal(Model model, @PathVariable(name = "field") String field) {
         model.addAttribute("fieldValue", field);
-        if (field.equals("nickname")) {
-        model.addAttribute("field", "닉네임");
+        if (field.equals("profileImgPath")) {
+            model.addAttribute("field", "프로필 사진");
+        } else if (field.equals("nickname")) {
+            model.addAttribute("field", "닉네임");
         } else if (field.equals("password")) {
             model.addAttribute("field", "비밀번호");
         } else {

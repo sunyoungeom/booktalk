@@ -27,11 +27,6 @@ class ReviewServiceTest {
         service = new ReviewService(reviewFacade);
     }
 
-    @AfterEach
-    public void clear() {
-        reviewFacade.clearStore();
-    }
-
     @Test
     public void 리뷰_생성() {
         Review review = new Review(0L, "리뷰제목", "닉네임", "리뷰내용");
