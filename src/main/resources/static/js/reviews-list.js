@@ -117,11 +117,13 @@ function createReviewHTML(review) {
     return `
         <div class="review">
             <div class="top-5">
-                <img class="image rectangle-1" src="/img/rectangle-1.png" alt="Image" />
+                <img class="image rectangle-1" src="${review.user.profileImgPath}" alt="Image" />
                 <div class="container">
                     <div class="name-5">
                         <input type="hidden" id="currentReview" value="${review.id}">
-                        <div class="book-title first-last manrope-semi-bold-mirage-16px">${review.title}</div>
+                        <div class="book-title first-last manrope-semi-bold-mirage-16px" style="cursor:pointer;"
+                         onclick="window.location.href='/books/detail/' + encodeURIComponent('${review.title}')">${review.title}
+                        </div>
                         <div class="username manrope-normal-storm-gray-14px">${review.author}</div>
                     </div>
                 </div>
