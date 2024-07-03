@@ -84,7 +84,7 @@ function confirmEdit() {
 
     .then(response => {
       if (!response.ok) {
-        if (response.status === 400) {
+        if (response.status === 400 || response.status === 409) {
           return response.json().then(json => {
             const errorMessage = json.message;
             alert(errorMessage)
