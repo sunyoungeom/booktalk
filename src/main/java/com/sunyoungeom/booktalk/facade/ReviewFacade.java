@@ -3,6 +3,7 @@ package com.sunyoungeom.booktalk.facade;
 
 import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.domain.ReviewLikes;
+import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.repository.ReviewLikesRepository;
 import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,20 +30,20 @@ public class ReviewFacade {
         return reviewRepository.existsByTitleAndUserId(title, userId);
     }
 
-    public List<Review> findAllReviewsOrderByDateDesc() {
-        return reviewRepository.findAllOrderByDateDesc();
+    public List<ReviewDTO> findAllReviewsOrderByDateDesc(Long userid) {
+        return reviewRepository.findAllOrderByDateDesc(userid);
     }
 
-    public List<Review> findAllReviewsOrderByLikesDesc() {
-        return reviewRepository.findAllOrderByLikesDesc();
+    public List<ReviewDTO> findAllReviewsOrderByLikesDesc(Long userId) {
+        return reviewRepository.findAllOrderByLikesDesc(userId);
     }
 
-    public List<Review> findReviewsByTitleOrderByDateDesc(String title) {
-        return reviewRepository.findByTitleOrderByDateDesc(title);
+    public List<ReviewDTO> findReviewsByTitleOrderByDateDesc(Long userId, String title) {
+        return reviewRepository.findByTitleOrderByDateDesc(userId, title);
     }
 
-    public List<Review> findReviewsByTitleOrderByLikesDesc(String title) {
-        return reviewRepository.findByTitleOrderByLikesDesc(title);
+    public List<ReviewDTO> findReviewsByTitleOrderByLikesDesc(Long userId, String title) {
+        return reviewRepository.findByTitleOrderByLikesDesc(userId, title);
     }
 
     public List<Review> findReviewsByUserId(Long userId) {

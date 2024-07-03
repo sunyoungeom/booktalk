@@ -3,6 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Review">
+
+    <resultMap id="ReviewMap" type="ReviewDTO">
+        <id property="id" column="id"/>
+        <result property="userId" column="userId"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="date" column="date"/>
+        <result property="content" column="content"/>
+        <result property="likes" column="likes"/>
+        <result property="liked" column="liked"/>
+        <association property="user" javaType="User">
+            <id property="id" column="userId"/>
+            <result property="profileImgPath" column="profileImgPath"/>
+        </association>
+    </resultMap>
+
     <insert id="save" parameterType="Review">
         INSERT INTO reviews(userId, title, author, content)
         VALUES (#{userId}, #{title}, #{author}, #{content})
@@ -20,34 +36,47 @@
         WHERE userId = #{userId} AND title = #{title}
     </select>
 
-    <select id="findAllOrderByDateDesc" resultType="Review">
-        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
-        FROM reviews
-        ORDER BY id DESC
+    <select id="findAllOrderByDateDesc" resultMap="ReviewMap">
+        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
+        FROM reviews r
+        JOIN users u ON r.userId = u.id
+        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
+        ORDER BY r.id DESC;
+
     </select>
 
-    <select id="findAllOrderByLikesDesc" resultType="Review">
-        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
-        FROM reviews
-        ORDER BY likes DESC
+    <select id="findAllOrderByLikesDesc" resultMap="ReviewMap">
+        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
+        FROM reviews r
+        JOIN users u ON r.userId = u.id
+        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
+        ORDER BY r.likes DESC;
     </select>
 
-    <select id="findByTitleOrderByDateDesc" resultType="Review">
-        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
-        FROM reviews
+    <select id="findByTitleOrderByDateDesc" resultMap="ReviewMap">
+        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
+        FROM reviews r
+        JOIN users u ON r.userId = u.id
+        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
         WHERE title = #{title}
-        ORDER BY id DESC
+        ORDER BY r.id DESC;
     </select>
 
-    <select id="findByTitleOrderByLikesDesc" resultType="Review">
-        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
-        FROM reviews
+    <select id="findByTitleOrderByLikesDesc" resultMap="ReviewMap">
+        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
+        FROM reviews r
+        JOIN users u ON r.userId = u.id
+        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
         WHERE title = #{title}
-        ORDER BY likes DESC
+        ORDER BY r.likes DESC;
     </select>
 
     <select id="findByUserId" resultType="Review">
-        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        SELECT title, FORMATDATETIME(date, 'yyyy-MM-dd') as date
         FROM reviews
         WHERE userId = #{userId}
         ORDER BY id DESC

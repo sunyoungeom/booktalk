@@ -1,6 +1,7 @@
 package com.sunyoungeom.booktalk.repository;
 
 import com.sunyoungeom.booktalk.domain.Review;
+import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -38,23 +39,29 @@ public class ReviewRepositoryMybatis implements ReviewRepository {
     }
 
     @Override
-    public List<Review> findAllOrderByDateDesc() {
-        return sql.selectList("Review.findAllOrderByDateDesc");
+    public List<ReviewDTO> findAllOrderByDateDesc(Long userId) {
+        return sql.selectList("Review.findAllOrderByDateDesc", userId);
     }
 
     @Override
-    public List<Review> findAllOrderByLikesDesc() {
-        return sql.selectList("Review.findAllOrderByLikesDesc");
+    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId) {
+        return sql.selectList("Review.findAllOrderByLikesDesc", userId);
     }
 
     @Override
-    public List<Review> findByTitleOrderByDateDesc(String title) {
-        return sql.selectList("Review.findByTitleOrderByDateDesc", title);
+    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("title", title);
+        return sql.selectList("Review.findByTitleOrderByDateDesc", params);
     }
 
     @Override
-    public List<Review> findByTitleOrderByLikesDesc(String title) {
-        return sql.selectList("Review.findByTitleOrderByLikesDesc", title);
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("title", title);
+        return sql.selectList("Review.findByTitleOrderByLikesDesc", params);
     }
 
     @Override

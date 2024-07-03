@@ -25,43 +25,24 @@ public class ReviewService {
     private final ReviewFacade reviewFacade;
 
     public List<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy) {
-        List<Review> reviews;
+        List<ReviewDTO> reviews;
 
         // 리뷰 검색
         if (title != null) {
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = findByTitleOrderByLikesDesc(title);
+                reviews = findByTitleOrderByLikesDesc(userId, title);
             } else {
-                reviews = findByTitleOrderByDateDesc(title);
+                reviews = findByTitleOrderByDateDesc(userId, title);
             }
         } else {
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = findAllOrderByLikesDesc();
+                reviews = findAllOrderByLikesDesc(userId);
             } else {
-                reviews = findAllOrderByDateDesc();
+               reviews = findAllOrderByDateDesc(userId);
             }
         }
-
-        List<ReviewDTO> reviewDTOs = new ArrayList<>();
-        for (Review review : reviews) {
-            ReviewDTO reviewDTO = new ReviewDTO();
-            reviewDTO.setId(review.getId());
-            reviewDTO.setUserId(review.getUserId());
-            reviewDTO.setTitle(review.getTitle());
-            reviewDTO.setAuthor(review.getAuthor());
-            reviewDTO.setDate(review.getDate());
-            reviewDTO.setContent(review.getContent());
-            reviewDTO.setLikes(review.getLikes());
-
-            boolean liked = reviewFacade.findByUserIdAndReviewId(userId, review.getId());
-            reviewDTO.setLiked(liked);
-
-            reviewDTOs.add(reviewDTO);
-        }
-
-        return reviewDTOs;
+        return reviews;
     }
-
 
     public Review createReview(Review review, Long userId, String username) {
         // 중복 리뷰 검증
@@ -81,20 +62,20 @@ public class ReviewService {
         return review;
     }
 
-    public List<Review> findAllOrderByDateDesc() {
-        return reviewFacade.findAllReviewsOrderByDateDesc();
+    public List<ReviewDTO> findAllOrderByDateDesc(Long userId) {
+        return reviewFacade.findAllReviewsOrderByDateDesc(userId);
     }
 
-    public List<Review> findAllOrderByLikesDesc() {
-        return reviewFacade.findAllReviewsOrderByLikesDesc();
+    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId) {
+        return reviewFacade.findAllReviewsOrderByLikesDesc(userId);
     }
 
-    public List<Review> findByTitleOrderByLikesDesc(String title) {
-        return reviewFacade.findReviewsByTitleOrderByLikesDesc(title);
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title) {
+        return reviewFacade.findReviewsByTitleOrderByLikesDesc(userId, title);
     }
 
-    public List<Review> findByTitleOrderByDateDesc(String title) {
-        return reviewFacade.findReviewsByTitleOrderByDateDesc(title);
+    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title) {
+        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title);
     }
 
     public List<Review> findByUserId(Long userId) {
@@ -135,7 +116,6 @@ public class ReviewService {
     public List<ReviewLikes> findAllReviewLikes() {
         return reviewFacade.findAllReviewLikes();
     }
-
 
     @Transactional
     public ReviewLikesDTO likeReview(Long reviewId, Long userId) {

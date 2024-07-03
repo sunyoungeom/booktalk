@@ -1,5 +1,6 @@
 package com.sunyoungeom.booktalk.dto;
 
+import com.sunyoungeom.booktalk.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,4 +17,5 @@ public class ReviewDTO {
     private String content;
     private int likes;
     private boolean liked;
+    private User user;
 }
