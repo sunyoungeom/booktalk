@@ -404,12 +404,15 @@
 .reviews-my .head-2 {
   align-items: center;
   background-color: var(--basewhite);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--neutral--100);
   display: flex;
   flex: 1;
   flex-grow: 1;
   gap: 8px;
   justify-content: center;
-  padding: 16px 40px;
+  padding: 15px 40px;
 }
 
 .reviews-my .light-button {
