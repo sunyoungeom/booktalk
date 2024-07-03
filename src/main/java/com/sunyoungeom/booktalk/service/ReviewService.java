@@ -11,6 +11,8 @@ import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.facade.ReviewFacade;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,23 +26,27 @@ public class ReviewService {
 
     private final ReviewFacade reviewFacade;
 
-    public List<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy) {
-        List<ReviewDTO> reviews;
+    public List<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy, Pageable pageable) {
+        List<ReviewDTO> reviews = new ArrayList<>();
+
+        int offset = pageable.getPageNumber() * pageable.getPageSize();
+        RowBounds rowBounds = new RowBounds(offset, pageable.getPageSize());
 
         // 리뷰 검색
         if (title != null) {
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = findByTitleOrderByLikesDesc(userId, title);
+                reviews = findByTitleOrderByLikesDesc(userId, title, rowBounds);
             } else {
-                reviews = findByTitleOrderByDateDesc(userId, title);
+                reviews = findByTitleOrderByDateDesc(userId, title, rowBounds);
             }
         } else {
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = findAllOrderByLikesDesc(userId);
+                reviews = findAllOrderByLikesDesc(userId, rowBounds);
             } else {
-               reviews = findAllOrderByDateDesc(userId);
+               reviews = findAllOrderByDateDesc(userId, rowBounds);
             }
         }
+        System.out.println("reviews" + reviews.toString());
         return reviews;
     }
 
@@ -62,20 +68,20 @@ public class ReviewService {
         return review;
     }
 
-    public List<ReviewDTO> findAllOrderByDateDesc(Long userId) {
-        return reviewFacade.findAllReviewsOrderByDateDesc(userId);
+    public List<ReviewDTO> findAllOrderByDateDesc(Long userId, RowBounds pageable) {
+        return reviewFacade.findAllReviewsOrderByDateDesc(userId, pageable);
     }
 
-    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId) {
-        return reviewFacade.findAllReviewsOrderByLikesDesc(userId);
+    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId, RowBounds pageable) {
+        return reviewFacade.findAllReviewsOrderByLikesDesc(userId, pageable);
     }
 
-    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title) {
-        return reviewFacade.findReviewsByTitleOrderByLikesDesc(userId, title);
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, RowBounds pageable) {
+        return reviewFacade.findReviewsByTitleOrderByLikesDesc(userId, title, pageable);
     }
 
-    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title) {
-        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title);
+    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, RowBounds rowBounds) {
+        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title, rowBounds);
     }
 
     public List<Review> findByUserId(Long userId) {

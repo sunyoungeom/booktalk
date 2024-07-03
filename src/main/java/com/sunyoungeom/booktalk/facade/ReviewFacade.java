@@ -7,6 +7,7 @@ import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.repository.ReviewLikesRepository;
 import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,20 +31,28 @@ public class ReviewFacade {
         return reviewRepository.existsByTitleAndUserId(title, userId);
     }
 
-    public List<ReviewDTO> findAllReviewsOrderByDateDesc(Long userid) {
-        return reviewRepository.findAllOrderByDateDesc(userid);
+    public List<ReviewDTO> findAllReviewsOrderByDateDesc(Long userid, RowBounds pageable) {
+        return reviewRepository.findAllOrderByDateDesc(userid, pageable);
     }
 
-    public List<ReviewDTO> findAllReviewsOrderByLikesDesc(Long userId) {
-        return reviewRepository.findAllOrderByLikesDesc(userId);
+    public List<ReviewDTO> findAllReviewsOrderByLikesDesc(Long userId, RowBounds pageable) {
+        return reviewRepository.findAllOrderByLikesDesc(userId, pageable);
     }
 
-    public List<ReviewDTO> findReviewsByTitleOrderByDateDesc(Long userId, String title) {
-        return reviewRepository.findByTitleOrderByDateDesc(userId, title);
+    public List<ReviewDTO> findReviewsByTitleOrderByDateDesc(Long userId, String title, RowBounds pageable) {
+        return reviewRepository.findByTitleOrderByDateDesc(userId, title, pageable);
     }
 
-    public List<ReviewDTO> findReviewsByTitleOrderByLikesDesc(Long userId, String title) {
-        return reviewRepository.findByTitleOrderByLikesDesc(userId, title);
+    public List<ReviewDTO> findReviewsByTitleOrderByLikesDesc(Long userId, String title, RowBounds pageable) {
+        return reviewRepository.findByTitleOrderByLikesDesc(userId, title, pageable);
+    }
+
+    public int countReviews(Long userId) {
+        return reviewRepository.countReviews(userId);
+    }
+
+    public int countReviewsByTitle(Long userId, String title) {
+        return reviewRepository.countReviewsByTitle(userId, title);
     }
 
     public List<Review> findReviewsByUserId(Long userId) {
@@ -73,6 +82,7 @@ public class ReviewFacade {
     public Optional<ReviewLikes> findReviewLikesById(Long id) {
         return reviewLikesRepository.findById(id);
     }
+
     public List<ReviewLikes> findAllReviewLikes() {
         return reviewLikesRepository.findAll();
     }

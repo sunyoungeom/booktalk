@@ -7,6 +7,7 @@ import com.sunyoungeom.booktalk.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,11 +35,12 @@ public class ReviewApiController {
     public ResponseEntity<Object> getReviews(
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "author", required = false) String author,
-            @RequestParam(name = "sortBy", required = false) String sortBy) {
+            @RequestParam(name = "sortBy", required = false) String sortBy,
+            Pageable pageable) {
 
         Long userId = (Long) session.getAttribute("id");
         if (author == null) {
-            List<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, sortBy);
+            List<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, sortBy, pageable);
             if (!reviews.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
             } else {
