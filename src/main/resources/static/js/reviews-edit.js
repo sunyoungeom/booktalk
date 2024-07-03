@@ -42,3 +42,8 @@ function submitForm(event) {
 function previousPage() {
     history.back();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const profileImg = document.getElementById('profileImgPath');
+    profileImg.src = sessionStorage.getItem('profileImgPath');
+});
