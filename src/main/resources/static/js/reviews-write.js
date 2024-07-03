@@ -1,5 +1,5 @@
- // 오늘 날짜
- function formatDate(date) {
+// 오늘 날짜
+function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -14,6 +14,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     var currentDate = formatDate(new Date());
     document.getElementById("currentDate").textContent = currentDate;
+
+    const profileImg = document.getElementById('profileImgPath');
+    profileImg.src = sessionStorage.getItem('profileImgPath');
 });
 
 // 리뷰 등록
