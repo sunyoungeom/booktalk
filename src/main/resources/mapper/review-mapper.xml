@@ -25,29 +25,28 @@
     </insert>
 
     <select id="findById" parameterType="Long" resultType="Review">
-        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content, likes
+        SELECT id, userId, title, author, DATE_FORMAT(date, '%Y-%m-%d') as date, content, likes
         FROM reviews
         WHERE id = #{id}
     </select>
 
     <select id="existsByTitleAndUserId" parameterType="map" resultType="Review">
-        SELECT id, userId, title, author, FORMATDATETIME(date, 'yyyy-MM-dd') as date, content
+        SELECT id, userId, title, author, DATE_FORMAT(date, '%Y-%m-%d') as date, content
         FROM reviews
         WHERE userId = #{userId} AND title = #{title}
     </select>
 
     <select id="findAllOrderByDateDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
         ORDER BY r.id DESC;
-
     </select>
 
     <select id="findAllOrderByLikesDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
@@ -56,7 +55,7 @@
     </select>
 
     <select id="findByTitleOrderByDateDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
@@ -66,7 +65,7 @@
     </select>
 
     <select id="findByTitleOrderByLikesDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, FORMATDATETIME(r.date, 'yyyy-MM-dd') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
@@ -75,8 +74,19 @@
         ORDER BY r.likes DESC;
     </select>
 
+    <select id="countReviews" resultType="int">
+        SELECT COUNT(*)
+        FROM reviews
+    </select>
+
+    <select id="countReviewsByTitle" resultType="int">
+        SELECT COUNT(*)
+        FROM reviews
+        WHERE title = #{title}
+    </select>
+
     <select id="findByUserId" resultType="Review">
-        SELECT title, FORMATDATETIME(date, 'yyyy-MM-dd') as date
+        SELECT title, DATE_FORMAT(date, '%Y-%m-%d') as date
         FROM reviews
         WHERE userId = #{userId}
         ORDER BY id DESC

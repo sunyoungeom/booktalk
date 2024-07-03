@@ -9,12 +9,12 @@
     </insert>
 
     <select id="findAll" resultType="User">
-        SELECT id, nickname, email, signUpType, FORMATDATETIME(signUpDate, 'yyyy-MM-dd') as signUpDate
+        SELECT id, nickname, email, signUpType, DATE_FORMAT(signUpDate, '%Y-%m-%d') as signUpDate
         FROM users order by id DESC
     </select>
 
     <select id="findById" parameterType="Long" resultType="User">
-        SELECT id, profileImgPath, nickname, email, password, signUpType, FORMATDATETIME(signUpDate, 'yyyy-MM-dd') as signUpDate
+        SELECT id, profileImgPath, nickname, email, password, signUpType, DATE_FORMAT(signUpDate, '%Y-%m-%d') as signUpDate
         FROM users
         WHERE id = #{id}
     </select>
