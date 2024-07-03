@@ -4,6 +4,7 @@ import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.dto.UserUpdateDTO;
 import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,26 +38,18 @@ public class UserApiController {
 
     @GetMapping("/{id}")
         public ResponseEntity<Object> getUser(@PathVariable(name = "id") Long id) {
-        User user = service.findById(id);
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setProfileImgPath(user.getProfileImgPath());
-        userDTO.setNickname(user.getNickname());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setSignUpType(user.getSignUpType());
-        userDTO.setSignUpDate(user.getSignUpDate());
-
+        UserDTO userDTO = service.getUserDTOById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(name = "id") Long id,
-                                             @RequestBody UserUpdateDTO userUpdateDTO) {
+                                             @RequestBody UserUpdateDTO userUpdateDTO,
+                                             HttpSession session) {
         log.info("api = {}", userUpdateDTO.toString());
         User updatedUser = service.updateUser(id, userUpdateDTO);
-         if (userUpdateDTO.getProfileImgPath() != null) {
-             return ResponseEntity.status(HttpStatus.OK).body(Map.of("profileImgPath", "프로필 사진이 수정되었습니다."));
-         } else if (userUpdateDTO.getNewNickname() != null) {
+         if (userUpdateDTO.getNewNickname() != null) {
+             session.setAttribute("username", userUpdateDTO.getNewNickname());
              return ResponseEntity.status(HttpStatus.OK).body(Map.of("nickname", updatedUser.getNickname()));
          } else if (userUpdateDTO.getCurrentPassword() != null && userUpdateDTO.getNewPassword() != null) {
              return ResponseEntity.status(HttpStatus.OK).body(Map.of("password", "비밀번호가 수정되었습니다."));
@@ -97,9 +90,10 @@ public class UserApiController {
             Files.write(filePath, bytes);
 
             UserUpdateDTO updateDTO = new UserUpdateDTO();
-            updateDTO.setProfileImgPath("/file/img/" + fileName);
+            String profileImg = "/file/img/" + fileName;
+            updateDTO.setProfileImgPath(profileImg);
             service.updateUser(id, updateDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("profileImgPath", "프로필 사진이 수정되었습니다."));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("profileImgPath", profileImg));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "파일 업로드 중 오류가 발생하였습니다."));
@@ -107,8 +101,9 @@ public class UserApiController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id, HttpSession session) {
         service.deleteUser(id);
+        session.invalidate();
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "회원탈퇴가 완료되었습니다."));
     }
 }

@@ -2,6 +2,7 @@ package com.sunyoungeom.booktalk.controller;
 
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.dto.LoginDTO;
+import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService service;
-    private final HttpSession session;
 
     @GetMapping("/join")
     public String signup() {
@@ -31,12 +31,12 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto, HttpSession session) {
         Long userId = service.login(loginDto);
+        UserDTO userDTO = service.getUserDTOById(userId);
 
-        User user = service.findById(userId);
         session.setAttribute("id", userId);
-        session.setAttribute("username", user.getNickname());
+        session.setAttribute("username", userDTO.getNickname());
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
     @GetMapping("/logout")

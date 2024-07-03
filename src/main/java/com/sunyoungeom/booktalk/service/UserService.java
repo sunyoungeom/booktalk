@@ -3,6 +3,7 @@ package com.sunyoungeom.booktalk.service;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserSignupType;
 import com.sunyoungeom.booktalk.dto.LoginDTO;
+import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.dto.UserUpdateDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
@@ -86,10 +87,22 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        findById(id); // 사용자 존재 확인
+        findById(id);
         repository.delete(id);
     }
 
+    public UserDTO getUserDTOById(Long id) {
+        User user = findById(id);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setProfileImgPath(user.getProfileImgPath());
+        userDTO.setNickname(user.getNickname());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setSignUpType(user.getSignUpType());
+        userDTO.setSignUpDate(user.getSignUpDate());
+
+        return userDTO;
+    }
     public User findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));

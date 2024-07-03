@@ -17,8 +17,8 @@ function loadUserInfo() {
       const email = document.getElementById('email');
       const signUpType = document.getElementById('signUpType');
       const signUpDate = document.getElementById('signUpDate');
-console.log(data.profileImgPath)
-profileImg.src = data.profileImgPath;
+
+      profileImg.src = data.profileImgPath;
       nickname.textContent = data.nickname;
       email.textContent = data.email;
       signUpType.textContent = data.signUpType;
@@ -36,8 +36,6 @@ function modifyUserInfo(field) {
 
 function cancelModal() {
   closeModal();
-
-  window.postMessage({ type: 'closeModal', payload: '취소되었습니다.' }, '*');
 }
 
 // 비밀번호 유효성 검사
@@ -52,9 +50,10 @@ function confirmEdit() {
 
   let data = {};
 
-if (fieldValue === 'profileImgPath') {
-  uploadImg();
-  return;
+  if (fieldValue === 'profileImgPath') {
+    uploadImg();
+    cancelModal();
+    return;
   }
 
   if (fieldValue === 'password') {
@@ -69,10 +68,10 @@ if (fieldValue === 'profileImgPath') {
   }
 
   if (fieldValue === 'nickname') {
-  currentValue.textContent =
-    data = {
-      newNickname: newValue
-    };
+    currentValue.textContent =
+      data = {
+        newNickname: newValue
+      };
   }
 
   fetch(`/api/user/` + id, {
@@ -98,18 +97,17 @@ if (fieldValue === 'profileImgPath') {
       return response.json();
     })
     .then(data => {
-      // 프로필 사진 수정 성공
-      if (data.profileImgPath) {
-        alert(data.profileImgPath);
-      }
       // 닉네임 수정 성공
       if (data.nickname) {
         const nickname = document.getElementById('nickname');
         nickname.textContent = data.nickname;
+        sessionStorage.setItem('username', data.nickname);
+        alert("닉네임이 수정되었습니다.");
+
       }
       // 비밀번호 수정 성공
       if (data.password) {
-        alert(data.password);
+        alert("비밀번호가 수정되었습니다.");
       }
       closeModal();
     })
@@ -119,50 +117,35 @@ if (fieldValue === 'profileImgPath') {
 }
 
 function uploadImg() {
- const profileImg = document.getElementById('newValue');
-const file = profileImg.files[0];
-    if (!file) {
-        alert('파일을 선택해주세요.');
-        return;
-    }
-    const formData = new FormData();
-    formData.append('file', file);
-    console.log(file)
-fetch(`/api/user/${id}/profileImg`, {
+  const profileImg = document.getElementById('newValue');
+  const file = profileImg.files[0];
+  if (!file) {
+    alert('파일을 선택해주세요.');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('file', file);
+  fetch(`/api/user/${id}/profileImg`, {
     method: 'PATCH',
-    body: formData  // FormData를 body로 설정하여 전송
-})
-.then(response => {
-        if (!response.ok) {
-            throw new Error('파일 업로드에 실패하였습니다.');
-        }
-        return response.json();
+    body: formData
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('파일 업로드에 실패하였습니다.');
+      }
+      return response.json();
     })
     .then(data => {
-        alert(data.profileImgPath); // 성공적으로 업로드된 경우 서버에서 반환하는 데이터
+      // 프로필 사진 수정 성공
+      const profileImg = document.getElementById('profileImgPath');
+      profileImg.src = data.profileImgPath;
+      sessionStorage.setItem('profileImgPath', data.profileImgPath);
+      alert("프로필 사진이 수정되었습니다.");
     })
     .catch(error => {
-        console.error('파일 업로드 오류:', error);
-        alert('파일 업로드 중 오류가 발생하였습니다.');
+      console.error(error);
+      alert('파일 업로드 중 오류가 발생하였습니다.');
     });
-//    }
-/*
-
-
-
-
-        if (!response.ok) {
-            const result = await response.json();
-            alert(result.message);
-            throw new Error(result.message);
-        }
-
-        const result = await response.json();
-        alert(result.profileImgPath);
-    } catch (error) {
-        console.error(error);
-    }
-*/
 }
 
 function openModal(field) {

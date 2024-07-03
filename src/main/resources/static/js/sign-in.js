@@ -51,7 +51,15 @@
           }
           throw new Error('서버에서 오류 응답을 받았습니다.');
         }
+        return response.json();
+
+      })
+      .then(data => {
         alert("로그인에 성공했습니다.");
+
+        sessionStorage.setItem('profileImgPath', data.profileImgPath);
+        sessionStorage.setItem('username', data.nickname);
+
         window.location.href = '/';
       })
       .catch(error => {
