@@ -96,7 +96,7 @@
     </select>
 
     <select id="findByUserId" resultMap="ReviewMap">
-        SELECT title, DATE_FORMAT(date, '%Y-%m-%d') as date
+        SELECT id, title, DATE_FORMAT(date, '%Y-%m-%d') as date
         FROM reviews
         WHERE userId = #{userId}
         ORDER BY id DESC
