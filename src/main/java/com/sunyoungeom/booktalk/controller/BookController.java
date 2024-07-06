@@ -34,9 +34,9 @@ public class BookController {
         return "books/search";
     }
 
-    @GetMapping("/search/{query}/{page}")
-    public String searchBook(@PathVariable(name = "query") String query, @PathVariable(name = "page") Integer page, Model model) {
-        List<Book> books = searchService.search(query, page);
+    @GetMapping("/search/{query}")
+    public String searchBook(@PathVariable(name = "query") String query, Model model) {
+        List<Book> books = searchService.search(query, 1);
         model.addAttribute("bookList", books);
         model.addAttribute("query", "🔎 " + query);
         return "books/search";

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.key === 'Enter') {
             var inputValue = inputField.value;
             if (inputValue.trim() !== '') {
-                window.location.href = '/books/search/' + inputValue + '/1';
+                window.location.href = `/books/search/${inputValue}`;
             }
         }
     });

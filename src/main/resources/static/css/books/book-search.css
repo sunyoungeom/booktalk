@@ -86,7 +86,7 @@
 }
 
 .book-search .overlap-group {
-  height: 509px;
+  height: auto;
   margin-left: 5.0px;
   margin-top: 47px;
   position: relative;
@@ -207,8 +207,6 @@ align-self: stretch;
   text-align: center;
   text-overflow: ellipsis;
 }
-
-
 
 .book-search .text-145 {
   -webkit-box-orient: vertical;
