@@ -12,6 +12,7 @@
   <link th:href="@{/css/mypage/reviews-my.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/css/styleguide.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/css/globals.css}" rel="stylesheet" type="text/css" />
+  <script th:src="@{/js/pagination.js}" defer></script>
   <script th:src="@{/js/mypage-my.js}" defer></script>
 </head>
 
@@ -62,186 +63,42 @@
             <div class="head">
               <div class="text-67 inter-semi-bold-storm-gray-14px">글번호</div>
             </div>
-            <div class="head-1 head-4">
-              <div class="frame-521">
-                <div class="text presetsbody2">1</div>
-              </div>
+            <div class="content-column" id="content-column-number">
             </div>
-            <div class="head-1 head-4">
-              <div class="frame-521">
-                <div class="text presetsbody2">2</div>
-              </div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="frame-521">
-                <div class="text presetsbody2">3</div>
-              </div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="frame-521">
-                <div class="text presetsbody2">4</div>
-              </div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="frame-521">
-                <div class="text presetsbody2">5</div>
-              </div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="frame-521">
-                <div class="text presetsbody2">6</div>
-              </div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="frame-521">
-                <div class="text presetsbody2">7</div>
-              </div>
-            </div>
+            <!-- 글번호 -->
           </div>
-
           <div class="column-1 column-4">
             <div class="head">
               <div class="head-title inter-semi-bold-storm-gray-14px">책 제목</div>
             </div>
-            <div class="head-1 head-4">
-              <div class="text-2 manrope-regular-normal-mirage-16px">미움받을 용기</div>
+            <div class="content-column" id="content-column-title">
             </div>
-            <div class="head-1 head-4">
-              <div class="text-2 manrope-regular-normal-mirage-16px">미움받을 용기</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text-2 manrope-regular-normal-mirage-16px">미움받을 용기</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text-2 manrope-regular-normal-mirage-16px">미움받을 용기</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text-2 manrope-regular-normal-mirage-16px">미움받을 용기</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text-2 manrope-regular-normal-mirage-16px">미움받을 용기</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text-2 manrope-regular-normal-mirage-16px">미움받을 용기</div>
-            </div>
+            <!-- 책 제목 -->
           </div>
-
           <div class="column-2 column-4">
             <div class="head">
               <div class="text-67 inter-semi-bold-storm-gray-14px">작성일</div>
             </div>
-            <div class="head-1 head-4">
-              <div class="text presetsbody2">2024-05-29</div>
+            <div class="content-column" id="content-column-date">
             </div>
-            <div class="head-1 head-4">
-              <div class="text presetsbody2">2024-05-29</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text presetsbody2">2024-05-29</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text presetsbody2">2024-05-29</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text presetsbody2">2024-05-29</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text presetsbody2">2024-05-29</div>
-            </div>
-            <div class="head-1 head-4">
-              <div class="text presetsbody2">2024-05-29</div>
-            </div>
+            <!-- 작성일 -->
           </div>
           <div class="column-2 column-4">
             <div class="head">
               <div class="text-67 inter-semi-bold-storm-gray-14px">-</div>
             </div>
-            <div class="head-2 head">
-                <div class="light-button">
-                  <div class="text-3 valign-text-middle presetsbody2">수정</div>
-              </div>
-            </div>
-            <div class="head-2 head">
-                <div class="light-button">
-                  <div class="text-3 valign-text-middle presetsbody2">수정</div>
-              </div>
-            </div>
-              <div class="head-2 head">
-                <div class="light-button">
-                  <div class="text-3 valign-text-middle presetsbody2">수정</div>
-                </div>
-            </div>
-              <div class="head-2 head">
-                <div class="light-button">
-                  <div class="text-3 valign-text-middle presetsbody2">수정</div>
-                </div>
-            </div>
-              <div class="head-2 head">
-                <div class="light-button">
-                  <div class="text-3 valign-text-middle presetsbody2">수정</div>
-                </div>
-            </div>
-              <div class="head-2 head">
-                <div class="light-button">
-                  <div class="text-3 valign-text-middle presetsbody2">수정</div>
-              </div>
-            </div>
-              <div class="head-2 head">
-                <div class="light-button">
-                  <div class="text-3 valign-text-middle presetsbody2">수정</div>
-                </div>
+            <div class="content-column" id="content-column-action">
             </div>
           </div>
+          <!-- 수정 버튼 -->
         </div>
-        <div class="pagination">
-          <div class="pagination-button-group">
-            <div class="pagination-button-group-base-1 pagination-button-group-base-4">
-              <img class="arrow" src="/img/arrow-left-1.svg" alt="arrow-left" />
-            </div>
-            <div class="pagination-button-group-base-2 pagination-button-group-base-4">
-              <div class="x-line"></div>
-              <div class="content">
-                <div class="text-5 text-smmedium">1</div>
-              </div>
-              <div class="x-line"></div>
-            </div>
-            <img class="divider" src="/img/divider-4.svg" alt="Divider" />
-            <div class="pagination-button-group-base">
-              <div class="x-line"></div>
-              <div class="content">
-                <div class="text-4 text-smmedium">2</div>
-              </div>
-              <div class="x-line"></div>
-            </div>
-            <img class="divider" src="/img/divider-4.svg" alt="Divider" />
-            <div class="pagination-button-group-base">
-              <div class="x-line"></div>
-              <div class="content">
-                <div class="text-4 text-smmedium">...</div>
-              </div>
-              <div class="x-line"></div>
-            </div>
-            <img class="divider" src="/img/divider-4.svg" alt="Divider" />
-            <div class="pagination-button-group-base">
-              <div class="x-line"></div>
-              <div class="content">
-                <div class="text-4 text-smmedium">9</div>
-              </div>
-              <div class="x-line"></div>
-            </div>
-            <img class="divider" src="/img/divider-4.svg" alt="Divider" />
-            <div class="pagination-button-group-base">
-              <div class="x-line"></div>
-              <div class="content">
-                <div class="text-4 text-smmedium">10</div>
-              </div>
-              <div class="x-line"></div>
-            </div>
-            <div class="pagination-button-group-base-3 pagination-button-group-base-4">
-              <img class="arrow" src="/img/arrow-right-1.svg" alt="arrow-right" />
-            </div>
-          </div>
-        </div>
+
+         <!-- 에러 메시지 -->
+         <div id="errorContainer" style="display:none;"></div>
+
+        <!-- 페이지네이션 -->
+        <div id="pagination"></div>
+
       </div>
     </div>
   </div>
