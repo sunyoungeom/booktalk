@@ -158,7 +158,6 @@
   width: fit-content;
 }
 
-
 .list .text-11 {
   color: var(--black);
   font-weight: 500;
@@ -172,8 +171,6 @@
   align-items: flex-end;
   display: inline-flex;
   flex-direction: column;
-  height: 1753px;
-
 }
 
 .list .review {
@@ -207,9 +204,6 @@
    border-radius: 1000px;
 
 }
-
-
-
 
 .list .name {
   align-items: flex-start;
@@ -430,7 +424,6 @@
   align-items: flex-start;
   align-self: stretch;
   display: flex;
-
   gap: 15px;
   position: relative;
   width: 100%;
@@ -441,6 +434,7 @@
   margin-left: -1.00px;
   margin-right: -1.00px;
 }
+
 .list .text-7 {
   letter-spacing: 0;
   line-height: normal;

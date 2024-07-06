@@ -188,7 +188,7 @@
 }
 
 .reviews-my .overlap-group {
-  height: 580px;
+  height: auto;
   margin-top: 20px;
   position: relative;
   width: 706px;
@@ -201,16 +201,14 @@
   display: flex;
   gap: 27px;
   left: 1px;
-  position: absolute;
   top: 0;
-  width: 704px;
+  width: 100%;
 }
 
 .reviews-my .column {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  height: 511px;
   position: relative;
   width: 120px;
 }
@@ -412,7 +410,7 @@
   flex-grow: 1;
   gap: 8px;
   justify-content: center;
-  padding: 15px 40px;
+  padding: 10px 40px;
 }
 
 .reviews-my .light-button {
@@ -496,7 +494,6 @@
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  height: 511px;
   position: relative;
 }
 
