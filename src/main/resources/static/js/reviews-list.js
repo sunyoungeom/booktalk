@@ -1,15 +1,18 @@
-let currentTitle = document.getElementById('currentTitle').value;
-let userId = document.getElementById('userId').value;
+const reviewsContainer = document.getElementById('feed');
 
-function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
-    let url = '/api/reviews?';
+let currentTitle = document.getElementById('currentTitle').value;
+let currentPage = 0;
+const pageSize = 5;
+
+function fetchReviews(page, title = '', author = '', sortBy = '') {
+    let url = `/api/reviews?page=${page}&size=${pageSize}`;
     const params = new URLSearchParams();
 
     if (title) params.append('title', title);
     if (author) params.append('author', author);
     if (sortBy) params.append('sortBy', sortBy);
 
-    url += params.toString();
+    url += '&' + params.toString();
 
     fetch(url)
         .then(response => {
@@ -18,13 +21,8 @@ function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
                     return response.json().then(json => {
                         const errorMessage = json.message;
                         console.error(errorMessage);
-                        clearContentsAddSpinner();
-
-                        // setTimeout(() => {
-                        removeSpinner();
+                        clearContents();
                         displayErrorMessage(errorMessage);
-                        // }, 500);
-
                         throw new Error(errorMessage);
                     });
                 }
@@ -33,117 +31,89 @@ function fetchAndRenderReviews(title = '', author = '', sortBy = '') {
             return response.json();
         })
         .then((json) => {
-            clearContentsAddSpinner();
-            console.log(json)
+            clearContents();
             if (!json.reviews || json.reviews.length === 0) {
                 throw new Error('리뷰 검색결과가 없습니다.');
             }
 
-            const reviews = json.reviews;
-            const container = document.getElementById('feed');
+            const reviews = json.reviews.content;
+            const totalElements = json.reviews.totalElements;
+            reviewsContainer.innerHTML = '';
 
-            // setTimeout(() => {
-            removeSpinner();
             reviews.forEach(review => {
-                container.innerHTML += createReviewHTML(review);
+                reviewsContainer.innerHTML += createReviewHTML(review);
                 if (review.liked) {
                     const heartIcon = document.getElementById(`heartIcon${review.id}`);
                     heartIcon.src = "/img/heart-liked.svg";
                 }
             });
-            // }, 500);
+            setupPagination(totalElements, page);
         })
         .catch(error => {
             console.error(error);
         });
 }
 
-// 컨텐츠 초기화 & 스피너 추가
-function clearContentsAddSpinner() {
-    const reviewContainer = document.getElementById('feed');
+function clearContents() {
     const errorContainer = document.getElementById('errorContainer');
-    reviewContainer.innerHTML = '';
+    reviewsContainer.innerHTML = '';
     errorContainer.innerHTML = '';
-    addSpinner();
-
 }
 
-// 스피너 추가
-function addSpinner() {
-    const spinner = document.getElementById('spinner');
-    spinner.style.display = 'block';
-}
-
-// 스피너 제거
-function removeSpinner() {
-    const spinner = document.getElementById('spinner');
-    spinner.style.display = 'none';
-}
-
-// 오류 메시지 출력
 function displayErrorMessage(message) {
     const container = document.getElementById('errorContainer');
-
-    container.innerHTML = `
-        <div class="inter-normal-black-20px" style="margin-top:100px">
-            ${message}
-        </div>
-    `;
-
-    // setTimeout(() => {
+    container.innerHTML = `<div class="inter-normal-black-20px" style="margin-top:100px">${message}</div>`;
     container.style.display = 'block';
-    // }, 500);
-
 }
 
-// 리뷰 생성
 function createReviewHTML(review) {
     let editAndDeleteButtons = '';
+    const userId = document.getElementById('userId').value;
     if (userId == review.userId) {
         editAndDeleteButtons = `
-            <div class="head">
-                <div class="light-button-3 light-button-5" style="cursor: pointer;" onclick="editFunction(${review.id})">
-                    <div class="text-7 valign-text-middle manrope-normal-storm-gray-16px">수정</div>
+                <div class="head">
+                    <div class="light-button-3 light-button-5" style="cursor: pointer;" onclick="editFunction(${review.id})">
+                        <div class="text-7 valign-text-middle manrope-normal-storm-gray-16px">수정</div>
+                    </div>
                 </div>
-            </div>
-            <div class="head">
-                <div class="light-button-4 light-button-5" style="cursor: pointer;" onclick="deleteFunction(${review.id})">
-                    <div class="text-8 valign-text-middle presetsbody3">삭제</div>
+                <div class="head">
+                    <div class="light-button-4 light-button-5" style="cursor: pointer;" onclick="deleteFunction(${review.id})">
+                        <div class="text-8 valign-text-middle presetsbody3">삭제</div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
     }
 
     return `
-        <div class="review">
-            <div class="top-5">
-                <img class="image rectangle-1" src="${review.user.profileImgPath}" alt="Image" />
-                <div class="container">
-                    <div class="name-5">
-                        <input type="hidden" id="currentReview" value="${review.id}">
-                        <div class="book-title first-last manrope-semi-bold-mirage-16px" style="cursor:pointer;"
-                         onclick="window.location.href='/books/detail/' + encodeURIComponent('${review.title}')">${review.title}
+            <div class="review">
+                <div class="top-5">
+                    <img class="image rectangle-1" src="${review.user.profileImgPath}" alt="Image" />
+                    <div class="container">
+                        <div class="name-5">
+                            <input type="hidden" id="currentReview" value="${review.id}">
+                            <div class="book-title first-last manrope-semi-bold-mirage-16px" style="cursor:pointer;"
+                            onclick="window.location.href='/books/detail/' + encodeURIComponent('${review.title}')">${review.title}
+                            </div>
+                            <div class="username manrope-normal-storm-gray-14px">${review.author}</div>
                         </div>
-                        <div class="username manrope-normal-storm-gray-14px">${review.author}</div>
                     </div>
                 </div>
-            </div>
-            <div class="container-1">
-                <div class="paragraph-5">
-                    <p class="text-3 manrope-normal-mirage-16px">${review.content}</p>
+                <div class="container-1">
+                    <div class="paragraph-5">
+                        <p class="text-3 manrope-normal-mirage-16px">${review.content}</p>
+                    </div>
+                    <div class="date manrope-normal-storm-gray-12px">${review.date}</div>
                 </div>
-                <div class="date manrope-normal-storm-gray-12px">${review.date}</div>
-            </div>
-            <div class="icons">
-                <div class="frame-2610462">
-                    <img id="heartIcon${review.id}" class="heart-5" src="/img/heart.svg" alt="heart" onclick="likeFunction(${review.id})"/>
-                    <div id="likesCount${review.id}" class="address-5 small-text">${review.likes} 좋아요</div>
+                <div class="icons">
+                    <div class="frame-2610462">
+                        <img id="heartIcon${review.id}" class="heart-5" src="/img/heart.svg" alt="heart" onclick="likeFunction(${review.id})"/>
+                        <div id="likesCount${review.id}" class="address-5 small-text">${review.likes} 좋아요</div>
+                    </div>
+                    ${editAndDeleteButtons}
                 </div>
-                ${editAndDeleteButtons}
+                <div class="divider"></div>
             </div>
-            <div class="divider"></div>
-        </div>
-    `;
+        `;
 }
 
 function editFunction(id) {
@@ -170,14 +140,14 @@ function deleteFunction(id) {
 }
 
 function likeFunction(id) {
-    var reviewId = id;
-
-    var data = {
+    const reviewId = id;
+    const userId = document.getElementById('userId').value;
+    const data = {
         userId: userId,
         reviewId: reviewId
-    }
+    };
 
-    fetch(`/api/reviews/` + id + `/likes`, {
+    fetch(`/api/reviews/${id}/likes`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -186,20 +156,16 @@ function likeFunction(id) {
     })
         .then(response => {
             if (!response.ok) {
-                // 비회원인 경우
                 if (response.status === 404) {
                     return response.json().then(json => {
-                        alert("비회원은 좋아요를 누를 수 없습니다.")
-
-                        throw new Error(errorMessage);
+                        alert("비회원은 좋아요를 누를 수 없습니다.");
+                        throw new Error('비회원은 좋아요를 누를 수 없습니다.');
                     });
                 }
-                // 본인 작성글인 경우
                 if (response.status === 409) {
                     return response.json().then(json => {
                         const errorMessage = json.message;
-                        alert(errorMessage)
-
+                        alert(errorMessage);
                         throw new Error(errorMessage);
                     });
                 }
@@ -223,41 +189,41 @@ function likeFunction(id) {
         });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
     // 검색한 제목으로 리뷰 로드
-    fetchAndRenderReviews(currentTitle, '', '');
+    fetchReviews(currentPage, currentTitle, '', '');
 
     // '인기순' 리뷰 로드
-    const popularityDiv = document.getElementById('popularity');
-    popularityDiv.addEventListener('click', () => fetchAndRenderReviews(currentTitle, '', 'popularity'));
+    document.getElementById('popularity').addEventListener('click', () => {
+        fetchReviews(currentPage, currentTitle, '', 'popularity');
+    });
 
     // '최신순' 리뷰 로드
-    const latestDiv = document.getElementById('latest');
-    latestDiv.addEventListener('click', () => fetchAndRenderReviews(currentTitle, '', ''));
+    document.getElementById('latest').addEventListener('click', () => {
+        fetchReviews(currentPage, currentTitle, '', 'latest');
+    });
 
     // 검색 입력 필드
     const inputField = document.querySelector('.x04-search-input input');
 
     inputField.addEventListener('keypress', function (event) {
-        var inputValue = inputField.value;
+        const inputValue = inputField.value;
         if (!/^[a-zA-Z0-9가-힣\s]*$/.test(inputValue + event.key)) {
             event.preventDefault();
         }
     });
 
     inputField.addEventListener('input', function (event) {
-        var inputValue = inputField.value;
+        const inputValue = inputField.value;
         inputField.value = inputValue.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
     });
 
     inputField.addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
-            var inputValue = inputField.value;
+            const inputValue = inputField.value;
             if (inputValue.trim() !== '') {
-                console.log(inputValue);
                 currentTitle = inputValue;
-
-                fetchAndRenderReviews(currentTitle, '', '');
+                fetchReviews(currentPage, currentTitle, '', '');
             }
         }
     });

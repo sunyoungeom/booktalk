@@ -11,6 +11,7 @@
     <link th:href="@{/css/fragments/spinner.css}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
+    <script th:src="@{/js/pagination.js}" defer></script>
     <script th:src="@{/js/reviews-list.js}" defer></script>
 
 </head>
@@ -49,16 +50,16 @@
                 </div>
             </div>
 
-            <!-- 스피너 -->
-            <div th:replace="~{fragments/spinner :: spinner}"></div>
-
             <!-- 에러 메시지 -->
             <div id="errorContainer" style="display:none;"></div>
 
             <div id="feed" class="feed">
                 <!-- 리뷰 추가 -->
-
             </div>
+
+            <!-- 페이지네이션 -->
+            <div id="pagination"></div>
+
         </div>
     </div>
 </body>
