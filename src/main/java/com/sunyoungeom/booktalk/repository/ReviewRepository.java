@@ -50,18 +50,20 @@ public class ReviewRepository {
         return sql.selectList("Review.findAllOrderByLikesDesc", params);
     }
 
-    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, Pageable pageable) {
+    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, String author, Pageable pageable) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("title", title);
+        params.put("author", author);
         params.put("pageable", pageable);
         return sql.selectList("Review.findByTitleOrderByDateDesc", params);
     }
 
-    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, Pageable pageable) {
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, String author, Pageable pageable) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("title", title);
+        params.put("author", author);
         params.put("pageable", pageable);
         return sql.selectList("Review.findByTitleOrderByLikesDesc", params);
     }

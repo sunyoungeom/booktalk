@@ -39,12 +39,12 @@ public class ReviewFacade {
         return reviewRepository.findAllOrderByLikesDesc(userId, pageable);
     }
 
-    public List<ReviewDTO> findReviewsByTitleOrderByDateDesc(Long userId, String title, Pageable pageable) {
-        return reviewRepository.findByTitleOrderByDateDesc(userId, title, pageable);
+    public List<ReviewDTO> findReviewsByTitleOrderByDateDesc(Long userId, String title, String author, Pageable pageable) {
+        return reviewRepository.findByTitleOrderByDateDesc(userId, title, author, pageable);
     }
 
-    public List<ReviewDTO> findReviewsByTitleOrderByLikesDesc(Long userId, String title, Pageable pageable) {
-        return reviewRepository.findByTitleOrderByLikesDesc(userId, title, pageable);
+    public List<ReviewDTO> findReviewsByTitleOrderByLikesDesc(Long userId, String title, String author, Pageable pageable) {
+        return reviewRepository.findByTitleOrderByLikesDesc(userId, title, author, pageable);
     }
 
     public int countReviews() {
@@ -83,24 +83,16 @@ public class ReviewFacade {
         return reviewLikesRepository.save(reviewLikes);
     }
 
-    public Optional<ReviewLikes> findReviewLikesById(Long id) {
-        return reviewLikesRepository.findById(id);
+    public List<ReviewDTO> findLikedReviewsByUserId(Long userId, Pageable pageable) {
+        return reviewLikesRepository.findLikedReviewsByUserId(userId, pageable);
     }
 
-    public List<ReviewLikes> findAllReviewLikes() {
-        return reviewLikesRepository.findAll();
-    }
-
-    public List<ReviewLikes> findReviewLikesByUserId(Long userId) {
-        return reviewLikesRepository.findReviewLikesByUserId(userId);
+    public int countLikedReviews(Long userId) {
+        return reviewLikesRepository.countLikedReviews(userId);
     }
 
     public boolean findByUserIdAndReviewId(Long userId, Long reviewId) {
         return reviewLikesRepository.findByUserIdAndReviewId(userId, reviewId);
-    }
-
-    public boolean findByUserId(Long userId) {
-        return reviewLikesRepository.findByUserId(userId);
     }
 
     public void deleteReviewLikes(Long userId, Long reviewId) {

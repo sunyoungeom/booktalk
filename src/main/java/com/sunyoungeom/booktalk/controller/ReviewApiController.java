@@ -4,6 +4,7 @@ import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.service.ReviewService;
+import com.sunyoungeom.booktalk.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class ReviewApiController {
 
     private final ReviewService reviewService;
+    private final UserService userService;
     private final HttpSession session;
 
     @PostMapping
@@ -39,9 +41,10 @@ public class ReviewApiController {
             Pageable pageable) {
 
         Long userId = (Long) session.getAttribute("id");
+        String nickname = userService.getNicknameById(userId);
 
-        if (author == null) {
-            Page<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, sortBy, pageable);
+        if (userId == null || (nickname != null && !nickname.equals(author))) {
+            Page<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, author, sortBy, pageable);
             if (!reviews.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
             } else {
@@ -58,8 +61,25 @@ public class ReviewApiController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getLikedReviews(
+            @PathVariable(name = "id") String id,
+            Pageable pageable) {
+
+        Long userId = (Long) session.getAttribute("id");
+        Page<ReviewDTO> reviews = reviewService.findLikedReviewsByUserId(userId, pageable);
+        if (!reviews.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
+        }
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateReview(@PathVariable(name = "id") Long reviewId, @RequestBody ReviewDTO reviewDTO) {
+    public ResponseEntity<Object> updateReview(
+            @PathVariable(name = "id") Long reviewId,
+            @RequestBody ReviewDTO reviewDTO) {
+
         Long userId = (Long) session.getAttribute("id");
         reviewService.update(reviewId, userId, reviewDTO.getContent());
         return ResponseEntity.status(HttpStatus.OK).build();

@@ -91,6 +91,18 @@ public class UserService {
         repository.delete(id);
     }
 
+    public String getNicknameById(Long id) {
+        if (id == null) {
+            return null;
+        }
+        User user = repository.findById(id).orElse(null);
+        if (user == null) {
+            return null;
+        }
+
+        return user.getNickname();
+    }
+
     public UserDTO getUserDTOById(Long id) {
         User user = findById(id);
 
@@ -103,6 +115,7 @@ public class UserService {
 
         return userDTO;
     }
+
     public User findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));

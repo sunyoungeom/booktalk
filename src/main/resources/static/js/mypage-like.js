@@ -1,25 +1,19 @@
-let currentAuthor = document.getElementById('username').value;
+let currentAuthor = '';
 let currentTitle = '';
 let currentPage = 0;
 const pageSize = 5;
+const userId = document.getElementById('userId').value;
 
 function fetchReviews(page, title = '', author = '', sortBy = '') {
     const table = document.querySelector('.table');
     const contentColumns = table.querySelectorAll('.content-column');
 
-    let url = `/api/reviews?&page=${page}&size=${pageSize}`;
-    const params = new URLSearchParams();
-
-    if (title) params.append('title', title);
-    if (author) params.append('author', author);
-    if (sortBy) params.append('sortBy', sortBy);
-
-    url += '&' + params.toString();
+    let url = `/api/reviews/${userId}?page=${page}&size=${pageSize}`;
 
     const contentColumnNumber = document.getElementById('content-column-number');
     const contentColumnTitle = document.getElementById('content-column-title');
     const contentColumnDate = document.getElementById('content-column-date');
-    const contentColumnAction = document.getElementById('content-column-action');
+    const contentColumnAuthor = document.getElementById('content-column-author');
 
     fetch(url)
         .then(response => {
@@ -38,6 +32,7 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
             return response.json();
         })
         .then((json) => {
+            console.log(json)
             clearContents();
             if (!json.reviews || json.reviews.length === 0) {
                 throw new Error('리뷰 검색결과가 없습니다.');
@@ -55,7 +50,9 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
                 // 책 제목
                 const titleDiv = document.createElement('div');
                 titleDiv.className = 'head head-1 head-4';
-                titleDiv.innerHTML = `<div class="text-2 manrope-regular-normal-mirage-16px">${review.title}</div>`;
+                titleDiv.innerHTML = `<div class="text-2 manrope-regular-normal-mirage-16px" style="cursor:pointer;"
+                                        onclick="window.location.href='/reviews/search?title=' + encodeURIComponent('${review.title}') 
+                                        + '&author=' + encodeURIComponent('${review.author}')">${review.title}</div>`;
                 contentColumnTitle.appendChild(titleDiv);
 
                 // 작성일
@@ -64,12 +61,11 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
                 dateDiv.innerHTML = `<div class="text presetsbody2">${review.date}</div>`;
                 contentColumnDate.appendChild(dateDiv);
 
-                // 수정 버튼
-                const actionDiv = document.createElement('div');
-                actionDiv.className = 'head-2 head';
-                actionDiv.innerHTML = `<div class="light-button" style="cursor: pointer;" onclick="editFunction(${review.id})">
-                                        <div class="text-3 valign-text-middle presetsbody2">수정</div></div>`;
-                contentColumnAction.appendChild(actionDiv);
+                // 작성자
+                const authorDiv = document.createElement('div');
+                authorDiv.className = 'head head-1 head-4';
+                authorDiv.innerHTML = `<div class="text presetsbody2">${review.author}</div>`;
+                contentColumnAuthor.appendChild(authorDiv);
 
             });
             setupPagination(totalElements, page);
@@ -81,11 +77,11 @@ function clearContents() {
     const contentColumnNumber = document.getElementById('content-column-number');
     const contentColumnTitle = document.getElementById('content-column-title');
     const contentColumnDate = document.getElementById('content-column-date');
-    const contentColumnAction = document.getElementById('content-column-action');
+    const contentColumnAuthor = document.getElementById('content-column-author');
     contentColumnNumber.innerHTML = '';
     contentColumnTitle.innerHTML = '';
     contentColumnDate.innerHTML = '';
-    contentColumnAction.innerHTML = '';
+    contentColumnAuthor.innerHTML = '';
 }
 
 function displayErrorMessage(message) {
@@ -95,11 +91,7 @@ function displayErrorMessage(message) {
     container.style.display = 'block';
 }
 
-function editFunction(id) {
-    window.location.href = '/reviews/edit-init?id=' + id;
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-    // 작성한 리뷰 로드
-    fetchReviews(currentPage, '', currentAuthor, '');
+    // 좋아요한 리뷰 로드
+    fetchReviews(currentPage, '', '', '');
 });

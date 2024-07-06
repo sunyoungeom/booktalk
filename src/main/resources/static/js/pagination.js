@@ -14,7 +14,7 @@ function setupPagination(totalElements, currentPage) {
         pageButton.textContent = pageNum + 1;
         pageButton.addEventListener('click', () => {
             currentPage = pageNum;
-            fetchReviews(currentPage, currentTitle, '', '');
+            fetchReviews(currentPage, currentTitle, currentAuthor, '');
         });
         if (pageNum === currentPage) {
             pageButton.disabled = true;

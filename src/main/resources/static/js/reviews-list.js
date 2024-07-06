@@ -1,5 +1,6 @@
 const reviewsContainer = document.getElementById('feed');
 
+let currentAuthor = document.getElementById('currentAuthor').value;
 let currentTitle = document.getElementById('currentTitle').value;
 let currentPage = 0;
 const pageSize = 5;
@@ -191,7 +192,7 @@ function likeFunction(id) {
 
 document.addEventListener("DOMContentLoaded", function () {
     // 검색한 제목으로 리뷰 로드
-    fetchReviews(currentPage, currentTitle, '', '');
+    fetchReviews(currentPage, currentTitle, currentAuthor, '');
 
     // '인기순' 리뷰 로드
     document.getElementById('popularity').addEventListener('click', () => {

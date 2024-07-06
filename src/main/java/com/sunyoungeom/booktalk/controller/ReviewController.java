@@ -23,13 +23,16 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/search")
-    public String listSearchByTitle(@RequestParam(name = "title", required = false) String title, RedirectAttributes redirectAttributes) {
+    public String listSearchByTitle(@RequestParam(name = "title", required = false) String title,
+                                    @RequestParam(name = "author", required = false) String author,
+                                    RedirectAttributes redirectAttributes) {
         if (title == null) {
             log.info("Review Search Title: None");
             return "/reviews/list";
         } else {
             log.info("Review Search Title: {}", title);
             redirectAttributes.addFlashAttribute("title", title);
+            redirectAttributes.addFlashAttribute("author", author);
         }
         return "redirect:/reviews/list";
     }

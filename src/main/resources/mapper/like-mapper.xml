@@ -8,32 +8,20 @@
         VALUES (#{userId}, #{reviewId})
     </insert>
 
-    <select id="findAll" resultType="ReviewLikes">
-        SELECT *
-        FROM likes
+    <select id="findLikedReviewsByUserId" resultType="ReviewDTO">
+        SELECT r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date"
+        FROM reviews r
+        JOIN likes l ON r.id = l.reviewId AND l.userId = #{userId}
+        ORDER BY r.id DESC
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
-    <select id="findById" resultType="ReviewLikes">
-        SELECT *
-        FROM likes
-        WHERE id = #{id}
-    </select>
-
-    <select id="findReviewLikesByUserId" resultType="ReviewLikes">
-        SELECT *
-        FROM likes
-        WHERE userId = #{userId}
+    <select id="countLikedReviews" resultType="int">
+        SELECT COUNT(*) FROM likes WHERE userId = #{userId};
     </select>
 
     <select id="findByUserIdAndReviewId" parameterType="map" resultType="int">
         SELECT COUNT(*) FROM likes WHERE userId = #{userId} AND reviewId = #{reviewId}
-    </select>
-
-    <select id="findByUserId" parameterType="Long" resultType="int">
-        SELECT COUNT(*)
-        FROM likes
-        WHERE userId = #{userId}
-        ORDER BY id DESC
     </select>
 
     <delete id="delete" parameterType="map">

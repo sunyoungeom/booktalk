@@ -27,7 +27,7 @@ public class ReviewService {
 
     private final ReviewFacade reviewFacade;
 
-    public Page<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy, Pageable pageable) {
+    public Page<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String author, String sortBy, Pageable pageable) {
         List<ReviewDTO> reviews = new ArrayList<>();
 
         // 리뷰 검색
@@ -35,9 +35,9 @@ public class ReviewService {
         if (title != null) {
             totalElements = countReviewsByTitle(title);
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = findByTitleOrderByLikesDesc(userId, title, pageable);
+                reviews = findByTitleOrderByLikesDesc(userId, title, author, pageable);
             } else {
-                reviews = findByTitleOrderByDateDesc(userId, title, pageable);
+                reviews = findByTitleOrderByDateDesc(userId, title, author, pageable);
             }
         } else {
             totalElements = countReviews();
@@ -76,12 +76,12 @@ public class ReviewService {
         return reviewFacade.findAllReviewsOrderByLikesDesc(userId, pageable);
     }
 
-    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, Pageable pageable) {
-        return reviewFacade.findReviewsByTitleOrderByLikesDesc(userId, title, pageable);
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, String author, Pageable pageable) {
+        return reviewFacade.findReviewsByTitleOrderByLikesDesc(userId, title, author, pageable);
     }
 
-    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, Pageable pageable) {
-        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title, pageable);
+    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, String author, Pageable pageable) {
+        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title, author, pageable);
     }
 
     public int countReviews() {
@@ -134,8 +134,10 @@ public class ReviewService {
         return review;
     }
 
-    public List<ReviewLikes> findAllReviewLikes() {
-        return reviewFacade.findAllReviewLikes();
+    public Page<ReviewDTO> findLikedReviewsByUserId(Long userId, Pageable pageable) {
+        List<ReviewDTO> reviews = reviewFacade.findLikedReviewsByUserId(userId, pageable);
+        int totalElements = reviewFacade.countLikedReviews(userId);
+        return new PageImpl<>(reviews, pageable, totalElements);
     }
 
     @Transactional

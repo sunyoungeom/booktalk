@@ -62,7 +62,7 @@
         FROM reviews r
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
-        WHERE title = #{title}
+        WHERE title = #{title} AND author = #{author}
         ORDER BY r.id DESC
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
@@ -73,7 +73,7 @@
         FROM reviews r
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
-        WHERE title = #{title}
+        WHERE title = #{title} AND author = #{author}
         ORDER BY r.likes DESC
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
