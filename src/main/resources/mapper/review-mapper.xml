@@ -42,7 +42,8 @@
         FROM reviews r
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
-        ORDER BY r.id DESC;
+        ORDER BY r.id DESC
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <select id="findAllOrderByLikesDesc" resultMap="ReviewMap">
@@ -51,7 +52,8 @@
         FROM reviews r
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
-        ORDER BY r.likes DESC;
+        ORDER BY r.likes DESC
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <select id="findByTitleOrderByDateDesc" resultMap="ReviewMap">
@@ -61,7 +63,8 @@
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
         WHERE title = #{title}
-        ORDER BY r.id DESC;
+        ORDER BY r.id DESC
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <select id="findByTitleOrderByLikesDesc" resultMap="ReviewMap">
@@ -71,7 +74,8 @@
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
         WHERE title = #{title}
-        ORDER BY r.likes DESC;
+        ORDER BY r.likes DESC
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <select id="countReviews" resultType="int">
@@ -85,11 +89,18 @@
         WHERE title = #{title}
     </select>
 
-    <select id="findByUserId" resultType="Review">
+    <select id="countReviewsByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM reviews
+        WHERE userId = #{userId}
+    </select>
+
+    <select id="findByUserId" resultMap="ReviewMap">
         SELECT title, DATE_FORMAT(date, '%Y-%m-%d') as date
         FROM reviews
         WHERE userId = #{userId}
         ORDER BY id DESC
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <update id="increaseLikes" parameterType="Long">

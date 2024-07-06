@@ -11,7 +11,8 @@ import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.facade.ReviewFacade;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.session.RowBounds;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,28 +27,27 @@ public class ReviewService {
 
     private final ReviewFacade reviewFacade;
 
-    public List<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy, Pageable pageable) {
+    public Page<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String sortBy, Pageable pageable) {
         List<ReviewDTO> reviews = new ArrayList<>();
 
-        int offset = pageable.getPageNumber() * pageable.getPageSize();
-        RowBounds rowBounds = new RowBounds(offset, pageable.getPageSize());
-
         // 리뷰 검색
+        int totalElements = 0;
         if (title != null) {
+            totalElements = countReviewsByTitle(title);
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = findByTitleOrderByLikesDesc(userId, title, rowBounds);
+                reviews = findByTitleOrderByLikesDesc(userId, title, pageable);
             } else {
-                reviews = findByTitleOrderByDateDesc(userId, title, rowBounds);
+                reviews = findByTitleOrderByDateDesc(userId, title, pageable);
             }
         } else {
+            totalElements = countReviews();
             if ("popularity".equalsIgnoreCase(sortBy)) {
-                reviews = findAllOrderByLikesDesc(userId, rowBounds);
+                reviews = findAllOrderByLikesDesc(userId, pageable);
             } else {
-               reviews = findAllOrderByDateDesc(userId, rowBounds);
+               reviews = findAllOrderByDateDesc(userId, pageable);
             }
         }
-        System.out.println("reviews" + reviews.toString());
-        return reviews;
+        return new PageImpl<>(reviews, pageable, totalElements);
     }
 
     public Review createReview(Review review, Long userId, String username) {
@@ -68,24 +68,39 @@ public class ReviewService {
         return review;
     }
 
-    public List<ReviewDTO> findAllOrderByDateDesc(Long userId, RowBounds pageable) {
+    public List<ReviewDTO> findAllOrderByDateDesc(Long userId, Pageable pageable) {
         return reviewFacade.findAllReviewsOrderByDateDesc(userId, pageable);
     }
 
-    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId, RowBounds pageable) {
+    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId, Pageable pageable) {
         return reviewFacade.findAllReviewsOrderByLikesDesc(userId, pageable);
     }
 
-    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, RowBounds pageable) {
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, Pageable pageable) {
         return reviewFacade.findReviewsByTitleOrderByLikesDesc(userId, title, pageable);
     }
 
-    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, RowBounds rowBounds) {
-        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title, rowBounds);
+    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, Pageable pageable) {
+        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title, pageable);
     }
 
-    public List<Review> findByUserId(Long userId) {
-        return reviewFacade.findReviewsByUserId(userId);
+    public int countReviews() {
+        return reviewFacade.countReviews();
+    }
+
+    public int countReviewsByTitle(String title) {
+        return reviewFacade.countReviewsByTitle(title);
+    }
+
+    public Page<ReviewDTO> findByUserId(Long userId, Pageable pageable) {
+        List<ReviewDTO> reviews = reviewFacade.findReviewsByUserId(userId, pageable);
+        int total = countReviewsByUserId(userId);
+        return new PageImpl<>(reviews, pageable, total);
+
+    }
+
+    public int countReviewsByUserId(Long userId) {
+        return reviewFacade.countReviewsByUserId(userId);
     }
 
     public void update(Long reviewId, Long userId, String content) {

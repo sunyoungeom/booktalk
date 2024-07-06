@@ -3,8 +3,8 @@ package com.sunyoungeom.booktalk.repository;
 import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -36,41 +36,53 @@ public class ReviewRepository {
         return Optional.ofNullable(review);
     }
 
-    public List<ReviewDTO> findAllOrderByDateDesc(Long userId, RowBounds rowBounds) {
-        return sql.selectList("Review.findAllOrderByDateDesc", userId, rowBounds);
+    public List<ReviewDTO> findAllOrderByDateDesc(Long userId, Pageable pageable) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("pageable", pageable);
+        return sql.selectList("Review.findAllOrderByDateDesc", params);
     }
 
-    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId, RowBounds rowBounds) {
-        return sql.selectList("Review.findAllOrderByLikesDesc", userId, rowBounds);
+    public List<ReviewDTO> findAllOrderByLikesDesc(Long userId, Pageable pageable) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("pageable", pageable);
+        return sql.selectList("Review.findAllOrderByLikesDesc", params);
     }
 
-    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, RowBounds rowBounds) {
+    public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, Pageable pageable) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("title", title);
-        return sql.selectList("Review.findByTitleOrderByDateDesc", params, rowBounds);
+        params.put("pageable", pageable);
+        return sql.selectList("Review.findByTitleOrderByDateDesc", params);
     }
 
-    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, RowBounds rowBounds) {
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, Pageable pageable) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("title", title);
-        return sql.selectList("Review.findByTitleOrderByLikesDesc", params, rowBounds);
+        params.put("pageable", pageable);
+        return sql.selectList("Review.findByTitleOrderByLikesDesc", params);
     }
 
-    public int countReviews(Long userId) {
-        return sql.selectOne("Review.countReviews", userId);
+    public int countReviews() {
+        return sql.selectOne("Review.countReviews");
     }
 
-    public int countReviewsByTitle(Long userId, String title) {
+    public int countReviewsByTitle(String title) {
+        return sql.selectOne("Review.countReviewsByTitle", title);
+    }
+
+    public int countReviewsByUserId(Long userId) {
+        return sql.selectOne("Review.countReviewsByUserId", userId);
+    }
+
+    public List<ReviewDTO> findByUserId(Long userId, Pageable pageable) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
-        params.put("title", title);
-        return sql.selectOne("Review.countReviewsByTitle", params);
-    }
-
-    public List<Review> findByUserId(Long userId) {
-        return sql.selectList("Review.findByUserId", userId);
+        params.put("pageable", pageable);
+        return sql.selectList("Review.findByUserId", params);
     }
 
     public void increaseLikes(Long id) {

@@ -7,11 +7,11 @@ import com.sunyoungeom.booktalk.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,8 +39,9 @@ public class ReviewApiController {
             Pageable pageable) {
 
         Long userId = (Long) session.getAttribute("id");
+
         if (author == null) {
-            List<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, sortBy, pageable);
+            Page<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, sortBy, pageable);
             if (!reviews.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
             } else {
@@ -48,7 +49,7 @@ public class ReviewApiController {
             }
 
         } else {
-            List<Review> reviews = reviewService.findByUserId(userId);
+            Page<ReviewDTO> reviews = reviewService.findByUserId(userId, pageable);
             if (!reviews.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
             } else {
