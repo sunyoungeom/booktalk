@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -34,6 +37,8 @@ public class BestsellerScheduler {
         synchronized (lockObject) {
             String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             String fileName = String.format(FILE_NAME, formattedDate);
+            Path filePath = Paths.get(FILE_DIRECTORY, fileName);
+
             try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_DIRECTORY, fileName), "rw");
                  FileChannel channel = raf.getChannel();
                  FileLock lock = channel.lock()) {
@@ -44,7 +49,7 @@ public class BestsellerScheduler {
 
                 // 베스트셀러 업데이트
                 List<Map<String, String>> bestsellers = fetchBestsellers();
-                saveBestsellersToFile(bestsellers);
+                saveBestsellersToFile(bestsellers, filePath);
 
                 log.info("베스트셀러 업데이트 완료");
             } catch (IOException e) {
@@ -104,12 +109,10 @@ public class BestsellerScheduler {
 
             bestsellers.add(elementMap);
         }
-        saveBestsellersToFile(bestsellers);
-
         return bestsellers;
     }
 
-    private void saveBestsellersToFile(List<Map<String, String>> bestsellers) {
+    private void saveBestsellersToFile(List<Map<String, String>> bestsellers, Path filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -117,11 +120,8 @@ public class BestsellerScheduler {
             if (!directory.exists()) {
                 directory.mkdirs();
             }
-            String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            String fileName = String.format(FILE_NAME, formattedDate);
-            File filePath = new File(FILE_DIRECTORY, fileName);
-            System.out.println(filePath.toPath());
-            objectMapper.writeValue(filePath, bestsellers);
+            objectMapper.writeValue(filePath.toFile(), bestsellers);
+            log.info("베스트셀러 저장 완료: {}", filePath.toString());
 
         } catch (IOException e) {
             log.error("베스트셀러 저장 시 에러 발생", e);
@@ -133,21 +133,27 @@ public class BestsellerScheduler {
         ObjectMapper objectMapper = new ObjectMapper();
         String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String fileName = String.format(FILE_NAME, formattedDate);
-        File file = new File(FILE_DIRECTORY, fileName);
+        Path filePath = Paths.get(FILE_DIRECTORY, fileName);
 
         synchronized (lockObject) {
-            try (RandomAccessFile raf = new RandomAccessFile(file, "rw");
-                 FileChannel channel = raf.getChannel();
-                 FileLock lock = channel.lock()) {
+            try {
+                if (Files.exists(filePath)) {
+                    try (RandomAccessFile raf = new RandomAccessFile(filePath.toFile(), "rw");
+                         FileChannel channel = raf.getChannel();
+                         FileLock lock = channel.lock()) {
+                        bestseller = objectMapper.readValue(filePath.toFile(), new TypeReference<List<Map<String, String>>>() {
+                        });
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                if (file.exists() && lock != null) {
-                    bestseller = objectMapper.readValue(file, new TypeReference<List<Map<String, String>>>() {
-                    });
                 } else {
                     bestseller = fetchBestsellers();
+                    saveBestsellersToFile(bestseller, filePath);
                 }
+
             } catch (IOException e) {
-                log.error("베스트셀러 로드 시 에러 발생", e);
+                throw new RuntimeException(e);
             }
             return bestseller;
         }
