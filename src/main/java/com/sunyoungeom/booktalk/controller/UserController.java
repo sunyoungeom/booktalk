@@ -1,19 +1,20 @@
 package com.sunyoungeom.booktalk.controller;
 
-import com.sunyoungeom.booktalk.domain.User;
-import com.sunyoungeom.booktalk.dto.LoginDTO;
 import com.sunyoungeom.booktalk.dto.UserDTO;
+import com.sunyoungeom.booktalk.dto.UserLoginDTO;
 import com.sunyoungeom.booktalk.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
-@RequestMapping("/user")
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService service;
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto, HttpSession session) {
+    public ResponseEntity<Object> login(@RequestBody UserLoginDTO loginDto, HttpSession session) {
         Long userId = service.login(loginDto);
         UserDTO userDTO = service.getUserDTOById(userId);
 

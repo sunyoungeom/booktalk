@@ -2,8 +2,8 @@ package com.sunyoungeom.booktalk.service;
 
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserSignupType;
-import com.sunyoungeom.booktalk.dto.LoginDTO;
 import com.sunyoungeom.booktalk.dto.UserDTO;
+import com.sunyoungeom.booktalk.dto.UserLoginDTO;
 import com.sunyoungeom.booktalk.dto.UserUpdateDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
@@ -22,12 +22,12 @@ public class UserService {
     private final UserRepository repository;
 
     public User join(User user) {
-        // 중복 유저 검증
+        // 중복회원 검증
         validateDuplicateUser(user);
-
-        // 가입
+        // 회원가입
         user.setSignUpType(UserSignupType.EMAIL.getTypeName());
         repository.save(user);
+
         return user;
     }
 
@@ -42,7 +42,7 @@ public class UserService {
         }
     }
 
-    public Long login(LoginDTO loginDto) {
+    public Long login(UserLoginDTO loginDto) {
         User user = repository.findIdByEmail(loginDto.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
 
@@ -61,6 +61,31 @@ public class UserService {
 
     public List<User> findAll() {
         return repository.findAll();
+    }
+
+    public void updateNickname(Long id, String newNickname) {
+        // 회원조회
+        User user = findById(id);
+        // 닉네임 중복검사
+        if (repository.existsByNickname(newNickname)) {
+            throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
+        }
+        // 닉네임 업데이트
+        user.setNickname(newNickname);
+        repository.update(id, user);
+    }
+
+    public void updatePassword(Long id, String currentPassword, String newPassword) {
+        // 회원조회
+        User user = findById(id);
+        // 비밀번호 일치 검사
+        if (user.getPassword().equals(currentPassword)) {
+            user.setPassword(newPassword);
+        } else {
+            throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
+        }
+        // 비밀번호 업데이트
+        repository.update(id, user);
     }
 
     public User updateUser(Long id, UserUpdateDTO updateDTO) {
