@@ -3,10 +3,9 @@ package com.sunyoungeom.booktalk.dto;
 import lombok.*;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter
 @ToString
-public class LoginDTO {
+public class UserLoginDTO {
     private String email;
     private String password;
 }
