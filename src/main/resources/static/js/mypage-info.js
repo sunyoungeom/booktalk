@@ -18,11 +18,11 @@ function loadUserInfo() {
       const signUpType = document.getElementById('signUpType');
       const signUpDate = document.getElementById('signUpDate');
 
-      profileImg.src = data.profileImgPath;
-      nickname.textContent = data.nickname;
-      email.textContent = data.email;
-      signUpType.textContent = data.signUpType;
-      signUpDate.textContent = data.signUpDate;
+      profileImg.src = data.data.profileImgPath;
+      nickname.textContent = data.data.nickname;
+      email.textContent = data.data.email;
+      signUpType.textContent = data.data.signUpType;
+      signUpDate.textContent = data.data.signUpDate;
     })
     .catch(error => {
       console.error(error);
@@ -32,15 +32,6 @@ function loadUserInfo() {
 // 회원 정보 수정
 function modifyUserInfo(field) {
   openModal(field);
-}
-
-function cancelModal() {
-  closeModal();
-}
-
-// 비밀번호 유효성 검사
-function validatePassword(password) {
-  return /^[a-zA-Z0-9]+$/.test(password);
 }
 
 function confirmEdit() {
@@ -56,9 +47,27 @@ function confirmEdit() {
     return;
   }
 
+  if (fieldValue === 'nickname') {
+    if (!noSpace(newValue)) {
+      alert("닉네임은 공백을 포함할 수 없습니다.");
+      return;
+    }
+    if (!validateNickname(newValue)) {
+      alert("닉네임은 특수문자를 포함하지 않으며 6자 이내여야 합니다.");
+      return;
+    }
+    data = {
+      newNickname: newValue
+    };
+  }
+
   if (fieldValue === 'password') {
+    if (!noSpace(newValue)) {
+      alert("비밀번호는 공백을 포함할 수 없습니다.");
+      return;
+    }
     if (!validatePassword(newValue)) {
-      alert("비밀번호는 영어와 숫자로만 구성되어야 합니다.");
+      alert("비밀번호는 10자 이내의 숫자와 영소문자로 이루어져야 합니다.");
       return;
     }
     data = {
@@ -67,21 +76,13 @@ function confirmEdit() {
     };
   }
 
-  if (fieldValue === 'nickname') {
-    currentValue.textContent =
-      data = {
-        newNickname: newValue
-      };
-  }
-
-  fetch(`/api/user/` + id, {
+  fetch(`/api/user/${id}/${fieldValue}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   })
-
     .then(response => {
       if (!response.ok) {
         if (response.status === 400 || response.status === 409) {
@@ -98,16 +99,15 @@ function confirmEdit() {
     })
     .then(data => {
       // 닉네임 수정 성공
-      if (data.nickname) {
+      if (fieldValue === 'nickname') {
         const nickname = document.getElementById('nickname');
-        nickname.textContent = data.nickname;
-        sessionStorage.setItem('username', data.nickname);
-        alert("닉네임이 수정되었습니다.");
-
+        nickname.textContent = data.data;
+        sessionStorage.setItem('username', data.data);
+        alert(data.message);
       }
       // 비밀번호 수정 성공
-      if (data.password) {
-        alert("비밀번호가 수정되었습니다.");
+      if (fieldValue === 'password') {
+        alert(data.message);
       }
       closeModal();
     })
@@ -148,6 +148,21 @@ function uploadImg() {
     });
 }
 
+// 공통 유효성 검사
+function noSpace(str) {
+  return str.trim().length === 0;
+}
+
+// 닉네임 유효성 검사
+function validateNickname(nickname) {
+  return /^[a-zA-Z0-9가-힣]{1,6}$/i.test(nickname);
+}
+
+// 비밀번호 유효성 검사
+function validatePassword(password) {
+  return /^[a-z0-9]{1,10}$/i.test(password);
+}
+
 function openModal(field) {
   const modal = document.getElementById('editModal');
   fetch('/edit/' + field)
@@ -162,6 +177,10 @@ function closeModal() {
   const modal = document.getElementById('editModal');
   modal.innerHTML = "";
   modal.style.display = 'none';
+}
+
+function cancelModal() {
+  closeModal();
 }
 
 // 회원 탈퇴
