@@ -38,7 +38,6 @@ function submitForm(event) {
         "userId": userId,
         "title": title,
         "author": author,
-        "date": currentDate,
         "content": reviewContent,
     };
 
@@ -50,14 +49,19 @@ function submitForm(event) {
         body: JSON.stringify(data)
     })
         .then(response => {
-            if (response.ok) {
-                console.log(data)
-                alert("리뷰가 등록되었습니다.");
-                window.location.href = '/reviews/search?title=' + title;
-            } else {
-                alert('리뷰 등록에 실패하였습니다.')
-                console.error('리뷰 등록에 실패하였습니다.');
+            if (!response.ok) {
+                return response.json().then(json => {
+                    const errorMessage = json.data[0];
+                    alert(errorMessage)
+                    throw new Error(errorMessage);
+                });
             }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data)
+            alert("리뷰가 등록되었습니다.");
+            window.location.href = '/reviews/search?title=' + title;
         })
         .catch(error => {
             console.error(error);

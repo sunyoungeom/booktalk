@@ -1,18 +1,24 @@
 package com.sunyoungeom.booktalk.controller;
 
+import com.sunyoungeom.booktalk.common.ApiResponseUtil;
 import com.sunyoungeom.booktalk.domain.Review;
+import com.sunyoungeom.booktalk.dto.ReviewAddDTO;
 import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.service.ReviewService;
 import com.sunyoungeom.booktalk.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @RestController
@@ -26,11 +32,32 @@ public class ReviewApiController {
     private final HttpSession session;
 
     @PostMapping
-    public ResponseEntity<Object> createReview(@RequestBody Review review) {
+    public ResponseEntity<Object> createReview(@Valid @RequestBody ReviewAddDTO reviewAddDTO, BindingResult bindingResult) {
+        // 유효성 검사
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
+        }
+
         Long userId = (Long) session.getAttribute("id");
         String author = (String) session.getAttribute("username");
-        Review createdReview = reviewService.createReview(review, userId, author);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
+
+        // 현재 시간 yyyy-MM-dd HH:mm:ss 형식으로 변환
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
+
+        Review review = Review.builder()
+                .userId(userId)
+                .title(reviewAddDTO.getTitle())
+                .author(author)
+                .date(formattedDateTime)
+                .content(reviewAddDTO.getContent())
+                .build();
+
+        Review result = reviewService.createReview(review, userId, author);
+
+        return ApiResponseUtil.successResponse(HttpStatus.CREATED, "리뷰가 작성되었습니다.", result);
     }
 
     @GetMapping
