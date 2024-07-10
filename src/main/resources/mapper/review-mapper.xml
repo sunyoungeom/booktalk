@@ -37,43 +37,87 @@
     </select>
 
     <select id="findAllOrderByDateDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes,
+        u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
-        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
+        LEFT JOIN likes l ON r.id = l.reviewId
+        <!--    로그인 시    -->
+        <if test="userId != null">
+            AND l.userid = #{userId}
+        </if>
+        <!--    비로그인 시    -->
+        <if test="userId == null">
+            AND l.userid = 0
+        </if>
         ORDER BY r.id DESC
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <select id="findAllOrderByLikesDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes,
+        u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
-        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
+        LEFT JOIN likes l ON r.id = l.reviewId
+        <!--    로그인 시    -->
+        <if test="userId != null">
+            AND l.userid = #{userId}
+        </if>
+        <!--    비로그인 시    -->
+        <if test="userId == null">
+            AND l.userid = 0
+        </if>
         ORDER BY r.likes DESC
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <select id="findByTitleOrderByDateDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes,
+        u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
-        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
-        WHERE title = #{title} AND author = #{author}
+        LEFT JOIN likes l ON r.id = l.reviewId
+        <!--    로그인 시    -->
+        <if test="userId != null">
+            AND l.userid = #{userId}
+        </if>
+        <!--    비로그인 시    -->
+        <if test="userId == null">
+            AND l.userid = 0
+        </if>
+        WHERE r.title = #{title}
+        <!--    특정 작성자가 쓴 리뷰 검색시    -->
+        <if test="author != null">
+            AND r.author = #{author}
+        </if>
         ORDER BY r.id DESC
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
     <select id="findByTitleOrderByLikesDesc" resultMap="ReviewMap">
-        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes, u.PROFILEIMGPATH,
+        SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes,
+        u.PROFILEIMGPATH,
         CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
-        LEFT JOIN likes l ON r.id = l.reviewId AND l.userid = #{userId}
-        WHERE title = #{title} AND author = #{author}
+        LEFT JOIN likes l ON r.id = l.reviewId
+        <!--    로그인 시    -->
+        <if test="userId != null">
+            AND l.userid = #{userId}
+        </if>
+        <!--    비로그인 시    -->
+        <if test="userId == null">
+            AND l.userid = 0
+        </if>
+        WHERE r.title = #{title}
+        <!--    특정 작성자가 쓴 리뷰 검색시    -->
+        <if test="author != null">
+            AND r.author = #{author}
+        </if>
         ORDER BY r.likes DESC
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>

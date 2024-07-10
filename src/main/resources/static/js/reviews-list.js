@@ -39,7 +39,8 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
 
             const reviews = json.reviews.content;
             const totalElements = json.reviews.totalElements;
-            reviewsContainer.innerHTML = '';
+            reviewsContainer.innerHTML = ''; // 리뷰 목록 초기화
+            currentTitle = '' // 작성자 검색 초기화
 
             reviews.forEach(review => {
                 reviewsContainer.innerHTML += createReviewHTML(review);
@@ -206,18 +207,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 검색 입력 필드
     const inputField = document.querySelector('.x04-search-input input');
-
-    inputField.addEventListener('keypress', function (event) {
-        const inputValue = inputField.value;
-        if (!/^[a-zA-Z0-9가-힣\s]*$/.test(inputValue + event.key)) {
-            event.preventDefault();
-        }
-    });
-
-    inputField.addEventListener('input', function (event) {
-        const inputValue = inputField.value;
-        inputField.value = inputValue.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    });
 
     inputField.addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
