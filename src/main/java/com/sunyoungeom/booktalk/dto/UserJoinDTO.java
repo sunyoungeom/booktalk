@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Data
+@Setter
 public class UserJoinDTO {
     // 닉네임
     @NotBlank(message = "{user.nickname.notblank}")
@@ -21,5 +21,6 @@ public class UserJoinDTO {
     // 비밀번호
     @NotBlank(message = "{user.password.notblank}")
     @Pattern(regexp = "^[a-z0-9]{1,10}$", message = "{user.password.pattern}")
+    @Pattern(regexp = "^\\S+$", message = "{user.password.nospace}")
     private String password;
 }
