@@ -4,6 +4,7 @@ import com.sunyoungeom.booktalk.common.ApiResponseUtil;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.dto.*;
 import com.sunyoungeom.booktalk.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -87,7 +88,7 @@ public class UserApiController {
     @PatchMapping("/{id}/profileImg")
     public ResponseEntity<Object> updateProfileImg(@PathVariable(name = "id") Long id,
                                                    @RequestParam("file") MultipartFile file) {
-        // TODO: 프로필 사진 유효성 검사 추가, 업로드 로직 수정 필요
+        // TODO: 업로드 로직 수정 필요
         try {
             File directory = new File(FILE_DIRECTORY);
             if (!directory.exists()) {
@@ -118,10 +119,8 @@ public class UserApiController {
             Path filePath = Paths.get(FILE_DIRECTORY + fileName);
             Files.write(filePath, bytes);
 
-            UserUpdateDTO updateDTO = new UserUpdateDTO();
             String profileImg = "/file/img/" + fileName;
-            updateDTO.setProfileImgPath(profileImg);
-            userService.updateUser(id, updateDTO);
+            userService.updateProfile(id, profileImg);
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("profileImgPath", profileImg));
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,11 +129,16 @@ public class UserApiController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id, HttpSession session) {
+    public ResponseEntity<Object> deleteUser(@SessionAttribute(name = "userId") Long userId,
+                                             @PathVariable(name = "id") Long id,
+                                             HttpServletRequest httpServletRequest) {
+        if (!userId.equals(id)) {
+            return ApiResponseUtil.failResponse(HttpStatus.FORBIDDEN, "회원탈퇴 권한이 없습니다.");
+        }
         // 회원탈퇴
-        userService.deleteUser(id);
+        userService.deleteUser(userId);
         // 세션 무효화
-        session.invalidate();
+        httpServletRequest.getSession().invalidate();
         return ApiResponseUtil.successResponse(HttpStatus.OK, "회원탈퇴가 완료되었습니다.", null);
     }
 }

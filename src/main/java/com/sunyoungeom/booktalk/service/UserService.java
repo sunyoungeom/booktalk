@@ -4,7 +4,6 @@ import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.domain.UserSignupType;
 import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.dto.UserLoginDTO;
-import com.sunyoungeom.booktalk.dto.UserUpdateDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.repository.UserRepository;
@@ -88,27 +87,12 @@ public class UserService {
         repository.update(id, user);
     }
 
-    public User updateUser(Long id, UserUpdateDTO updateDTO) {
+    public void updateProfile(Long id, String profileImgPath) {
+        // 회원조회
         User user = findById(id);
-        if (updateDTO.getProfileImgPath() != null) {
-            user.setProfileImgPath(updateDTO.getProfileImgPath());
-        }
-        if (updateDTO.getNewNickname() != null) {
-            if (repository.existsByNickname(updateDTO.getNewNickname())) {
-                throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
-            }
-            user.setNickname(updateDTO.getNewNickname());
-        }
-        if (updateDTO.getCurrentPassword() != null && updateDTO.getNewPassword() != null) {
-            if (user.getPassword().equals(updateDTO.getCurrentPassword())) {
-                user.setPassword(updateDTO.getNewPassword());
-            } else {
-                throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
-            }
-        }
-
+        // 프로필 사진 업데이트
+        user.setProfileImgPath(profileImgPath);
         repository.update(id, user);
-        return user;
     }
 
     public void deleteUser(Long id) {

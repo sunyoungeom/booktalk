@@ -1,4 +1,4 @@
-const id = document.getElementById('userId').value;
+const id = document.getElementById('session-userId').value;
 
 // 유저 정보 로드
 function loadUserInfo() {
@@ -43,7 +43,6 @@ function confirmEdit() {
 
   if (fieldValue === 'profileImgPath') {
     uploadImg();
-    cancelModal();
     return;
   }
 
@@ -141,6 +140,7 @@ function uploadImg() {
       profileImg.src = data.profileImgPath;
       sessionStorage.setItem('profileImgPath', data.profileImgPath);
       alert("프로필 사진이 수정되었습니다.");
+      cancelModal();
     })
     .catch(error => {
       console.error(error);
@@ -197,6 +197,7 @@ function withdrawal() {
       })
       .then(data => {
         alert(data.message)
+        window.location.href = '/';
       })
       .catch(error => {
         console.error(error);
