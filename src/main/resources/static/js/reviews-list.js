@@ -140,9 +140,7 @@ function deleteFunction(id) {
 
 function likeFunction(id) {
     const reviewId = id;
-    const userId = document.getElementById('userId').value;
     const data = {
-        userId: userId,
         reviewId: reviewId
     };
 
@@ -155,7 +153,7 @@ function likeFunction(id) {
     })
         .then(response => {
             if (!response.ok) {
-                if (response.status === 404) {
+                if (response.status === 400) {
                     return response.json().then(json => {
                         alert("비회원은 좋아요를 누를 수 없습니다.");
                         throw new Error('비회원은 좋아요를 누를 수 없습니다.');
@@ -175,13 +173,14 @@ function likeFunction(id) {
         .then(data => {
             const heartIcon = document.getElementById(`heartIcon${reviewId}`);
             const likesCount = document.getElementById(`likesCount${reviewId}`);
+            const result = data.data;
 
-            if (data.liked) {
+            if (result.liked) {
                 heartIcon.src = "/img/heart-liked.svg";
             } else {
                 heartIcon.src = "/img/heart.svg";
             }
-            likesCount.textContent = `${data.likes} 좋아요`;
+            likesCount.textContent = `${result.likes} 좋아요`;
         })
         .catch(error => {
             console.error(error);

@@ -1,4 +1,4 @@
-let currentAuthor = document.getElementById('username').value;
+let currentAuthor = document.getElementById('session-username').value;
 let currentTitle = '';
 let currentPage = 0;
 const pageSize = 5;

@@ -23,26 +23,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/api/reviews")
 @Slf4j
+@RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/reviews")
 public class ReviewApiController {
 
     private final ReviewService reviewService;
-    private final UserService userService;
-    private final HttpSession session;
 
     @PostMapping
-    public ResponseEntity<Object> createReview(@Valid @RequestBody ReviewAddDTO reviewAddDTO, BindingResult bindingResult) {
+    public ResponseEntity<Object> createReview(
+            @SessionAttribute(name = "userId") Long userId,
+            @SessionAttribute(name = "username") String author,
+            @Valid @RequestBody ReviewAddDTO reviewAddDTO, BindingResult bindingResult) {
         // 유효성 검사
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
-
-        Long userId = (Long) session.getAttribute("id");
-        String author = (String) session.getAttribute("username");
 
         // 제목 마지막 공백 제거
         String title = reviewAddDTO.getTitle().replaceAll("\\s+$", "");
@@ -78,9 +76,9 @@ public class ReviewApiController {
         if (userId != null && liked != null && liked.equals("true")) {
             Page<ReviewDTO> reviews = reviewService.findLikedReviewsByUserId(userId, pageable);
             if (!reviews.get().collect(Collectors.toList()).isEmpty()) {
-                return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공했습니다.", reviews);
+                return ApiResponseUtil.successResponse(HttpStatus.OK, "좋아요한 리뷰 조회에 성공했습니다.", reviews);
             } else {
-                return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "리뷰 검색결과가 없습니다.");
+                return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "좋아요 한 리뷰가 없습니다.");
             }
         }
         // 비회원 조회 || 작성자 조건 조회
@@ -91,13 +89,13 @@ public class ReviewApiController {
             } else {
                 return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "리뷰 검색결과가 없습니다.");
             }
-        // 본인 작성 리뷰 조회
+            // 본인 작성 리뷰 조회
         } else {
             Page<ReviewDTO> reviews = reviewService.findByUserId(userId, pageable);
             if (!reviews.isEmpty()) {
-                return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공했습니다.", reviews);
+                return ApiResponseUtil.successResponse(HttpStatus.OK, "본인이 작성한 리뷰 조회에 성공했습니다.", reviews);
             } else {
-                return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "리뷰 검색결과가 없습니다.");
+                return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "작성한 리뷰가 없습니다.");
             }
         }
     }
@@ -105,7 +103,7 @@ public class ReviewApiController {
     // 수정 페이지에서 리뷰 조회
     @GetMapping("/{id}")
     public ResponseEntity<Object> getReview(
-            @SessionAttribute(name = "userId", required = true) Long userId,
+            @SessionAttribute(name = "userId") Long userId,
             @PathVariable(name = "id") Long reviewId) {
         Review review = reviewService.existsById(reviewId);
         if (userId != review.getUserId()) {
@@ -116,6 +114,7 @@ public class ReviewApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(
+            @SessionAttribute(name = "userId") Long userId,
             @PathVariable(name = "id") Long reviewId,
             @Valid @RequestBody ReviewUpdateDTO reviewUpdateDTO, BindingResult bindingResult) {
         // 유효성 검사
@@ -124,23 +123,24 @@ public class ReviewApiController {
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
 
-        Long userId = (Long) session.getAttribute("id");
         reviewService.update(reviewId, userId, reviewUpdateDTO.getContent());
 
         return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰가 수정되었습니다.", reviewUpdateDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteReview(@PathVariable(name = "id") Long reviewId) {
-        Long userId = (Long) session.getAttribute("id");
+    public ResponseEntity<Object> deleteReview(
+            @SessionAttribute(name = "userId") Long userId,
+            @PathVariable(name = "id") Long reviewId) {
         reviewService.deleteReview(reviewId, userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));
+        return ApiResponseUtil.successResponse(HttpStatus.NO_CONTENT, "리뷰가 성공적으로 삭제되었습니다.", "");
     }
 
     @PostMapping("/{id}/likes")
-    public ResponseEntity<Object> likeReview(@PathVariable(name = "id") Long reviewId) {
-        Long userId = (Long) session.getAttribute("id");
+    public ResponseEntity<Object> likeReview(
+            @SessionAttribute(name = "userId") Long userId,
+            @PathVariable(name = "id") Long reviewId) {
         ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(reviewId, userId);
-        return ResponseEntity.status(HttpStatus.OK).body(reviewLikesDTO);
+        return ApiResponseUtil.successResponse(HttpStatus.OK, "좋아요가 반영되었습니다.", reviewLikesDTO);
     }
 }
