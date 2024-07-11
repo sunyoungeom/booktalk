@@ -28,12 +28,11 @@ public class ReviewRepository {
         return Optional.ofNullable(review);
     }
 
-    public Optional<Review> existsByTitleAndUserId(String title, Long userId) {
+    public Integer existsByTitleAndUserId(Long userId, String title) {
         Map<String, Object> params = new HashMap<>();
-        params.put("title", title);
         params.put("userId", userId);
-        Review review = sql.selectOne("Review.existsByTitleAndUserId", params);
-        return Optional.ofNullable(review);
+        params.put("title", title);
+        return sql.selectOne("Review.existsByTitleAndUserId", params);
     }
 
     public List<ReviewDTO> findAllOrderByDateDesc(Long userId, Pageable pageable) {

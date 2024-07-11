@@ -27,8 +27,8 @@ public class ReviewFacade {
         return reviewRepository.findById(id);
     }
 
-    public Optional<Review> existsReviewByTitleAndUserId(String title, Long userId) {
-        return reviewRepository.existsByTitleAndUserId(title, userId);
+    public Integer existsReviewByTitleAndUserId(Long userId, String title) {
+        return reviewRepository.existsByTitleAndUserId(userId, title);
     }
 
     public List<ReviewDTO> findAllReviewsOrderByDateDesc(Long userid, Pageable pageable) {

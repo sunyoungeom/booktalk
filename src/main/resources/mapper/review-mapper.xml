@@ -30,8 +30,8 @@
         WHERE id = #{id}
     </select>
 
-    <select id="existsByTitleAndUserId" parameterType="map" resultType="Review">
-        SELECT id, userId, title, author, DATE_FORMAT(date, '%Y-%m-%d') as date, content
+    <select id="existsByTitleAndUserId" parameterType="map" resultType="Integer">
+        SELECT id
         FROM reviews
         WHERE userId = #{userId} AND title = #{title}
     </select>

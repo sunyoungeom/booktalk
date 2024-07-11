@@ -5,6 +5,7 @@ import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.dto.ReviewAddDTO;
 import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
+import com.sunyoungeom.booktalk.dto.ReviewUpdateDTO;
 import com.sunyoungeom.booktalk.service.ReviewService;
 import com.sunyoungeom.booktalk.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -41,6 +42,9 @@ public class ReviewApiController {
 
         Long userId = (Long) session.getAttribute("id");
         String author = (String) session.getAttribute("username");
+
+        // 제목 마지막 공백 제거
+        String title = reviewAddDTO.getTitle().replaceAll("\\s+$", "");
 
         // 현재 시간 yyyy-MM-dd HH:mm:ss 형식으로 변환
         LocalDateTime now = LocalDateTime.now();
@@ -89,6 +93,15 @@ public class ReviewApiController {
     }
 
     @GetMapping("/{id}")
+    public ResponseEntity<Object> getReview(
+            @PathVariable(name = "id") Long reviewId) {
+        Long userId = (Long) session.getAttribute("id");
+        Review review = reviewService.existsById(reviewId);
+
+        return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공하였습니다.", review);
+    }
+
+    @GetMapping("/{id}/like")
     public ResponseEntity<Object> getLikedReviews(
             @PathVariable(name = "id") String id,
             Pageable pageable) {
@@ -105,11 +118,17 @@ public class ReviewApiController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(
             @PathVariable(name = "id") Long reviewId,
-            @RequestBody ReviewDTO reviewDTO) {
+            @Valid @RequestBody ReviewUpdateDTO reviewUpdateDTO, BindingResult bindingResult) {
+        // 유효성 검사
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
+        }
 
         Long userId = (Long) session.getAttribute("id");
-        reviewService.update(reviewId, userId, reviewDTO.getContent());
-        return ResponseEntity.status(HttpStatus.OK).build();
+        reviewService.update(reviewId, userId, reviewUpdateDTO.getContent());
+
+        return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰가 수정되었습니다.", reviewUpdateDTO);
     }
 
     @DeleteMapping("/{id}")

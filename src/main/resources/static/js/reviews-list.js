@@ -119,7 +119,7 @@ function createReviewHTML(review) {
 }
 
 function editFunction(id) {
-    window.location.href = '/reviews/edit-init?id=' + id;
+    window.location.href = '/reviews/edit/' + id;
 }
 
 function deleteFunction(id) {

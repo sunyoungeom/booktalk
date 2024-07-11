@@ -7,7 +7,7 @@
     <meta name="og:type" content="website" />
     <meta name="twitter:card" content="photo" />
     <link rel="stylesheet" type="text/css" href="/css/reviews/review-write.css"
-          th:href="@{/css/reviews/review-write.css}" />
+        th:href="@{/css/reviews/review-write.css}" />
     <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/css/styleguide.css" th:href="@{/css/styleguide.css}" />
     <link rel="stylesheet" type="text/css" href="/css/globals.css" th:href="@{/css/globals.css}" />
@@ -16,60 +16,59 @@
 </head>
 
 <body style="margin: 0; background: #ffffff">
-<input type="hidden" id="anPageName" name="page" value="review-write" />
-<div class="container-center-horizontal">
-    <div class="review-write screen">
+    <input type="hidden" id="anPageName" name="page" value="review-write" />
+    <div class="container-center-horizontal">
+        <div class="review-write screen">
 
-        <!-- nav -->
-        <div th:replace="fragments/navbar"></div>
+            <!-- nav -->
+            <div th:replace="fragments/navbar"></div>
 
-        <!-- 리뷰 작성 폼 -->
-        <div class="form">
-            <form onsubmit="submitForm(event)">
+            <!-- 리뷰 작성 폼 -->
+            <div class="form">
+                <form onsubmit="submitForm(event)">
 
-                <div class="profile">
-                    <div class="avatar"><img id="profileImgPath" class="rectangle-1" alt="Image" />
+                    <div class="profile">
+                        <div class="avatar"><img id="profileImgPath" class="rectangle-1" alt="Image" />
+                        </div>
+                        <div class="frame-2610465">
+                            <input type="hidden" id="reviewId" th:value="${reviewId}">
+                            <input type="hidden" id="username" th:value="${session.username}">
+                            <div id="reviewAuthor" class="text-123 small-text" th:text="${session.username}">유저 닉네임
+                            </div>
+
+                            <div id="reviewCreationDate" class="date presetsbody2">2024-01-01</div>
+                        </div>
                     </div>
-                    <div class="frame-2610465">
-                        <input type="hidden" id="reviewId" th:value="${review.id}">
-                        <input type="hidden" id="userId" th:value="${session.id}">
-                        <input type="hidden" id="username" th:value="${session.username}">
-                        <div id="author" class="text-123 small-text" th:text="${session.username}">유저 닉네임</div>
 
-                        <div id="currentDate" class="date presetsbody2" th:text="${review.date}">2024-01-01</div>
+                    <div class="input">
+                        <div class="text-124 small-text">책 제목</div>
+                        <div class="field" style="background-color: #f2f2f2;">
+                            <div id="reviewTitle" class="label presetsbody2">미움받을 용기</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="input">
-                    <div class="text-124 small-text">책 제목</div>
-                    <div class="field" style="background-color: #f2f2f2;">
-                        <input type="hidden" id="currentTitle" th:value="${review.title}">
-                        <div id="title" class="label presetsbody2" th:text="${review.title}">미움받을 용기</div>
-                    </div>
-                </div>
-
-                <div class="x04-multi-line-paragraph-input small-text">
-                    <div class="text-125">내용</div>
-                    <div class="field-1">
-                        <input type="hidden" id="previousContent" th:value="${review.content}">
+                    <div class="x04-multi-line-paragraph-input small-text">
+                        <div class="text-125">내용</div>
+                        <div class="field-1">
+                            <input type="hidden" id="previousContent">
 
                             <textarea type="text" id="reviewContent" name="reviewContent" class="label-1"
-                                      style="height:100%; border:none"></textarea>
+                                style="height:100%; border:none"></textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div style="width:100%; margin-top: 10px;">
-                   <a onclick="previousPage()" class="button-3">
-                       <div class="text-126 valign-text-middle small-text">이전으로</div>
-                    </a>
-                    <button type="submit" class="button-1">
-                        <div class="text-126 valign-text-middle small-text">수정 완료</div>
-                    </button>
-                </div>
-            </form>
+                    <div style="width:100%; margin-top: 10px;">
+                        <a onclick="previousPage()" class="button-3">
+                            <div class="text-126 valign-text-middle small-text">이전으로</div>
+                        </a>
+                        <button type="submit" class="button-1">
+                            <div class="text-126 valign-text-middle small-text">수정 완료</div>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </body>
 
 </html>

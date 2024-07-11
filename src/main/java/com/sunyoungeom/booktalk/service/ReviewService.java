@@ -52,8 +52,8 @@ public class ReviewService {
 
     public Review createReview(Review review, Long userId, String username) {
         // 중복 리뷰 검증
-        Optional<Review> result = validateDuplicateReview(review.getTitle(), userId);
-        if (result.isEmpty()) {
+        Integer result = validateDuplicateReview(userId, review.getTitle());
+        if (result == null) {
             // 리뷰 저장
             reviewFacade.saveReview(review);
             return review;
@@ -63,9 +63,8 @@ public class ReviewService {
         }
     }
 
-    public Optional<Review> validateDuplicateReview(String title, Long userId) {
-        Optional<Review> review = reviewFacade.existsReviewByTitleAndUserId(title, userId);
-        return review;
+    public Integer validateDuplicateReview(Long userId, String title) {
+        return reviewFacade.existsReviewByTitleAndUserId(userId, title);
     }
 
     public List<ReviewDTO> findAllOrderByDateDesc(Long userId, Pageable pageable) {
