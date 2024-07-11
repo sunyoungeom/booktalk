@@ -1,6 +1,5 @@
 package com.sunyoungeom.booktalk.controller;
 
-import com.sunyoungeom.booktalk.common.ApiResponseUtil;
 import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.dto.UserLoginDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
@@ -9,12 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Controller
@@ -40,7 +38,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(UserLoginDTO loginDto, HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) {
+    public String login(@RequestParam(name = "redirectURL", defaultValue = "/") String redirectURL,
+                        UserLoginDTO loginDto,
+                        HttpServletRequest httpServletRequest,
+                        RedirectAttributes redirectAttributes) {
         try {
             Long userId = service.login(loginDto);
             UserDTO userDTO = service.getUserDTOById(userId);
@@ -52,7 +53,9 @@ public class UserController {
             session.setAttribute("userId", userId);
             session.setAttribute("username", userDTO.getNickname());
             session.setAttribute("profileImgPath", userDTO.getProfileImgPath());
-            return "redirect:/";
+
+            String encodedRedirectURL = UriComponentsBuilder.fromUriString(redirectURL).build().encode().toUriString();
+            return "redirect:" + encodedRedirectURL;
 
         } catch (UserException e) {
             // 오류 발생시 오류 메시지 전달

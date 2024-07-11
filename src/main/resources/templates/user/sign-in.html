@@ -21,6 +21,7 @@
                 <div class="overlap-group1">
                     <!-- 로그인 폼 -->
                     <form action="/user/login" method="post">
+                        <input type="hidden" name="redirectURL" th:value="${param.redirectURL}" />
                         <div class="button-primary-with-icon">
                             <div class="frame-1">
                                 <input type="email" id="email" name="email"
