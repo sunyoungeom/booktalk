@@ -111,6 +111,16 @@
   width: 87px;
 }
 
+.sign-in .text-8 {
+  color: #ce5347;
+  font-weight: 400;
+  height: 22px;
+  line-height: 22px;
+  margin-left: 0.4px;
+  margin-top: 19px;
+  white-space: nowrap;
+}
+
 .sign-in .light-button {
   align-items: center;
   background-color: var(--black);

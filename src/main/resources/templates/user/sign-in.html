@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/user/sign-in.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
-    <script th:src="@{/js/sign-in.js}" defer></script>
 </head>
 
 <body style="margin: 0; background: #ffffff">
@@ -20,7 +19,8 @@
                 <h1 class="text-1">로그인</h1>
 
                 <div class="overlap-group1">
-                    <form onsubmit="submitForm(event)">
+                    <!-- 로그인 폼 -->
+                    <form action="/user/login" method="post">
                         <div class="button-primary-with-icon">
                             <div class="frame-1">
                                 <input type="email" id="email" name="email"
@@ -35,14 +35,13 @@
                                     style="border:none; width: 390px;" placeholder="비밀번호를 입력해 주세요">
                             </div>
                         </div>
-                        <div class="text regular13px">
-                            <div class="check">
-                                <div class="shape"></div>
-                                <div class="text-3">이메일 저장</div>
+
+                        <!-- 오류 메시지 -->
+                        <div th:if="${error}">
+                            <div id="errorContainer" class="text-8 valign-text-middle regular13px" th:text="${error}">
                             </div>
-                            <div class="text-4">이메일 찾기</div>
-                            <div class="text-2">비밀번호 찾기</div>
                         </div>
+                        
                         <button type="submit" class="light-button" style="cursor: pointer;">
                             <div class="text-6 valign-text-middle presetsbody2">로그인</div>
                         </button>

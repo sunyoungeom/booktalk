@@ -1,15 +1,20 @@
 package com.sunyoungeom.booktalk.controller;
 
+import com.sunyoungeom.booktalk.common.ApiResponseUtil;
 import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.dto.UserLoginDTO;
+import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -25,19 +30,35 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String signin() {
+    public String loginPage(Model model) {
+        // 오류 메시지가 있을 경우 화면에 출력
+        if (model.containsAttribute("errorMessage")) {
+            Object errorMessage = model.getAttribute("errorMessage");
+            model.addAttribute("error", errorMessage);
+        }
         return "user/sign-in";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody UserLoginDTO loginDto, HttpSession session) {
-        Long userId = service.login(loginDto);
-        UserDTO userDTO = service.getUserDTOById(userId);
+    public String login(UserLoginDTO loginDto, HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) {
+        try {
+            Long userId = service.login(loginDto);
+            UserDTO userDTO = service.getUserDTOById(userId);
 
-        session.setAttribute("id", userId);
-        session.setAttribute("username", userDTO.getNickname());
+            // 로그인 성공시 새로운 세션 생성
+            httpServletRequest.getSession().invalidate();
+            HttpSession session = httpServletRequest.getSession(true);
 
-        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+            session.setAttribute("userId", userId);
+            session.setAttribute("username", userDTO.getNickname());
+            session.setAttribute("profileImgPath", userDTO.getProfileImgPath());
+            return "redirect:/";
+
+        } catch (UserException e) {
+            // 오류 발생시 오류 메시지 전달
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/user/login";
+        }
     }
 
     @GetMapping("/logout")
