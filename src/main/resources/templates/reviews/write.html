@@ -28,11 +28,10 @@
                 <form onsubmit="submitForm(event)">
 
                     <div class="profile">
-                        <div class="avatar"><img id="profileImgPath" class="rectangle-1" alt="Image" />
+                        <div class="avatar"><img id="profileImgPath" class="rectangle-1" alt="Image"
+                                th:src="${session.profileImgPath}" />
                         </div>
                         <div class="frame-2610465">
-                            <input type="hidden" id="userId" th:value="${session.id}">
-                            <input type="hidden" id="username" th:value="${session.username}">
                             <div id="author" class="text-123 small-text" th:text="${session.username}">유저 닉네임</div>
 
                             <div id="currentDate" class="date presetsbody2">2024-01-01</div>

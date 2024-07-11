@@ -2,8 +2,6 @@ package com.sunyoungeom.booktalk.controller;
 
 import com.sunyoungeom.booktalk.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,10 +19,10 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/write")
-    public String write(HttpSession session, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        String title = (String) session.getAttribute("title");
+    public String write(@SessionAttribute(name = "userId") Long userId,
+                        @SessionAttribute(name = "title") String title,
+                        HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         String referer = request.getHeader("Referer");
-        Long userId = (Long) session.getAttribute("id");
 
         // 제목 마지막 공백 제거
         title = title.replaceAll("\\s+$", "");
