@@ -89,8 +89,5 @@ function previousPage() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const profileImg = document.getElementById('profileImgPath');
-    profileImg.src = sessionStorage.getItem('profileImgPath');
     fetchReviews(reviewId);
-
 });

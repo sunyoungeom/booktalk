@@ -23,6 +23,7 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
                         const errorMessage = json.message;
                         console.error(errorMessage);
                         clearContents();
+                        clearPagination();
                         displayErrorMessage(errorMessage);
                         throw new Error(errorMessage);
                     });
@@ -33,14 +34,10 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
         })
         .then((json) => {
             clearContents();
-            if (!json.reviews || json.reviews.length === 0) {
-                throw new Error('리뷰 검색결과가 없습니다.');
-            }
-
-            const reviews = json.reviews.content;
-            const totalElements = json.reviews.totalElements;
+            const reviews = json.data.content;
+            const totalElements = json.data.totalElements;
             reviewsContainer.innerHTML = ''; // 리뷰 목록 초기화
-            currentTitle = '' // 작성자 검색 초기화
+            currentAuthor = '' // 작성자 검색 초기화
 
             reviews.forEach(review => {
                 reviewsContainer.innerHTML += createReviewHTML(review);
@@ -70,8 +67,8 @@ function displayErrorMessage(message) {
 
 function createReviewHTML(review) {
     let editAndDeleteButtons = '';
-    const userId = document.getElementById('userId').value;
-    if (userId == review.userId) {
+    const userId = document.getElementById('session-userId').value;
+    if (userId != null & userId == review.userId) {
         editAndDeleteButtons = `
                 <div class="head">
                     <div class="light-button-3 light-button-5" style="cursor: pointer;" onclick="editFunction(${review.id})">

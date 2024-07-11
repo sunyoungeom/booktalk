@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -66,53 +67,51 @@ public class ReviewApiController {
 
     @GetMapping
     public ResponseEntity<Object> getReviews(
+            @SessionAttribute(name = "userId", required = false) Long userId,
+            @SessionAttribute(name = "username", required = false) String username,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "author", required = false) String author,
             @RequestParam(name = "sortBy", required = false) String sortBy,
+            @RequestParam(name = "liked", required = false) String liked,
             Pageable pageable) {
-
-        Long userId = (Long) session.getAttribute("id");
-        String nickname = userService.getNicknameById(userId);
-
-        if (userId == null || (nickname != null && !nickname.equals(author))) {
-            Page<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, author, sortBy, pageable);
-            if (!reviews.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
+        // 좋아요 한 리뷰 조회
+        if (userId != null && liked != null && liked.equals("true")) {
+            Page<ReviewDTO> reviews = reviewService.findLikedReviewsByUserId(userId, pageable);
+            if (!reviews.get().collect(Collectors.toList()).isEmpty()) {
+                return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공했습니다.", reviews);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
+                return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "리뷰 검색결과가 없습니다.");
             }
-
+        }
+        // 비회원 조회 || 작성자 조건 조회
+        else if (userId == null || (userId != null && username != null && !username.equals(author))) {
+            Page<ReviewDTO> reviews = reviewService.findReviewsWithLikeStatus(userId, title, author, sortBy, pageable);
+            if (!reviews.get().collect(Collectors.toList()).isEmpty()) {
+                return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공했습니다.", reviews);
+            } else {
+                return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "리뷰 검색결과가 없습니다.");
+            }
+        // 본인 작성 리뷰 조회
         } else {
             Page<ReviewDTO> reviews = reviewService.findByUserId(userId, pageable);
             if (!reviews.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
+                return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공했습니다.", reviews);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
+                return ApiResponseUtil.failResponse(HttpStatus.NOT_FOUND, "리뷰 검색결과가 없습니다.");
             }
         }
     }
 
+    // 수정 페이지에서 리뷰 조회
     @GetMapping("/{id}")
     public ResponseEntity<Object> getReview(
+            @SessionAttribute(name = "userId", required = true) Long userId,
             @PathVariable(name = "id") Long reviewId) {
-        Long userId = (Long) session.getAttribute("id");
         Review review = reviewService.existsById(reviewId);
-
-        return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공하였습니다.", review);
-    }
-
-    @GetMapping("/{id}/like")
-    public ResponseEntity<Object> getLikedReviews(
-            @PathVariable(name = "id") String id,
-            Pageable pageable) {
-
-        Long userId = (Long) session.getAttribute("id");
-        Page<ReviewDTO> reviews = reviewService.findLikedReviewsByUserId(userId, pageable);
-        if (!reviews.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("reviews", reviews));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "리뷰 검색결과가 없습니다."));
+        if (userId != review.getUserId()) {
+            return ApiResponseUtil.failResponse(HttpStatus.FORBIDDEN, "작성자만 조회가 가능합니다.");
         }
+        return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공하였습니다.", review);
     }
 
     @PutMapping("/{id}")

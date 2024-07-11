@@ -28,17 +28,19 @@
           <a th:href="@{/mypage/info}" class="nav-link">마이페이지</a>
         </div>
 
-        <div th:if="${session.username == null}">
+        <div th:if="${session.userId == null}">
           <a th:href="@{/user/login}">
             <div class="button">
+              <input id="session-userId" type="hidden">
+              <input id="session-username" type="hidden">
               <div class="nav-button-text valign-text-middle small-text">로그인</div>
             </div>
           </a>
         </div>
 
-        <div th:if="${session.username != null}">
-          <input id="session-userId" type="hidden" th:value="${session.id}">
-          <input id="username" type="hidden" th:value="${session.username}">
+        <div th:if="${session.userId != null}">
+          <input id="session-userId" type="hidden" th:value="${session.userId}">
+          <input id="session-username" type="hidden" th:value="${session.username}">
           <a th:href="@{/user/logout}" onclick="logout()">
             <div class="button">
               <div class="nav-button-text valign-text-middle small-text">로그아웃</div>

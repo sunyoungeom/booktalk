@@ -51,3 +51,8 @@ function setupPagination(totalElements, currentPage) {
         }
     }
 }
+
+function clearPagination() {
+    const paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = '';
+}

@@ -8,7 +8,7 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
     const table = document.querySelector('.table');
     const contentColumns = table.querySelectorAll('.content-column');
 
-    let url = `/api/reviews/${userId}?page=${page}&size=${pageSize}`;
+    let url = `/api/reviews?liked=true&page=${page}&size=${pageSize}`;
 
     const contentColumnNumber = document.getElementById('content-column-number');
     const contentColumnTitle = document.getElementById('content-column-title');
@@ -23,6 +23,8 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
                         const errorMessage = json.message;
                         console.error(errorMessage);
                         clearContents();
+                        clearPagination();
+
                         displayErrorMessage(errorMessage);
                         throw new Error(errorMessage);
                     });
@@ -34,11 +36,9 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
         .then((json) => {
             console.log(json)
             clearContents();
-            if (!json.reviews || json.reviews.length === 0) {
-                throw new Error('리뷰 검색결과가 없습니다.');
-            }
-            const reviews = json.reviews.content;
-            const totalElements = json.reviews.totalElements;
+        
+            const reviews = json.data.content;
+            const totalElements = json.data.totalElements;
 
             reviews.forEach((review, index) => {
                 // 글번호

@@ -28,7 +28,8 @@
                 <form onsubmit="submitForm(event)">
 
                     <div class="profile">
-                        <div class="avatar"><img id="profileImgPath" class="rectangle-1" alt="Image" />
+                        <div class="avatar"><img id="profileImgPath" class="rectangle-1" alt="Image"
+                                th:src="${session.profileImgPath}" />
                         </div>
                         <div class="frame-2610465">
                             <input type="hidden" id="reviewId" th:value="${reviewId}">
@@ -58,10 +59,10 @@
                     </div>
 
                     <div style="width:100%; margin-top: 10px;">
-                        <a onclick="previousPage()" class="button-3">
+                        <a onclick="previousPage()" class="button-3" style="cursor: pointer;">
                             <div class="text-126 valign-text-middle small-text">이전으로</div>
                         </a>
-                        <button type="submit" class="button-1">
+                        <button type="submit" class="button-1" style="cursor: pointer;">
                             <div class="text-126 valign-text-middle small-text">수정 완료</div>
                         </button>
                     </div>
