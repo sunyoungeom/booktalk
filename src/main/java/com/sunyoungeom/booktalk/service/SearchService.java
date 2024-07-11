@@ -61,6 +61,8 @@ public class SearchService {
             // 검색 결과
             for (JsonNode document : documents) {
                 String title = document.path("title").asText();
+                // 제목 마지막 공백 제거
+                title = title.replaceAll("\\s+$", "");
                 String date = document.path("datetime").asText();
                 String imgPath = document.path("thumbnail").asText();
                 String contents = document.path("contents").asText();

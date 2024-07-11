@@ -24,8 +24,8 @@ function submitForm(event) {
     event.preventDefault();
 
     var title = document.getElementById('currentTitle').value;
-    var userId = document.getElementById('userId').value;
-    var author = document.getElementById('username').value;
+    var userId = document.getElementById('session-userId').value;
+    var author = document.getElementById('session-username').value;
     var currentDate = formatDate(new Date());
     var reviewContent = document.getElementById("reviewContent").value;
 

@@ -40,7 +40,7 @@
             </a>
 
           </div>
-          <a th:href="@{/reviews/write}" class="button-2 button-3">
+          <a th:href="@{/reviews/write/{title}(title=${detailBook.title})}" class="button-2 button-3">
             <div class="text-1 valign-text-middle small-text">리뷰 쓰기</div>
           </a>
         </div>

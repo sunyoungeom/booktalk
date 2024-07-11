@@ -54,6 +54,7 @@ public class UserController {
             session.setAttribute("username", userDTO.getNickname());
             session.setAttribute("profileImgPath", userDTO.getProfileImgPath());
 
+            // URL 인코딩
             String encodedRedirectURL = UriComponentsBuilder.fromUriString(redirectURL).build().encode().toUriString();
             return "redirect:" + encodedRedirectURL;
 

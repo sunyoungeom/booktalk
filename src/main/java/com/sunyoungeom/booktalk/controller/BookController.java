@@ -27,8 +27,7 @@ public class BookController {
     @GetMapping("/search")
     public String getBooksSearch(Model model) throws IOException {
         BestsellerScheduler bestsellerScheduler = new BestsellerScheduler();
-        List<Map<String, String>> bestseller
-                = bestsellerScheduler.loadBestsellerFromJson();
+        List<Map<String, String>> bestseller = bestsellerScheduler.loadBestsellerFromJson();
         model.addAttribute("bookList", bestseller);
         model.addAttribute("query", "베스트셀러 TOP20");
         return "books/search";
@@ -44,6 +43,8 @@ public class BookController {
 
     @GetMapping("/detail/{title}")
     public String detail(@PathVariable(name = "title") String title, Model model, HttpSession session) {
+        // 제목 마지막 공백 제거
+        title = title.replaceAll("\\s+$", "");
         List<Book> detailBooks = searchService.search(title, 1);
         Book detailBook = detailBooks.get(0);
         model.addAttribute("detailBook", detailBook);

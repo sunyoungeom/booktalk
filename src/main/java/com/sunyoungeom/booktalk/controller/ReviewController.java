@@ -18,17 +18,16 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping("/write")
+    @GetMapping("/write/{title}")
     public String write(@SessionAttribute(name = "userId") Long userId,
-                        @SessionAttribute(name = "title") String title,
-                        HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+                        @PathVariable(name = "title") String title,
+                        HttpServletRequest request, Model model) {
         String referer = request.getHeader("Referer");
 
         // 제목 마지막 공백 제거
         title = title.replaceAll("\\s+$", "");
 
         if (title != null) {
-            if (referer != null && referer.contains("books/detail")) {
                 Integer reviewId = reviewService.validateDuplicateReview(userId, title);
                 if (reviewId != null) {
                     return "redirect:/reviews/edit/" + reviewId;
@@ -42,8 +41,6 @@ public class ReviewController {
                 return "redirect:/";
             }
         }
-        return "redirect:/";
-    }
 
     @GetMapping("/search")
     public String listSearchByTitle(@RequestParam(name = "title", required = false) String title,
