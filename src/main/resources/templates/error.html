@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1440, maximum-scale=1.0" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <link rel="stylesheet" type="text/css" href="/css/error.css" th:href="@{/css/error.css}" />
+</head>
+
+<body style="margin: 0; background: #ffffff">
+    <input type="hidden" id="anPageName" name="page" value="error" />
+    <div class="container-center-horizontal">
+        <div class="error screen">
+            <div class="overlap-group1">
+                <div class="x404-text">
+                    <h1 class="number" th:text="${errorCode}"></h1>
+                </div>
+                <p class="oops-we-can-seem-to" th:text="${errorMessage}"></p>
+                <a href="/" class="back-to-homepage-btn">
+                    <div class="overlap-group">
+                        <img class="icon" src="/img/error-arrow-icon.svg" alt="icon" />
+                        <div class="back-to-home-page">돌아가기</div>
+                    </div>
+                    <a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
