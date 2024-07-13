@@ -6,21 +6,11 @@ function fetchReviews(reviewId) {
     })
         .then(response => {
             if (!response.ok) {
-                if (response.status === 404) {
-                    return response.json().then(json => {
-                        const errorMessage = json.message;
-                        console.error(errorMessage);
-                        clearContents();
-                        displayErrorMessage(errorMessage);
-                        throw new Error(errorMessage);
-                    });
-                }
                 throw new Error('서버에서 오류 응답을 받았습니다.');
             }
             return response.json();
         })
         .then((data) => {
-            console.log(data)
             const review = data.data;
             const reviewAuthor = document.getElementById('reviewAuthor');
             const reviewCreationDate = document.getElementById('reviewCreationDate');
