@@ -47,4 +47,8 @@ public class ReviewLikesRepository {
         params.put("reviewId", reviewId);
         Integer count = sql.selectOne("ReviewLikes.delete", params);
     }
+
+    public void deleteReview(Long reviewId) {
+        sql.delete("ReviewLikes.deleteReview", reviewId);
+    }
 }

@@ -28,4 +28,8 @@
         DELETE FROM likes WHERE userId = #{userId} AND reviewId = #{reviewId}
     </delete>
 
+    <delete id="deleteReview" parameterType="Long">
+        DELETE FROM likes WHERE reviewId = #{reviewId}
+    </delete>
+
 </mapper>

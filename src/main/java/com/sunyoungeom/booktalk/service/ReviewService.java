@@ -125,6 +125,7 @@ public class ReviewService {
         // 작성자 일치 확인
         checkAuthorMatch(userId, review);
 
+        reviewLikesRepository.deleteReview(reviewId);
         reviewRepository.delete(reviewId);
     }
 
