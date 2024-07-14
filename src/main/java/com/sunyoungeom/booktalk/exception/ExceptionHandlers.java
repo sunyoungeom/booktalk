@@ -1,6 +1,8 @@
 package com.sunyoungeom.booktalk.exception;
 
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +22,12 @@ public class ExceptionHandlers {
     // 404 에러 페이지
     @ExceptionHandler({NoResourceFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView handleNoResourceFoundException(Exception ex, Model model) {
+    public ModelAndView handleNoResourceFoundException(Exception ex, Model model, HttpServletRequest request) throws NoResourceFoundException {
+        // css 예외 제외
+        if (request.getRequestURI().startsWith("/css/")) {
+            throw new NoResourceFoundException(HttpMethod.GET, request.getRequestURI());
+        }
+
         int errorCode = CommonErrorCode.NOT_FOUND_ERROR.getCode();
         String errorMessage = CommonErrorCode.NOT_FOUND_ERROR.getMessage();
 

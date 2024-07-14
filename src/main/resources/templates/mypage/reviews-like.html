@@ -4,14 +4,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=1440, maximum-scale=1.0" />
-  <link rel="shortcut icon" type="image/png" th:href="@{/home/favicon.png}" />
   <meta name="og:type" content="website" />
   <meta name="twitter:card" content="photo" />
-  <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/css/mypage/mypageMenu.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/css/mypage/reviews-my.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/css/styleguide.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/css/globals.css}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/navbar.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/mypage/mypageMenu.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/mypage/reviews-my.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
   <script th:src="@{/js/mypage-like.js}" defer></script>
   <script th:src="@{/js/pagination.js}" defer></script>
 </head>
@@ -22,17 +21,20 @@
     <div class="reviews-my screen">
 
       <div class="overlap-group2">
-        <div th:replace="fragments/navbar :: navbar"></div>
+
+        <!-- nav -->
+        <div th:replace="~{fragments/navbar}"></div>
+
         <h1 class="text-62 inter-semi-bold-black-24px">마이페이지</h1>
       </div>
 
       <div class="flex-row">
         <a th:href="@{/mypage/info}">
-          <img class="avatar" src="/img/avatar.svg" alt="Avatar" />
+          <img class="avatar" src="/img/mypage-info.svg" alt="Avatar" />
         </a>
         <div class="overlap-group1">
           <a th:href="@{/mypage/reviews/my}">
-            <img class="icon" src="/img/-icon.svg" alt="Icon" />
+            <img class="icon" src="/img/mypage-record.svg" alt="Icon" />
           </a>
         </div>
       </div>
@@ -44,16 +46,14 @@
       <div class="flex-row-1">
         <div class="text-91 manrope-bold-mirage-24px">리뷰보기</div>
         <div class="search">
-          <img class="search-1" src="/img/search.svg" alt="search" />
-          <div class="label presetsbody2">Search</div>
         </div>
         <div class="segmented-control">
-          <div class="item-1 item">
+          <a href="/mypage/reviews/my" class="item-1 item">
             <div class="text-65 valign-text-middle small-text">내가쓴</div>
-          </div>
-          <div class="item-3 item">
+          </a>
+          <a href="/mypage/reviews/like" class="item-3 item">
             <div class="text-66 valign-text-middle small-text">좋아요한</div>
-          </div>
+          </a>
         </div>
       </div>
       <div class="overlap-group">

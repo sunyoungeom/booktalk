@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=1442, maximum-scale=1.0" />
   <meta name="og:type" content="website" />
   <meta name="twitter:card" content="photo" />
-  <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/css/fragments/modal.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/css/mypage/mypageMenu.css}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/navbar.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/modal.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/mypage/mypageMenu.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/mypage/info.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
@@ -21,14 +21,15 @@
     <div class="info screen">
 
       <div class="overlap-group1">
+
         <!-- nav -->
-        <div th:replace="fragments/navbar :: navbar"></div>
+        <div th:replace="~{fragments/navbar}"></div>
+
         <div class="text-12 inter-semi-bold-black-24px">마이페이지</div>
 
-        <input type="hidden" th:value="${session.username}">
       </div>
       <!-- mypageMenu -->
-      <div th:replace="fragments/mypageMenu :: mypageMenu"></div>
+      <div th:replace="~{fragments/mypageMenu}"></div>
 
       <div class="text-25 inter-semi-bold-black-24px">회원정보</div>
       <div class="table">
@@ -65,7 +66,7 @@
           </div>
         </div>
         <div class="column-1 column-3">
-          <div  class="head-1 head-3"><img id="profileImgPath" class="image-3" alt="Image" />
+          <div class="head-1 head-3"><img id="profileImgPath" class="image-3" alt="Image" />
           </div>
           <div class="head-1 head-3">
             <div id="nickname" class="text-32 manrope-normal-mirage-16px"></div>
@@ -111,12 +112,8 @@
       </div>
     </div>
   </div>
-
-      <!-- 모달 표시 -->
-      <div id="editModal" style="display: none;"></div>
-
-      <!-- 세션 아이디 -->
-      <input type="hidden" id="userId" th:value="${session.id}">
+  <!-- 모달 표시 -->
+  <div id="editModal" style="display: none;"></div>
 </body>
 
 </html>

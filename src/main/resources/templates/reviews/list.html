@@ -20,6 +20,8 @@
     <input type="hidden" id="anPageName" name="page" value="list" />
     <div class="container-center-horizontal">
         <div class="list screen">
+            
+            <!-- nav -->
             <div th:replace="~{fragments/navbar}"></div>
 
             <!-- 검색 입력 필드 -->
@@ -38,8 +40,11 @@
                 <div id="book-title" class="text-114 inter-semi-bold-black-24px">리뷰 목록</div>
 
                 <div class="x04-dropdown">
-                    <div class="label-1 label-2 presetsbody2">카테고리</div>
-                    <img class="chevron-down" src="/img/chevron-down.svg" alt="chevron-down" />
+                    <div class="label-1 label-2 presetsbody2"></div>
+
+                    <!-- 
+                        <div class="label-1 label-2 presetsbody2"></div>
+                    <img class="chevron-down" src="/img/chevron-down.svg" alt="chevron-down" /> -->
                 </div>
                 <div class="segmented-control">
                     <div id="latest" class="item-1 item" style="cursor: pointer;">

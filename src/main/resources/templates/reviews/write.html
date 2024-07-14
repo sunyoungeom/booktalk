@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=1440, maximum-scale=1.0" />
     <meta name="og:type" content="website" />
     <meta name="twitter:card" content="photo" />
-    <link rel="stylesheet" type="text/css" href="/css/reviews/review-write.css"
-        th:href="@{/css/reviews/review-write.css}" />
-    <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/css/styleguide.css" th:href="@{/css/styleguide.css}" />
-    <link rel="stylesheet" type="text/css" href="/css/globals.css" th:href="@{/css/globals.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/navbar.css}" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reviews/review-write.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/navbar.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
     <script th:src="@{/js/reviews-write.js}" defer></script>
 
 </head>
@@ -21,7 +22,7 @@
         <div class="review-write screen">
 
             <!-- nav -->
-            <div th:replace="fragments/navbar"></div>
+            <div th:replace="~{fragments/navbar}"></div>
 
             <!-- 리뷰 작성 폼 -->
             <div class="form">

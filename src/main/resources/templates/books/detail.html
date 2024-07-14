@@ -4,11 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=1440, maximum-scale=1.0" />
-  <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
   <meta name="og:type" content="website" />
   <meta name="twitter:card" content="photo" />
-  <link rel="stylesheet" type="text/css" href="css/detail.css" th:href="@{/css/books/detail.css}" />
-  <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/books/detail.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/navbar.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
 </head>
@@ -17,28 +16,26 @@
   <input type="hidden" id="anPageName" name="page" value="detail" />
   <div class="container-center-horizontal">
     <div class="detail screen">
-      <div th:replace="fragments/navbar"></div>
+
+      <!-- nav -->
+      <div th:replace="~{fragments/navbar}"></div>
+
       <div class="flex-row">
         <div class="image" th:style="'background-image: url(' + ${detailBook.imgPath} + ');'"></div>
         <div class="overlap-group">
           <div class="copy">
             <div class="product-name inter-semi-bold-black-24px" th:text="${detailBook.title}">미움받을 용기</div>
             <div class="subheading-container small-text">
-              <div class="subheading-3 valign-text-middle small-text">카테고리</div>
-              <div class="subheading-1 valign-text-middle">교양심리</div>
-            </div>
-            <div class="subheading-container-1 small-text">
               <div class="subheading-3 valign-text-middle small-text">저자</div>
               <div class="subheading-2 valign-text-middle" th:text="${detailBook.author}">기시미 이치로, 고가 후미타케</div>
             </div>
-            <div class="subheading-container-1 small-text">
+            <div class="subheading-container small-text">
               <div class="subheading-3 valign-text-middle small-text">발행</div>
               <div class="price presetsbody2" th:text="${detailBook.date}">2014-11-17</div>
             </div>
             <a th:href="@{/reviews/search(title=${detailBook.title})}" class="button-1 button-3">
               <div class="text-1 valign-text-middle small-text">리뷰 목록</div>
             </a>
-
           </div>
           <a th:href="@{/reviews/write/{title}(title=${detailBook.title})}" class="button-2 button-3">
             <div class="text-1 valign-text-middle small-text">리뷰 쓰기</div>

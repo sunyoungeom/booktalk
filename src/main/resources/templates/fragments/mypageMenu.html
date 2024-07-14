@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=1442, maximum-scale=1.0" />
     <meta name="og:type" content="website" />
     <meta name="twitter:card" content="photo" />
-    <link th:href="@{/css/navbar.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/mypage/mypageMenu.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/styleguide.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/globals.css}" />
@@ -18,14 +18,14 @@
 
         <div class="flex-row">
             <a th:href="@{/mypage/info}">
-                <img class="avatar" src="/img/avatar.svg" alt="Avatar" />
+                <img class="avatar" src="/img/mypage-info.svg" alt="Avatar" />
             </a>
 
-            <div class="overlap-group">
                 <a th:href="@{/mypage/reviews/my}">
-                    <img class="icon" src="/img/-icon.svg" alt="Icon" />
-                </a>
+            <div class="overlap-group">
+                    <img class="icon" src="/img/mypage-record.svg" alt="Icon" />
             </div>
+                </a>
         </div>
         <div class="text-container small-text">
 

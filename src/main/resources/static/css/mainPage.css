@@ -1,0 +1,81 @@
+/* screen - mainPage */
+
+.mainPage {
+  align-items: center;
+  background-color: var(--basewhite);
+  display: flex;
+  flex-direction: column;
+  height: 860px;
+  width: 1440px;
+}
+
+.mainPage .header-context-1 {
+  margin-bottom: 24px;
+  display: inline-block;
+  overflow-wrap: break-word;
+  font-family: var(--title-font-family, 'Inter');
+  font-weight: var(--title-font-weight, 700);
+  font-size: var(--title-font-size, 64px);
+  letter-spacing: var(--title-letter-spacing, -1.3px);
+  color: #FFFFFF;
+}
+
+.mainPage .header-context-2 {
+  overflow-wrap: break-word;
+  font-family: var(--subheading-font-family, 'Inter');
+  font-weight: var(--subheading-font-weight, 400);
+  font-size: var(--subheading-font-size, 24px);
+  line-height: var(--subheading-line-height, 1.5);
+  color: #FFFFFF;
+}
+
+.mainPage .header-with-image {
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 100px 0 150px 0;
+    width: 842px;
+    height: 600px;
+    margin: auto;
+}
+
+.mainPage .text-151 {
+  color: var(--basewhite);
+  font-weight: 500;
+  line-height: 24px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.mainPage .copy {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  position: relative;
+  width: 842px;
+  height: 1200px !important;
+}
+
+.mainPage .text-146 {
+  align-self: stretch;
+  color: var(--black);
+  font-weight: 700;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.mainPage .text-147 {
+  align-self: stretch;
+  color: var(--gray);
+  font-weight: 400;
+  line-height: 36px;
+  position: relative;
+  text-align: center;
+}

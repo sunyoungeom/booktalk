@@ -100,8 +100,6 @@
 
 .list .x04-dropdown {
   align-items: center;
-  background-color: var(--basewhite);
-  border: 1px solid;
   border-color: var(--bon-jour);
   border-radius: 8px;
   display: flex;
