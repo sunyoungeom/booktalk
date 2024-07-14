@@ -9,7 +9,8 @@ import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
-import com.sunyoungeom.booktalk.facade.ReviewFacade;
+import com.sunyoungeom.booktalk.repository.ReviewLikesRepository;
+import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewFacade reviewFacade;
+    private final ReviewRepository reviewRepository;
+    private final ReviewLikesRepository reviewLikesRepository;
 
     public Page<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String author, String sortBy, Pageable pageable) {
         List<ReviewDTO> reviews = new ArrayList<>();
@@ -55,7 +56,7 @@ public class ReviewService {
         Integer result = validateDuplicateReview(userId, review.getTitle());
         if (result == null) {
             // 리뷰 저장
-            reviewFacade.saveReview(review);
+            reviewRepository.save(review);
             return review;
         } else {
             // 중복 리뷰인 경우 예외
@@ -64,42 +65,42 @@ public class ReviewService {
     }
 
     public Integer validateDuplicateReview(Long userId, String title) {
-        return reviewFacade.existsReviewByTitleAndUserId(userId, title);
+        return reviewRepository.existsByTitleAndUserId(userId, title);
     }
 
     public List<ReviewDTO> findAllOrderByDateDesc(Long userId, Pageable pageable) {
-        return reviewFacade.findAllReviewsOrderByDateDesc(userId, pageable);
+        return reviewRepository.findAllOrderByDateDesc(userId, pageable);
     }
 
     public List<ReviewDTO> findAllOrderByLikesDesc(Long userId, Pageable pageable) {
-        return reviewFacade.findAllReviewsOrderByLikesDesc(userId, pageable);
-    }
-
-    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, String author, Pageable pageable) {
-        return reviewFacade.findReviewsByTitleOrderByLikesDesc(userId, title, author, pageable);
+        return reviewRepository.findAllOrderByLikesDesc(userId, pageable);
     }
 
     public List<ReviewDTO> findByTitleOrderByDateDesc(Long userId, String title, String author, Pageable pageable) {
-        return reviewFacade.findReviewsByTitleOrderByDateDesc(userId, title, author, pageable);
+        return reviewRepository.findByTitleOrderByDateDesc(userId, title, author, pageable);
+    }
+
+    public List<ReviewDTO> findByTitleOrderByLikesDesc(Long userId, String title, String author, Pageable pageable) {
+        return reviewRepository.findByTitleOrderByLikesDesc(userId, title, author, pageable);
     }
 
     public int countReviews() {
-        return reviewFacade.countReviews();
+        return reviewRepository.countReviews();
     }
 
     public int countReviewsByTitle(String title) {
-        return reviewFacade.countReviewsByTitle(title);
+        return reviewRepository.countReviewsByTitle(title);
     }
 
     public Page<ReviewDTO> findByUserId(Long userId, Pageable pageable) {
-        List<ReviewDTO> reviews = reviewFacade.findReviewsByUserId(userId, pageable);
+        List<ReviewDTO> reviews = reviewRepository.findByUserId(userId, pageable);
         int total = countReviewsByUserId(userId);
         return new PageImpl<>(reviews, pageable, total);
 
     }
 
     public int countReviewsByUserId(Long userId) {
-        return reviewFacade.countReviewsByUserId(userId);
+        return reviewRepository.countReviewsByUserId(userId);
     }
 
     public void update(Long reviewId, Long userId, String content) {
@@ -109,7 +110,7 @@ public class ReviewService {
         checkAuthorMatch(userId, review);
 
         review.setContent(content);
-        reviewFacade.updateReviewContent(review.getId(), content);
+        reviewRepository.update(review.getId(), content);
     }
 
     private void checkAuthorMatch(Long userId, Review review) {
@@ -124,24 +125,24 @@ public class ReviewService {
         // 작성자 일치 확인
         checkAuthorMatch(userId, review);
 
-        reviewFacade.deleteReviewById(reviewId);
+        reviewRepository.delete(reviewId);
     }
 
     public Review existsById(Long id) {
-        Review review = reviewFacade.findReviewById(id)
+        Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
         return review;
     }
 
     public Page<ReviewDTO> findLikedReviewsByUserId(Long userId, Pageable pageable) {
-        List<ReviewDTO> reviews = reviewFacade.findLikedReviewsByUserId(userId, pageable);
-        int totalElements = reviewFacade.countLikedReviews(userId);
+        List<ReviewDTO> reviews = reviewLikesRepository.findLikedReviewsByUserId(userId, pageable);
+        int totalElements = reviewLikesRepository.countLikedReviews(userId);
         return new PageImpl<>(reviews, pageable, totalElements);
     }
 
     @Transactional
     public ReviewLikesDTO likeReview(Long reviewId, Long userId) {
-        Review review = reviewFacade.findReviewById(reviewId)
+        Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
         ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
         if (userId == null) {
@@ -150,18 +151,18 @@ public class ReviewService {
         if (review.getUserId().equals(userId)) {
             throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR.getMessage());
         }
-        boolean alreadyLiked = reviewFacade.findByUserIdAndReviewId(userId, reviewId);
+        boolean alreadyLiked = reviewLikesRepository.findByUserIdAndReviewId(userId, reviewId);
         if (alreadyLiked) {
             reviewLikesDTO.setLiked(false);
             reviewLikesDTO.setLikes(review.getLikes() - 1);
-            reviewFacade.decreaseLikes(reviewId);
-            reviewFacade.deleteReviewLikes(userId, reviewId);
+            reviewRepository.decreaseLikes(reviewId);
+            reviewLikesRepository.delete(userId, reviewId);
         } else {
             reviewLikesDTO.setLiked(true);
             reviewLikesDTO.setLikes(review.getLikes() + 1);
-            reviewFacade.increaseLikes(reviewId);
+            reviewRepository.increaseLikes(reviewId);
             ReviewLikes reviewLikes = new ReviewLikes(userId, reviewId);
-            reviewFacade.saveReviewLikes(reviewLikes);
+            reviewLikesRepository.save(reviewLikes);
         }
         return reviewLikesDTO;
     }
