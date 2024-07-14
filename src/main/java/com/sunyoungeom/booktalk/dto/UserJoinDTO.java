@@ -20,7 +20,7 @@ public class UserJoinDTO {
     private String email;
     // 비밀번호
     @NotBlank(message = "{user.password.notblank}")
-    @Pattern(regexp = "^[a-z0-9]{1,10}$", message = "{user.password.pattern}")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{1,10}$", message = "{user.password.pattern}")
     @Pattern(regexp = "^\\S+$", message = "{user.password.nospace}")
     private String password;
 }

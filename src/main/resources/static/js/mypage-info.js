@@ -150,17 +150,17 @@ function uploadImg() {
 
 // 공통 유효성 검사
 function noSpace(str) {
-  return str.trim().length === 0;
+  return /^\S+$/.test(str);
 }
 
 // 닉네임 유효성 검사
 function validateNickname(nickname) {
-  return /^[a-zA-Z0-9가-힣]{1,6}$/i.test(nickname);
+  return /^[a-zA-Z0-9가-힣]{1,6}$/.test(nickname);
 }
 
 // 비밀번호 유효성 검사
 function validatePassword(password) {
-  return /^[a-z0-9]{1,10}$/i.test(password);
+  return /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{1,10}$/i.test(password);
 }
 
 function openModal(field) {
