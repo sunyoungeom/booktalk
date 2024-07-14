@@ -101,6 +101,13 @@ public class ReviewRepository {
         sql.update("Review.update", params);
     }
 
+    public void updateAuthor(Long userId, String author) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("author", author);
+        sql.update("Review.updateAuthor", params);
+    }
+
     public void delete(Long id) {
         sql.delete("Review.delete", id);
     }

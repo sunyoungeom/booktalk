@@ -6,6 +6,7 @@ import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.dto.UserLoginDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
+import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import com.sunyoungeom.booktalk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,21 +19,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     public User join(User user) {
         // 중복회원 검증
         validateDuplicateUser(user);
         // 회원가입
         user.setSignUpType(UserSignupType.EMAIL.getTypeName());
-        repository.save(user);
+        userRepository.save(user);
 
         return user;
     }
 
     private void validateDuplicateUser(User user) {
-        boolean nicknameExists = repository.existsByNickname(user.getNickname());
-        boolean emailExists = repository.existsByEmail(user.getEmail());
+        boolean nicknameExists = userRepository.existsByNickname(user.getNickname());
+        boolean emailExists = userRepository.existsByEmail(user.getEmail());
 
         if (nicknameExists) {
             throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
@@ -42,7 +44,7 @@ public class UserService {
     }
 
     public Long login(UserLoginDTO loginDto) {
-        User user = repository.findIdByEmail(loginDto.getEmail())
+        User user = userRepository.findIdByEmail(loginDto.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
 
         if (user.getPassword().equals(loginDto.getPassword())) {
@@ -53,25 +55,26 @@ public class UserService {
     }
 
     public User findIdByEmail(String email) {
-        User user = repository.findIdByEmail(email)
+        User user = userRepository.findIdByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
         return user;
     }
 
     public List<User> findAll() {
-        return repository.findAll();
+        return userRepository.findAll();
     }
 
     public void updateNickname(Long id, String newNickname) {
         // 회원조회
         User user = findById(id);
         // 닉네임 중복검사
-        if (repository.existsByNickname(newNickname)) {
+        if (userRepository.existsByNickname(newNickname)) {
             throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
         }
         // 닉네임 업데이트
+        reviewRepository.updateAuthor(user.getId(), newNickname);
         user.setNickname(newNickname);
-        repository.update(id, user);
+        userRepository.update(id, user);
     }
 
     public void updatePassword(Long id, String currentPassword, String newPassword) {
@@ -84,7 +87,7 @@ public class UserService {
             throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
         }
         // 비밀번호 업데이트
-        repository.update(id, user);
+        userRepository.update(id, user);
     }
 
     public void updateProfile(Long id, String profileImgPath) {
@@ -92,19 +95,19 @@ public class UserService {
         User user = findById(id);
         // 프로필 사진 업데이트
         user.setProfileImgPath(profileImgPath);
-        repository.update(id, user);
+        userRepository.update(id, user);
     }
 
     public void deleteUser(Long id) {
         findById(id);
-        repository.delete(id);
+        userRepository.delete(id);
     }
 
     public String getNicknameById(Long id) {
         if (id == null) {
             return null;
         }
-        User user = repository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
         if (user == null) {
             return null;
         }
@@ -126,7 +129,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return repository.findById(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
     }
 }

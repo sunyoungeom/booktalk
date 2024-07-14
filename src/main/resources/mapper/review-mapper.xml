@@ -165,6 +165,12 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateAuthor" parameterType="map">
+        UPDATE reviews
+        SET author = #{author}
+        WHERE userId = #{userId}
+    </update>
+
     <delete id="delete" parameterType="Long">
         DELETE FROM reviews where id=#{id}
     </delete>
