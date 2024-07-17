@@ -1,6 +1,6 @@
 package com.sunyoungeom.booktalk.service;
 
-import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
+import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,24 +28,26 @@ class ReviewServiceTest {
     @Transactional
     void 동시성_테스트() throws InterruptedException {
         int numberOfThreads = 100;
+        CountDownLatch finishLatch = new CountDownLatch(numberOfThreads);
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
-        CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
         for (int i = 0; i < numberOfThreads; i++) {
-            Long userId = (long) i + 3;
-            executorService.submit(() -> {
+            Long userId = (long) i + 200;
+            executorService.execute(() -> {
                 try {
-                    ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(1L, userId);
-                    System.out.println(reviewLikesDTO.getLikes());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    reviewService.likeReview(1L, userId);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 } finally {
-                    latch.countDown();
+                    finishLatch.countDown();
                 }
             });
         }
 
-        latch.await(10, TimeUnit.SECONDS);
-        executorService.shutdown();
+        finishLatch.await(20, TimeUnit.SECONDS);
+
+        Review review = reviewRepository.findById(1L).get();
+        System.out.println("Thread 갯수: " + numberOfThreads);
+        System.out.println("실제 좋아요 수: " + review.getLikes());
     }
 }
