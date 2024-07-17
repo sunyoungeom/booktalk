@@ -14,4 +14,5 @@ public class Review {
     private String date;
     private String content;
     private int likes;
+    private Long version;
 }

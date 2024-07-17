@@ -25,7 +25,7 @@
     </insert>
 
     <select id="findById" parameterType="Long" resultType="Review">
-        SELECT id, userId, title, author, DATE_FORMAT(date, '%Y-%m-%d') as date, content, likes
+        SELECT id, userId, title, author, DATE_FORMAT(date, '%Y-%m-%d') as date, content, likes, version
         FROM reviews
         WHERE id = #{id}
     </select>
@@ -147,16 +147,12 @@
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
-    <update id="increaseLikes" parameterType="Long">
+    <update id="updateLikes" parameterType="map">
         UPDATE reviews
-        SET likes = likes + 1
-        WHERE id = #{id}
-    </update>
-
-    <update id="decreaseLikes" parameterType="Long">
-        UPDATE reviews
-        SET likes = likes - 1
-        WHERE id = #{id}
+        SET likes = likes + #{likeChange},
+        version = version + 1
+        WHERE id = #{reviewId}
+        AND version = #{currentVersion}
     </update>
 
     <update id="update" parameterType="map">

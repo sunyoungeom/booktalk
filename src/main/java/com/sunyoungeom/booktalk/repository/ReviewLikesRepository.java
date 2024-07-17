@@ -17,9 +17,11 @@ public class ReviewLikesRepository {
 
     private final SqlSessionTemplate sql;
 
-    public ReviewLikes save(ReviewLikes reviewLikes) {
-        sql.insert("ReviewLikes.save", reviewLikes);
-        return reviewLikes;
+    public int saveOrUpdateLike(Long userId, Long reviewId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("reviewId", reviewId);
+        return sql.insert("ReviewLikes.saveOrUpdateLike", params);
     }
 
     public List<ReviewDTO> findLikedReviewsByUserId(Long userId, Pageable pageable) {
@@ -37,8 +39,8 @@ public class ReviewLikesRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("reviewId", reviewId);
-        Integer count = sql.selectOne("ReviewLikes.findByUserIdAndReviewId", params);
-        return count != null && count > 0;
+        int result = sql.selectOne("ReviewLikes.findByUserIdAndReviewId", params);
+        return result == 1;
     }
 
     public void delete(Long userId, Long reviewId) {

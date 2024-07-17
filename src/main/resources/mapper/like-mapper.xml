@@ -3,9 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ReviewLikes">
-    <insert id="save" parameterType="ReviewLikes" useGeneratedKeys="true" keyProperty="id" >
-        INSERT INTO likes(userId, reviewId)
-        VALUES (#{userId}, #{reviewId})
+
+    <insert id="saveOrUpdateLike" parameterType="map">
+        INSERT INTO likes (userId, reviewId, liked)
+        VALUES (#{userId}, #{reviewId}, 1)
+        ON DUPLICATE KEY UPDATE liked = IF(liked = 1, 0, 1)
     </insert>
 
     <select id="findLikedReviewsByUserId" resultType="ReviewDTO">
@@ -21,7 +23,7 @@
     </select>
 
     <select id="findByUserIdAndReviewId" parameterType="map" resultType="int">
-        SELECT COUNT(*) FROM likes WHERE userId = #{userId} AND reviewId = #{reviewId}
+        SELECT liked FROM likes WHERE userId = #{userId} AND reviewId = #{reviewId}
     </select>
 
     <delete id="delete" parameterType="map">

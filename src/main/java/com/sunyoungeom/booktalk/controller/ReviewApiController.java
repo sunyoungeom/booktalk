@@ -7,8 +7,6 @@ import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.dto.ReviewUpdateDTO;
 import com.sunyoungeom.booktalk.service.ReviewService;
-import com.sunyoungeom.booktalk.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -139,7 +136,7 @@ public class ReviewApiController {
     @PostMapping("/{id}/likes")
     public ResponseEntity<Object> likeReview(
             @SessionAttribute(name = "userId") Long userId,
-            @PathVariable(name = "id") Long reviewId) {
+            @PathVariable(name = "id") Long reviewId) throws InterruptedException {
         ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(reviewId, userId);
         return ApiResponseUtil.successResponse(HttpStatus.OK, "좋아요가 반영되었습니다.", reviewLikesDTO);
     }

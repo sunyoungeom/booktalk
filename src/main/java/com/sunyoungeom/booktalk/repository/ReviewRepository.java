@@ -86,12 +86,12 @@ public class ReviewRepository {
         return sql.selectList("Review.findByUserId", params);
     }
 
-    public void increaseLikes(Long id) {
-        sql.update("Review.increaseLikes", id);
-    }
-
-    public void decreaseLikes(Long id) {
-        sql.update("Review.decreaseLikes", id);
+    public int updateLikes(Long reviewId, int likeChange, Long currentVersion) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("reviewId", reviewId);
+        params.put("likeChange", likeChange);
+        params.put("currentVersion", currentVersion);
+        return sql.update("Review.updateLikes", params);
     }
 
     public void update(Long id, String content) {
