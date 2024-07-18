@@ -39,8 +39,8 @@ public class ReviewLikesRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("reviewId", reviewId);
-        int result = sql.selectOne("ReviewLikes.findByUserIdAndReviewId", params);
-        return result == 1;
+        Integer result = sql.selectOne("ReviewLikes.findByUserIdAndReviewId", params);
+        return result != null && result == 1;
     }
 
     public void delete(Long userId, Long reviewId) {
