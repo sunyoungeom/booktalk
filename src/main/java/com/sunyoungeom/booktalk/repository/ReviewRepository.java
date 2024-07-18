@@ -86,6 +86,10 @@ public class ReviewRepository {
         return sql.selectList("Review.findByUserId", params);
     }
 
+    public Review findByIdForUpdate(Long reviewId) {
+        return sql.selectOne("Review.findByIdForUpdate", reviewId);
+    }
+
     public int updateLikes(Long reviewId, int likeChange, Long currentVersion) {
         Map<String, Object> params = new HashMap<>();
         params.put("reviewId", reviewId);

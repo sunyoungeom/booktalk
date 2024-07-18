@@ -147,6 +147,13 @@
         LIMIT #{pageable.pageSize} OFFSET #{pageable.offset};
     </select>
 
+    <select id="findByIdForUpdate" resultType="Review">
+        SELECT id, userId, title, author, DATE_FORMAT(date, '%Y-%m-%d') as date, content, likes, version
+        FROM reviews
+        WHERE id = #{id}
+        FOR UPDATE
+    </select>
+
     <update id="updateLikes" parameterType="map">
         UPDATE reviews
         SET likes = likes + #{likeChange},

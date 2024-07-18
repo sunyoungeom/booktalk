@@ -164,17 +164,28 @@ public class ReviewService {
                     throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR.getMessage());
                 }
 
+                // 좋아요 수가 50 이상인 경우 비관적 락 적용
+                if (review.getLikes() >= 50) {
+                    review = reviewRepository.findByIdForUpdate(reviewId);
+                }
+
                 Long currentVersion = review.getVersion(); // 버전 확인
                 boolean alreadyLiked = reviewLikesRepository.findByUserIdAndReviewId(userId, reviewId); // 좋아요 확인
                 int likeChange = alreadyLiked ? -1 : 1; // 좋아요 상태 토글
 
                 // 리뷰 좋아요 수 업데이트 시도
                 int count = reviewRepository.updateLikes(reviewId, likeChange, currentVersion);
+                log.info("리뷰 좋아요 수 업데이트 시도: {}", count);
+
                 // 좋아요 성공시
                 if (count > 0) {
                     reviewLikesRepository.saveOrUpdateLike(userId, reviewId);
+
+                    Review updatedReview = reviewRepository.findById(reviewId)
+                            .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
+
                     reviewLikesDTO.setLiked(!alreadyLiked);
-                    reviewLikesDTO.setLikes(review.getLikes());
+                    reviewLikesDTO.setLikes(updatedReview.getLikes());
                     break;
                 } else {
                     // 업데이트 실패 시 재시도
