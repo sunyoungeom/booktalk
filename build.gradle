@@ -14,8 +14,11 @@ java {
     }
 }
 
-jar {
+bootJar {
     enabled = false
+}
+jar {
+    enabled = true
 }
 
 configurations {
