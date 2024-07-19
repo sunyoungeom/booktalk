@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS likes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     userId BIGINT NOT NULL,
     reviewId BIGINT NOT NULL,
+    liked tinyint(1) NOT NULL,
+    UNIQUE KEY unique_user_review (userId, reviewId),
     FOREIGN KEY (userId) REFERENCES users(id),
     FOREIGN KEY (reviewId) REFERENCES reviews(id)
 );
+
