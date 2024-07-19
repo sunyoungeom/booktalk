@@ -101,7 +101,6 @@ function confirmEdit() {
       if (fieldValue === 'nickname') {
         const nickname = document.getElementById('nickname');
         nickname.textContent = data.data;
-        sessionStorage.setItem('username', data.data);
         alert(data.message);
       }
       // 비밀번호 수정 성공
@@ -137,8 +136,7 @@ function uploadImg() {
     .then(data => {
       // 프로필 사진 수정 성공
       const profileImg = document.getElementById('profileImgPath');
-      profileImg.src = data.profileImgPath;
-      sessionStorage.setItem('profileImgPath', data.profileImgPath);
+      profileImg.src = data.data;
       alert("프로필 사진이 수정되었습니다.");
       cancelModal();
     })
