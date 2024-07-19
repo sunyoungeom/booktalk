@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Data
 @AllArgsConstructor
 @Builder
-public class ApiResponse<T> {
+public class CustomApiResponse<T> {
     private Status status;
     private HttpStatus httpStatus;
     private String message;

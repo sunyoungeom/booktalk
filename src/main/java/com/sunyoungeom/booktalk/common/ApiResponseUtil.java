@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ApiResponseUtil {
-    public static ResponseEntity<Object> createResponse(Status status, HttpStatus httpStatus, String message, Object data) {
-        ApiResponse<Object> response = ApiResponse.<Object>builder()
+    public static ResponseEntity<CustomApiResponse> createResponse(Status status, HttpStatus httpStatus, String message, Object data) {
+        CustomApiResponse<Object> response = CustomApiResponse.<Object>builder()
                 .status(status)
                 .httpStatus(httpStatus)
                 .message(message)
@@ -20,19 +20,19 @@ public class ApiResponseUtil {
         return ResponseEntity.status(httpStatus).body(response);
     }
 
-    public static ResponseEntity<Object> successResponse(HttpStatus httpStatus, String message, Object data) {
+    public static ResponseEntity<CustomApiResponse> successResponse(HttpStatus httpStatus, String message, Object data) {
         return createResponse(Status.SUCCESS, httpStatus, message, data);
     }
 
-    public static ResponseEntity<Object> failResponse(HttpStatus httpStatus, String message) {
+    public static ResponseEntity<CustomApiResponse> failResponse(HttpStatus httpStatus, String message) {
         return createResponse(Status.FAIL, httpStatus, message, null);
     }
 
-    public static ResponseEntity<Object> errorResponse(HttpStatus httpStatus, String message) {
+    public static ResponseEntity<CustomApiResponse> errorResponse(HttpStatus httpStatus, String message) {
         return createResponse(Status.ERROR, httpStatus, message, null);
     }
 
-    public static ResponseEntity<Object> validatedErrorResponse(String message, BindingResult bindingResult) {
+    public static ResponseEntity<CustomApiResponse> validatedErrorResponse(String message, BindingResult bindingResult) {
         List<String> errorMessages = bindingResult.getAllErrors().stream()
                 .map(ObjectError::getDefaultMessage)
                 .collect(Collectors.toList());
