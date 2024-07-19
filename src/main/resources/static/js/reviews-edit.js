@@ -49,7 +49,7 @@ function submitForm(event) {
     };
 
     fetch('/api/reviews/' + reviewId, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },

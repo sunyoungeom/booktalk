@@ -1,11 +1,13 @@
 package com.sunyoungeom.booktalk.controller;
 
 import com.sunyoungeom.booktalk.common.ApiResponseUtil;
+import com.sunyoungeom.booktalk.common.CustomApiResponse;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.dto.*;
 import com.sunyoungeom.booktalk.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +22,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -33,8 +34,13 @@ public class UserApiController {
     private static final String FILE_DIRECTORY = "file/img/";
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@Valid @RequestBody UserJoinDTO user,
-                                             BindingResult bindingResult) {
+    @Operation(summary = "회원 가입", description = "새로운 사용자를 등록하는 API입니다. " +
+            "입력된 사용자 정보에 대해 유효성 검사를 수행하고, 이메일 및 닉네임의 중복 여부를 확인합니다.")
+    @ApiResponse(responseCode = "400", description = "유효성 검사에서 오류가 발생하였습니다.")
+    @ApiResponse(responseCode = "409", description = "이메일 또는 닉네임이 이미 사용중 입니다.")
+    @ApiResponse(responseCode = "201", description = "회원 가입에 성공하였습니다.")
+    public ResponseEntity<CustomApiResponse> createUser(@Valid @RequestBody UserJoinDTO user,
+                                                        BindingResult bindingResult) {
         // 유효성 검사
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
@@ -48,46 +54,70 @@ public class UserApiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUser(@PathVariable(name = "id") Long id) {
+    @Operation(summary = "회원 조회", description = "회원을 조회하는 API입니다.")
+    @ApiResponse(responseCode = "404", description = "해당 ID의 사용자가 존재하지 않습니다.")
+    @ApiResponse(responseCode = "200", description = "회원 조회에 성공하였습니다.")
+    public ResponseEntity<CustomApiResponse> getUser(@PathVariable(name = "id") Long id) {
         UserDTO userDTO = userService.getUserDTOById(id);
         return ApiResponseUtil.successResponse(HttpStatus.OK, "회원조회 성공", userDTO);
     }
 
     @PatchMapping("/{id}/nickname")
-    public ResponseEntity<Object> updateNickname(@PathVariable(name = "id") Long id,
-                                                 @Valid @RequestBody UserNicknameUpdateDTO nicknameUpdateDTO,
-                                                 BindingResult bindingResult,
-                                                 HttpSession session) {
+    @Operation(summary = "닉네임 수정", description = "사용자의 닉네임을 수정하는 API입니다. " +
+            "입력된 닉네임에 대해 유효성 검사를 수행하고, 중복 여부를 확인합니다.")
+    @ApiResponse(responseCode = "400", description = "유효성 검사에서 오류가 발생하였습니다.")
+    @ApiResponse(responseCode = "403", description = "권한이 없는 사용자입니다.")
+    @ApiResponse(responseCode = "404", description = "해당 ID의 사용자가 존재하지 않습니다.")
+    @ApiResponse(responseCode = "200", description = "닉네임 수정에 성공하였습니다.")
+    public ResponseEntity<CustomApiResponse> updateNickname(@PathVariable(name = "id") Long id,
+                                                            @Valid @RequestBody UserNicknameUpdateDTO nicknameUpdateDTO,
+                                                            BindingResult bindingResult,
+                                                            HttpServletRequest request) {
         // 유효성 검사
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
         // 닉네임 업데이트
-        userService.updateNickname(id, nicknameUpdateDTO.getNewNickname());
-        session.setAttribute("username", nicknameUpdateDTO.getNewNickname());
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        userService.updateNickname(userId, id, nicknameUpdateDTO.getNewNickname());
+        request.getSession().setAttribute("username", nicknameUpdateDTO.getNewNickname());
 
         return ApiResponseUtil.successResponse(HttpStatus.OK, "닉네임이 수정되었습니다.", nicknameUpdateDTO.getNewNickname());
     }
 
     @PatchMapping("/{id}/password")
-    public ResponseEntity<Object> updatePassword(@PathVariable(name = "id") Long id,
-                                                 @Valid @RequestBody UserPasswordUpdateDTO passwordUpdateDTO,
-                                                 BindingResult bindingResult) {
+    @Operation(summary = "비밀번호 수정", description = "지정된 사용자 ID를 사용하여 사용자의 비밀번호를 수정하는 API입니다. " +
+            "입력된 비밀번호에 대해 유효성 검사를 수행합니다.")
+    @ApiResponse(responseCode = "400", description = "유효성 검사에서 오류가 발생하였습니다.")
+    @ApiResponse(responseCode = "403", description = "권한이 없는 사용자입니다.")
+    @ApiResponse(responseCode = "404", description = "해당 ID의 사용자가 존재하지 않습니다.")
+    @ApiResponse(responseCode = "200", description = "비밀번호 수정에 성공하였습니다.")
+    public ResponseEntity<CustomApiResponse> updatePassword(@PathVariable(name = "id") Long id,
+                                                            @Valid @RequestBody UserPasswordUpdateDTO passwordUpdateDTO,
+                                                            BindingResult bindingResult,
+                                                            HttpServletRequest request) {
         // 유효성 검사
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
         // 비밀번호 업데이트
-        userService.updatePassword(id, passwordUpdateDTO.getCurrentPassword(), passwordUpdateDTO.getNewPassword());
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        userService.updatePassword(userId, id, passwordUpdateDTO.getCurrentPassword(), passwordUpdateDTO.getNewPassword());
 
         return ApiResponseUtil.successResponse(HttpStatus.OK, "비밀번호가 수정되었습니다.", null);
     }
 
     @PatchMapping("/{id}/profileImg")
-    public ResponseEntity<Object> updateProfileImg(@PathVariable(name = "id") Long id,
-                                                   @RequestParam("file") MultipartFile file) {
+    @Operation(summary = "프로필 사진 수정", description = "사용자의 프로필 사진을 수정하는 API입니다.")
+    @ApiResponse(responseCode = "500", description = "업로드 중 오류가 발생하였습니다.")
+    @ApiResponse(responseCode = "403", description = "권한이 없는 사용자입니다.")
+    @ApiResponse(responseCode = "404", description = "해당 ID의 사용자가 존재하지 않습니다.")
+    @ApiResponse(responseCode = "200", description = "프로필 사진 수정에 성공하였습니다.")
+    public ResponseEntity<CustomApiResponse> updateProfileImg(@PathVariable(name = "id") Long id,
+                                                              @RequestParam("file") MultipartFile file,
+                                                              HttpServletRequest request) {
         // TODO: 업로드 로직 수정 필요
         try {
             File directory = new File(FILE_DIRECTORY);
@@ -120,25 +150,31 @@ public class UserApiController {
             Files.write(filePath, bytes);
 
             String profileImg = "/file/img/" + fileName;
-            userService.updateProfile(id, profileImg);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("profileImgPath", profileImg));
+            // 프로필 사진 업데이트
+            Long userId = (Long) request.getSession().getAttribute("userId");
+            userService.updateProfile(userId, id, profileImg);
+
+            return ApiResponseUtil.successResponse(HttpStatus.OK, "프로필 사진 수정에 성공하였습니다.", profileImg);
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "파일 업로드 중 오류가 발생하였습니다."));
+            return ApiResponseUtil.errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드 중 오류가 발생하였습니다.");
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@SessionAttribute(name = "userId") Long userId,
-                                             @PathVariable(name = "id") Long id,
-                                             HttpServletRequest httpServletRequest) {
-        if (!userId.equals(id)) {
-            return ApiResponseUtil.failResponse(HttpStatus.FORBIDDEN, "회원탈퇴 권한이 없습니다.");
-        }
+    @Operation(summary = "회원 탈퇴", description = "지정된 사용자 ID를 사용하여 사용자를 탈퇴시키는 API입니다. " +
+            "현재 세션의 사용자가 요청한 경우에만 작동합니다.")
+    @ApiResponse(responseCode = "403", description = "권한이 없는 사용자입니다.")
+    @ApiResponse(responseCode = "404", description = "해당 ID의 사용자가 존재하지 않습니다.")
+    @ApiResponse(responseCode = "200", description = "회원 탈퇴에 성공하였습니다.")
+    public ResponseEntity<CustomApiResponse> deleteUser(@PathVariable(name = "id") Long id,
+                                                        HttpServletRequest request) {
         // 회원탈퇴
-        userService.deleteUser(userId);
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        userService.deleteUser(userId, id);
+
         // 세션 무효화
-        httpServletRequest.getSession().invalidate();
+        request.getSession().invalidate();
         return ApiResponseUtil.successResponse(HttpStatus.OK, "회원탈퇴가 완료되었습니다.", null);
     }
 }

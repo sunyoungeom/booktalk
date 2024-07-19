@@ -1,6 +1,5 @@
 package com.sunyoungeom.booktalk.repository;
 
-import com.sunyoungeom.booktalk.domain.ReviewLikes;
 import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
