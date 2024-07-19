@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Slf4j
 @Service
@@ -98,7 +97,6 @@ public class ReviewService {
         List<ReviewDTO> reviews = reviewRepository.findByUserId(userId, pageable);
         int total = countReviewsByUserId(userId);
         return new PageImpl<>(reviews, pageable, total);
-
     }
 
     public int countReviewsByUserId(Long userId) {
@@ -106,33 +104,33 @@ public class ReviewService {
     }
 
     public void update(Long reviewId, Long userId, String content) {
-        // 리뷰 존재 확인
         Review review = existsById(reviewId);
-        // 작성자 일치 확인
-        checkAuthorMatch(userId, review);
+        checkAuthorMatch(userId, review, false);
 
         review.setContent(content);
         reviewRepository.update(review.getId(), content);
     }
 
-    private void checkAuthorMatch(Long userId, Review review) {
-        if (review.getUserId() != userId) {
-            throw new ReviewException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
-        }
-    }
-
     public void deleteReview(Long reviewId, Long userId) {
-        // 리뷰 존재 확인
         Review review = existsById(reviewId);
-        // 작성자 일치 확인
-        checkAuthorMatch(userId, review);
+        checkAuthorMatch(userId, review, false);
 
         reviewLikesRepository.deleteReview(reviewId);
         reviewRepository.delete(reviewId);
     }
 
-    public Review existsById(Long id) {
-        Review review = reviewRepository.findById(id)
+    private void checkAuthorMatch(Long userId, Review review, boolean throwErrorWhenMatch) {
+        // 본인이 작성한 리뷰에 좋아요 시도
+        if (throwErrorWhenMatch && review.getUserId().equals(userId)) {
+            throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR.getMessage());
+            // 권한없는 사용자의 수정, 삭제 시도
+        } else if (!throwErrorWhenMatch && !review.getUserId().equals(userId)) {
+            throw new ReviewException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
+        }
+    }
+
+    public Review existsById(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
         return review;
     }
@@ -143,65 +141,55 @@ public class ReviewService {
         return new PageImpl<>(reviews, pageable, totalElements);
     }
 
-    @Transactional
     public ReviewLikesDTO likeReview(Long reviewId, Long userId) throws InterruptedException {
-        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
+        validateUser(userId);
 
-        // 사용자 체크
+        boolean alreadyLiked = reviewLikesRepository.findByUserIdAndReviewId(userId, reviewId); // 좋아요 확인
+        int success = 0; // 업데이트 성공 확인
+
+        while (success < 1) {
+            try {
+                success = likeReviewWithLock(reviewId, userId, alreadyLiked);
+            } catch (Exception e) {
+                Thread.sleep(50);
+            }
+        }
+
+        // 사용자 좋아요 업데이트
+        reviewLikesRepository.saveOrUpdateLike(userId, reviewId);
+
+        Review updatedReview = existsById(reviewId);
+        ReviewLikesDTO reviewLikesDTO = new ReviewLikesDTO();
+        reviewLikesDTO.setLiked(!alreadyLiked);
+        reviewLikesDTO.setLikes(updatedReview.getLikes());
+
+        return reviewLikesDTO;
+    }
+
+    @Transactional
+    public int likeReviewWithLock(Long reviewId, Long userId, boolean alreadyLiked) {
+        Review review = existsById(reviewId);
+        checkAuthorMatch(userId, review, true);
+        log.info("리뷰 조회 결과: {}", review.toString());
+
+        Long currentVersion = review.getVersion(); // 버전 확인
+        int likeChange = alreadyLiked ? -1 : 1; // 좋아요 상태 토글
+        int success = 0; // 업데이트 성공 확인
+
+        // 좋아요 수가 50 이상인 경우 비관적 락 적용
+        if (review.getLikes() >= 50) {
+            reviewRepository.findByIdForUpdate(reviewId);
+        }
+        // 좋아요 수가 50 미만인 경우 낙관적 락 적용
+        success = reviewRepository.updateLikes(reviewId, likeChange, currentVersion);
+        log.info("리뷰 좋아요 수 업데이트 시도: {}", success);
+
+        return success;
+    }
+
+    private static void validateUser(Long userId) {
         if (userId == null) {
             throw new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
         }
-
-        int retryCount = 3; // 재시도 횟수
-        while (retryCount > 0) {
-            try {
-                Review review = reviewRepository.findById(reviewId)
-                        .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
-                log.info("리뷰 조회 결과: {}", review.toString());
-
-                // 리뷰 작성자 확인
-                if (review.getUserId().equals(userId)) {
-                    throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR.getMessage());
-                }
-
-                // 좋아요 수가 50 이상인 경우 비관적 락 적용
-                if (review.getLikes() >= 50) {
-                    review = reviewRepository.findByIdForUpdate(reviewId);
-                }
-
-                Long currentVersion = review.getVersion(); // 버전 확인
-                boolean alreadyLiked = reviewLikesRepository.findByUserIdAndReviewId(userId, reviewId); // 좋아요 확인
-                int likeChange = alreadyLiked ? -1 : 1; // 좋아요 상태 토글
-
-                // 리뷰 좋아요 수 업데이트 시도
-                int count = reviewRepository.updateLikes(reviewId, likeChange, currentVersion);
-                log.info("리뷰 좋아요 수 업데이트 시도: {}", count);
-
-                // 좋아요 성공시
-                if (count > 0) {
-                    reviewLikesRepository.saveOrUpdateLike(userId, reviewId);
-
-                    Review updatedReview = reviewRepository.findById(reviewId)
-                            .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
-
-                    reviewLikesDTO.setLiked(!alreadyLiked);
-                    reviewLikesDTO.setLikes(updatedReview.getLikes());
-                    break;
-                } else {
-                    // 업데이트 실패 시 재시도
-                    retryCount--;
-                    Thread.sleep(50);
-                }
-            } catch (Exception e) {
-                retryCount--;
-
-                Random random = new Random();
-                int randomDelay = random.nextInt(201) + 100;
-                Thread.sleep(randomDelay);
-
-                e.printStackTrace();
-            }
-        }
-        return reviewLikesDTO;
     }
 }
