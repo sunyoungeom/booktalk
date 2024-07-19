@@ -1,7 +1,7 @@
 package com.sunyoungeom.booktalk.repository;
 
+import com.sunyoungeom.booktalk.BooktalkApplication;
 import com.sunyoungeom.booktalk.domain.User;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = BooktalkApplication.class)
 @Transactional
 class UserRepositoryTest {
 

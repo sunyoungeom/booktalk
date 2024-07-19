@@ -1,5 +1,6 @@
 package com.sunyoungeom.booktalk.service;
 
+import com.sunyoungeom.booktalk.BooktalkApplication;
 import com.sunyoungeom.booktalk.domain.Review;
 import com.sunyoungeom.booktalk.repository.*;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@SpringBootTest
+@SpringBootTest(classes = BooktalkApplication.class)
 class ReviewServiceTest {
 
     @Autowired

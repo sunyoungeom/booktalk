@@ -2,11 +2,13 @@ package com.sunyoungeom.booktalk.scheduler;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sunyoungeom.booktalk.BooktalkApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -18,6 +20,7 @@ import java.util.concurrent.*;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+@SpringBootTest(classes = BooktalkApplication.class)
 class BestsellerSchedulerTest {
     private final String FILE_PATH = "text.json";
     private final Object lockObject = new Object();
