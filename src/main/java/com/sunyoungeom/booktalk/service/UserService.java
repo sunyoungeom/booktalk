@@ -6,6 +6,7 @@ import com.sunyoungeom.booktalk.dto.UserDTO;
 import com.sunyoungeom.booktalk.dto.UserLoginDTO;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.UserErrorCode;
+import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.repository.ReviewRepository;
 import com.sunyoungeom.booktalk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -64,9 +65,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateNickname(Long id, String newNickname) {
-        // 회원조회
-        User user = findById(id);
+    public void updateNickname(Long sessionId, Long userId, String newNickname) {
+        // 회원 조회
+        User user = findById(userId);
+        // 권한 확인
+        validateUserAuthorization(sessionId, userId);
         // 닉네임 중복검사
         if (userRepository.existsByNickname(newNickname)) {
             throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
@@ -74,12 +77,14 @@ public class UserService {
         // 닉네임 업데이트
         reviewRepository.updateAuthor(user.getId(), newNickname);
         user.setNickname(newNickname);
-        userRepository.update(id, user);
+        userRepository.update(userId, user);
     }
 
-    public void updatePassword(Long id, String currentPassword, String newPassword) {
+    public void updatePassword(Long sessionId, Long userId, String currentPassword, String newPassword) {
         // 회원조회
-        User user = findById(id);
+        User user = findById(userId);
+        // 권한 확인
+        validateUserAuthorization(sessionId, userId);
         // 비밀번호 일치 검사
         if (user.getPassword().equals(currentPassword)) {
             user.setPassword(newPassword);
@@ -87,32 +92,30 @@ public class UserService {
             throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
         }
         // 비밀번호 업데이트
-        userRepository.update(id, user);
+        userRepository.update(userId, user);
     }
 
-    public void updateProfile(Long id, String profileImgPath) {
+    public void updateProfile(Long sessionId, Long userId, String profileImgPath) {
         // 회원조회
-        User user = findById(id);
+        User user = findById(userId);
+        // 권한 확인
+        validateUserAuthorization(sessionId, userId);
         // 프로필 사진 업데이트
         user.setProfileImgPath(profileImgPath);
-        userRepository.update(id, user);
+        userRepository.update(userId, user);
     }
 
-    public void deleteUser(Long id) {
-        findById(id);
-        userRepository.delete(id);
+    public void deleteUser(Long sessionId, Long userId) {
+        // 권한 확인
+        validateUserAuthorization(sessionId, userId);
+        findById(userId);
+        userRepository.delete(userId);
     }
 
-    public String getNicknameById(Long id) {
-        if (id == null) {
-            return null;
+    public void validateUserAuthorization(Long sessionId, Long userId) {
+        if (sessionId != userId) {
+            throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
         }
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
-            return null;
-        }
-
-        return user.getNickname();
     }
 
     public UserDTO getUserDTOById(Long id) {
