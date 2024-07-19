@@ -14,7 +14,7 @@ java {
     }
 }
 
-bootJar {
+jar {
     enabled = false
 }
 
