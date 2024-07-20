@@ -8,6 +8,7 @@ spring:
     url: jdbc:mysql://3.36.235.110:3306/booktalk
     username: root
     password: ${MYSQL_SECRET}
+
   sql:
     init:
       mode: always
@@ -20,3 +21,7 @@ server:
 mybatis:
   config-location: classpath:mybatis-config.xml
   mapper-locations: classpath:mapper/*.xml
+
+api:
+  key:
+    kakao-search: ${KAKAO_SEARCH}

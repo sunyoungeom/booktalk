@@ -1,0 +1,125 @@
+/* screen - error */
+
+.screen a {
+    display: contents;
+    text-decoration: none;
+}
+
+.container-center-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    pointer-events: none;
+    width: 100%;
+}
+
+.container-center-horizontal>* {
+    flex-shrink: 0;
+    pointer-events: auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --basewhite: #ffffff;
+    --black: #000000;
+    --shadeswhite: #ffffff;
+    --white: #ffffff;
+
+    --font-size-l: 352px;
+    --font-size-m: 42px;
+    --font-size-s: 18px;
+
+    --font-family-inter: "Inter", Helvetica;
+}
+
+.error {
+    align-items: flex-start;
+    background-color: var(--basewhite);
+    display: flex;
+    height: 860px;
+    width: 1440px;
+}
+
+.error .overlap-group1 {
+    align-items: flex-start;
+    /* background-image: url(../img/shape-bg.png); */
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 860px;
+    padding: 135px 185px;
+    width: 1440px;
+}
+
+.error .x404-text {
+    align-items: flex-start;
+    display: flex;
+    height: 362px;
+    overflow: hidden;
+    width: 626px;
+}
+
+.error .number {
+    -webkit-text-stroke: 1px var(--black);
+    color: #ffffff00;
+    font-family: var(--font-family-inter);
+    font-size: var(--font-size-l);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 362px;
+    margin-left: -1px;
+    margin-top: -1px;
+    white-space: nowrap;
+}
+
+.error .oops-we-can-seem-to {
+    color: var(--black);
+    font-family: var(--font-family-inter);
+    font-size: var(--font-size-m);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 52px;
+    margin-top: 22px;
+    white-space: nowrap;
+}
+
+.error .back-to-homepage-btn {
+    align-items: flex-start;
+    display: flex;
+    height: 72px;
+    justify-content: center;
+    margin-top: 77px;
+    overflow: hidden;
+    width: 332px;
+}
+
+.error .overlap-group {
+    align-items: center;
+    background-color: var(--black);
+    display: flex;
+    gap: 10px;
+    height: 74px;
+    margin-top: -1px;
+    min-width: 334px;
+    padding: 0 67px;
+}
+
+.error .icon {
+    height: 10px;
+    margin-top: 0.36px;
+    width: 24px;
+}
+
+.error .back-to-home-page {
+    color: var(--basewhite);
+    font-family: var(--font-family-inter);
+    font-size: var(--font-size-s);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 28px;
+    text-align: center;
+    width: 150px;
+}

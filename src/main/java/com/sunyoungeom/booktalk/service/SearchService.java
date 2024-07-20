@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,9 @@ public class SearchService {
 
     private final RestTemplate restTemplate;
 
+    @Value("${api.key.kakao-search}")
+    private String apiKey;
+
     @Autowired
     public SearchService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -32,7 +36,6 @@ public class SearchService {
         List<Book> bookList = new ArrayList<>();
         try {
             String url = "https://dapi.kakao.com/v3/search/book";
-            String apiKey = "9991c8dedd8f25708947e17ae3427876";
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                     .queryParam("query", query)
