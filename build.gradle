@@ -57,5 +57,5 @@ dependencies {
 }
 
 tasks.named('bootJar') {
-    mainClass = 'com.sunyoungeom.BooktalkApplication'
+    mainClass = 'com.sunyoungeom.booktalk.BooktalkApplication'
 }
