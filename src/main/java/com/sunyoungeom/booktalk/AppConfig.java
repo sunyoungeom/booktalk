@@ -18,7 +18,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void  addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/file/img/**")
-                .addResourceLocations("file:///Users/sun/Downloads/booktalk/file/img/");
+                .addResourceLocations("file:/home/ubuntu/booktalk/file/img/");
     }
 
     @Override
