@@ -8,10 +8,6 @@ plugins {
 group = 'com.sunyoungeom'
 version = '0.0.1-SNAPSHOT'
 
-springBoot {
-    mainClass = 'com.sunyoungeom.BooktalkApplication'
-}
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -62,6 +58,6 @@ dependencies {
     }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+tasks.named('bootJar') {
+    mainClass = 'com.sunyoungeom.BooktalkApplication'
 }
