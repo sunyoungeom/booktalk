@@ -23,7 +23,12 @@ public class UserController {
     private final UserService service;
 
     @GetMapping("/join")
-    public String signup() {
+    public String signup(Model model) {
+        // 오류 메시지가 있을 경우 화면에 출력
+        if (model.containsAttribute("errorMessage")) {
+            Object errorMessage = model.getAttribute("errorMessage");
+            model.addAttribute("error", errorMessage);
+        }
         return "user/sign-up";
     }
 
@@ -68,7 +73,7 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession(false);
-        if(session != null) {
+        if (session != null) {
             session.invalidate();
         }
         return "redirect:/";

@@ -114,7 +114,7 @@ public class UserService {
 
     public void validateUserAuthorization(Long sessionId, Long userId) {
         if (sessionId != userId) {
-//            throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
+            throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR);
         }
     }
 

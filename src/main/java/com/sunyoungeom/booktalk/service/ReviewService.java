@@ -61,7 +61,7 @@ public class ReviewService {
             return review;
         } else {
             // 중복 리뷰인 경우 예외
-            throw new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR.getMessage());
+            throw new ReviewException(ReviewErrorCode.REVIEW_ALREADY_EXISTS_ERROR);
         }
     }
 
@@ -122,16 +122,16 @@ public class ReviewService {
     private void checkAuthorMatch(Long userId, Review review, boolean throwErrorWhenMatch) {
         // 본인이 작성한 리뷰에 좋아요 시도
         if (throwErrorWhenMatch && review.getUserId().equals(userId)) {
-            throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR.getMessage());
+            throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR);
             // 권한없는 사용자의 수정, 삭제 시도
         } else if (!throwErrorWhenMatch && !review.getUserId().equals(userId)) {
-            throw new ReviewException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
+            throw new ReviewException(CommonErrorCode.ACCESS_DENIED_ERROR);
         }
     }
 
     public Review existsById(Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR.getMessage()));
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND_ERROR));
         return review;
     }
 
@@ -189,7 +189,7 @@ public class ReviewService {
 
     private static void validateUser(Long userId) {
         if (userId == null) {
-            throw new UserException(UserErrorCode.USER_NOT_FOUND_ERROR);
+            throw new ReviewException(UserErrorCode.USER_NOT_FOUND_ERROR);
         }
     }
 }

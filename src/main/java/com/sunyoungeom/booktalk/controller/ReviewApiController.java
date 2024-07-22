@@ -7,6 +7,7 @@ import com.sunyoungeom.booktalk.dto.ReviewAddDTO;
 import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.dto.ReviewUpdateDTO;
+import com.sunyoungeom.booktalk.exception.ReviewException;
 import com.sunyoungeom.booktalk.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -66,7 +67,12 @@ public class ReviewApiController {
                 .content(reviewAddDTO.getContent())
                 .build();
 
-        Review result = reviewService.createReview(review, userId, author);
+        Review result = null;
+        try {
+            result = reviewService.createReview(review, userId, author);
+        } catch (ReviewException e) {
+            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
+        }
 
         return ApiResponseUtil.successResponse(HttpStatus.CREATED, "리뷰가 작성되었습니다.", result);
     }
@@ -118,10 +124,18 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> getReview(@PathVariable(name = "id") Long reviewId,
                                                        HttpServletRequest request) {
         Long userId = (Long) request.getSession().getAttribute("userId");
-        Review review = reviewService.existsById(reviewId);
+
+        Review review = null;
+        try {
+            review = reviewService.existsById(reviewId);
+        } catch (ReviewException e) {
+            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
+        }
+
         if (userId != review.getUserId()) {
             return ApiResponseUtil.failResponse(HttpStatus.FORBIDDEN, "작성자만 조회가 가능합니다.");
         }
+
         return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰 조회에 성공하였습니다.", review);
     }
 
@@ -141,7 +155,11 @@ public class ReviewApiController {
         }
 
         Long userId = (Long) request.getSession().getAttribute("userId");
-        reviewService.update(reviewId, userId, reviewUpdateDTO.getContent());
+        try {
+            reviewService.update(reviewId, userId, reviewUpdateDTO.getContent());
+        } catch (ReviewException e) {
+            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
+        }
 
         return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰가 수정되었습니다.", reviewUpdateDTO);
     }
@@ -154,7 +172,11 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> deleteReview(@PathVariable(name = "id") Long reviewId,
                                                           HttpServletRequest request) {
         Long userId = (Long) request.getSession().getAttribute("userId");
-        reviewService.deleteReview(reviewId, userId);
+        try {
+            reviewService.deleteReview(reviewId, userId);
+        } catch (ReviewException e) {
+            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
+        }
         return ApiResponseUtil.successResponse(HttpStatus.NO_CONTENT, "리뷰가 성공적으로 삭제되었습니다.", "");
     }
 
@@ -166,7 +188,12 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> likeReview(@PathVariable(name = "id") Long reviewId,
                                                         HttpServletRequest request) throws InterruptedException {
         Long userId = (Long) request.getSession().getAttribute("userId");
-        ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(reviewId, userId);
+        ReviewLikesDTO reviewLikesDTO = null;
+        try {
+            reviewLikesDTO = reviewService.likeReview(reviewId, userId);
+        } catch (ReviewException e) {
+            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
+        }
         return ApiResponseUtil.successResponse(HttpStatus.OK, "좋아요가 반영되었습니다.", reviewLikesDTO);
     }
 }

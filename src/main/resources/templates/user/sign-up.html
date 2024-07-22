@@ -47,6 +47,11 @@
             </div>
             <div id="passwordError" class="text-8 valign-text-middle regular13px" style="display:none;">비밀번호가 일치하지 않습니다
             </div>
+            <!-- 오류 메시지 -->
+            <div th:if="${error}">
+              <div id="errorContainer" class="text-8 valign-text-middle regular13px" th:text="${error}">
+              </div>
+            </div>
             <div class="text">
               <input type="checkbox" id="agreeCheckbox" class="text-10 regular13px">가입에 동의합니다
             </div>
