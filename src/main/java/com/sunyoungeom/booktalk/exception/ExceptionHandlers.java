@@ -39,7 +39,6 @@ public class ExceptionHandlers {
 
     // 403 에러 페이지
     @ExceptionHandler({AccessDeniedException.class})
-    @ResponseStatus(FORBIDDEN)
     public ModelAndView handleAccessDeniedException(AccessDeniedException ex, Model model) {
         int errorCode = CommonErrorCode.ACCESS_DENIED_ERROR.getCode();
         String errorMessage = CommonErrorCode.ACCESS_DENIED_ERROR.getMessage();
@@ -52,7 +51,6 @@ public class ExceptionHandlers {
 
     // 500 에러 페이지
     @ExceptionHandler({RuntimeException.class})
-    @ResponseStatus(INTERNAL_SERVER_ERROR)
     public ModelAndView handleAllException(Exception ex, Model model) {
         int errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR.getCode();
         String errorMessage = CommonErrorCode.INTERNAL_SERVER_ERROR.getMessage();
