@@ -4,6 +4,7 @@ import com.sunyoungeom.booktalk.common.ApiResponseUtil;
 import com.sunyoungeom.booktalk.common.CustomApiResponse;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.dto.*;
+import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -79,11 +80,14 @@ public class UserApiController {
             log.info("errors={}", bindingResult);
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
-        // 닉네임 업데이트
-        Long userId = (Long) request.getSession().getAttribute("userId");
-        userService.updateNickname(userId, id, nicknameUpdateDTO.getNewNickname());
-        request.getSession().setAttribute("username", nicknameUpdateDTO.getNewNickname());
-
+        try {
+            // 닉네임 업데이트
+            Long userId = (Long) request.getSession().getAttribute("userId");
+            userService.updateNickname(userId, id, nicknameUpdateDTO.getNewNickname());
+            request.getSession().setAttribute("username", nicknameUpdateDTO.getNewNickname());
+        } catch (UserException e) {
+            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
+        }
         return ApiResponseUtil.successResponse(HttpStatus.OK, "닉네임이 수정되었습니다.", nicknameUpdateDTO.getNewNickname());
     }
 
