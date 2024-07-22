@@ -68,6 +68,7 @@ public class UserApiController {
     @ApiResponse(responseCode = "400", description = "유효성 검사에서 오류가 발생하였습니다.")
     @ApiResponse(responseCode = "403", description = "권한이 없는 사용자입니다.")
     @ApiResponse(responseCode = "404", description = "해당 ID의 사용자가 존재하지 않습니다.")
+    @ApiResponse(responseCode = "409", description = "닉네임이 이미 사용중 입니다.")
     @ApiResponse(responseCode = "200", description = "닉네임 수정에 성공하였습니다.")
     public ResponseEntity<CustomApiResponse> updateNickname(@PathVariable(name = "id") Long id,
                                                             @Valid @RequestBody UserNicknameUpdateDTO nicknameUpdateDTO,
