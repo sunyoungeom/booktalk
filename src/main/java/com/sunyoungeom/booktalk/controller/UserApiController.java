@@ -31,7 +31,7 @@ import java.util.UUID;
 public class UserApiController {
 
     private final UserService userService;
-    private static final String FILE_DIRECTORY = "/file/img/";
+    private static final String FILE_DIRECTORY = "booktalk/file/img/";
 
     @PostMapping
     @Operation(summary = "회원 가입", description = "새로운 사용자를 등록하는 API입니다. " +
