@@ -27,7 +27,7 @@ import java.util.*;
 @EnableScheduling
 @Slf4j
 public class BestsellerScheduler {
-    private static final String FILE_DIRECTORY = "/booktalk/file/best";
+    private static final String FILE_DIRECTORY = "/home/ubuntu/booktalk/file/img/";
     private static final String FILE_NAME = "bestseller_%s.json";
     private final Object lockObject = new Object();
 
