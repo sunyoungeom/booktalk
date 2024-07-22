@@ -99,6 +99,7 @@ function confirmEdit() {
       return response.json();
     })
     .then(data => {
+    console.log(data)
       // 닉네임 수정 성공
       if (fieldValue === 'nickname') {
         const nickname = document.getElementById('nickname');
@@ -112,7 +113,7 @@ function confirmEdit() {
       closeModal();
     })
     .catch(error => {
-      console.error(error.json);
+      console.error(error);
     });
 }
 
