@@ -16,7 +16,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ReviewException.class)
     public ResponseEntity<ErrorResponse> handleReviewException(ReviewException ex) {
-        ErrorCode errorCode = determineErrorCode(ex.getMessage());
+        ErrorCode errorCode = determineErrorCode(ex.getMessage(), "review");
         ErrorResponse errorResponse = makeErrorResponse(errorCode);
         log.warn("handleReviewException: code = {}, message = {}", errorCode.getCode(), ex.getMessage());
         return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
@@ -24,22 +24,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserException.class)
     public ResponseEntity<ErrorResponse> handleUserException(UserException ex) {
-        ErrorCode errorCode = determineErrorCode(ex.getMessage());
+        ErrorCode errorCode = determineErrorCode(ex.getMessage(), "user");
         ErrorResponse errorResponse = makeErrorResponse(errorCode);
         log.warn("handleUserException: code = {}, message = {}", errorCode.getCode(), ex.getMessage());
         return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
     }
 
-    private ErrorCode determineErrorCode(String message) {
-        for (ReviewErrorCode errorCode : ReviewErrorCode.values()) {
-            if (errorCode.getMessage().equals(message)) {
-                return errorCode;
+    private ErrorCode determineErrorCode(String message, String ex) {
+        if (ex.equals("review")) {
+            for (ReviewErrorCode errorCode : ReviewErrorCode.values()) {
+                if (errorCode.getMessage().equals(message)) {
+                    return errorCode;
+                }
             }
         }
-
-        for (UserErrorCode errorCode : UserErrorCode.values()) {
-            if (errorCode.getMessage().equals(message)) {
-                return errorCode;
+        if (ex.equals("user")) {
+            for (UserErrorCode errorCode : UserErrorCode.values()) {
+                if (errorCode.getMessage().equals(message)) {
+                    return errorCode;
+                }
             }
         }
 
