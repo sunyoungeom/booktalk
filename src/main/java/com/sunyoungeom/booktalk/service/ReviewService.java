@@ -189,7 +189,7 @@ public class ReviewService {
 
     private static void validateUser(Long userId) {
         if (userId == null) {
-            throw new ReviewException(UserErrorCode.USER_NOT_FOUND_ERROR);
+            throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR);
         }
     }
 }

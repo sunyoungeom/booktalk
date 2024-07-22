@@ -8,6 +8,7 @@ import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.dto.ReviewUpdateDTO;
 import com.sunyoungeom.booktalk.exception.ReviewException;
+import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -183,7 +184,8 @@ public class ReviewApiController {
     @PostMapping("/{id}/likes")
     @Operation(summary = "리뷰 좋아요", description = "리뷰에 좋아요를 반영하는 API입니다.")
     @ApiResponse(responseCode = "404", description = "해당 ID의 리뷰가 존재하지 않습니다.")
-    @ApiResponse(responseCode = "403", description = "권한이 없는 사용자입니다.")
+    @ApiResponse(responseCode = "403", description = "비회원은 좋아요를 누를 수 없습니다.")
+    @ApiResponse(responseCode = "409", description = "본인이 쓴 리뷰에는 좋아요를 누를 수 없습니다.")
     @ApiResponse(responseCode = "200", description = "리뷰 좋아요에 성공하였습니다.")
     public ResponseEntity<CustomApiResponse> likeReview(@PathVariable(name = "id") Long reviewId,
                                                         HttpServletRequest request) throws InterruptedException {
@@ -191,6 +193,8 @@ public class ReviewApiController {
         ReviewLikesDTO reviewLikesDTO = null;
         try {
             reviewLikesDTO = reviewService.likeReview(reviewId, userId);
+        } catch (UserException e) {
+            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
         } catch (ReviewException e) {
             return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
         }
