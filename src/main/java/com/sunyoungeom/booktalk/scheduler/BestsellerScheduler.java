@@ -27,7 +27,7 @@ import java.util.*;
 @EnableScheduling
 @Slf4j
 public class BestsellerScheduler {
-    private static final String FILE_DIRECTORY = "/home/ubuntu/booktalk/file/img/";
+    private static final String FILE_DIRECTORY = "/home/ubuntu/booktalk/file/best";
     private static final String FILE_NAME = "bestseller_%s.json";
     private final Object lockObject = new Object();
 
@@ -38,6 +38,11 @@ public class BestsellerScheduler {
             String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             String fileName = String.format(FILE_NAME, formattedDate);
             Path filePath = Paths.get(FILE_DIRECTORY, fileName);
+
+            File directory = new File(FILE_DIRECTORY);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
 
             try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_DIRECTORY, fileName), "rw");
                  FileChannel channel = raf.getChannel();
