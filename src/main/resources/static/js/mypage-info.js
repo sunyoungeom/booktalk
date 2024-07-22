@@ -83,7 +83,7 @@ function confirmEdit() {
     body: JSON.stringify(data)
   })
     .then(response => {
-      console.log(`Response status: ${response.status}`);
+      console.log(`Response status: ${response}`);
 
       if (!response.ok) {
         if (response.status === 400 || response.status === 409) {
