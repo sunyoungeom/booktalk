@@ -38,26 +38,26 @@ public class UserService {
         boolean emailExists = userRepository.existsByEmail(user.getEmail());
 
         if (nicknameExists) {
-            throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
+            throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR);
         } else if (emailExists) {
-            throw new UserException(UserErrorCode.EMAIL_ALREADY_EXISTS_ERROR.getMessage());
+            throw new UserException(UserErrorCode.EMAIL_ALREADY_EXISTS_ERROR);
         }
     }
 
     public Long login(UserLoginDTO loginDto) {
         User user = userRepository.findIdByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR));
 
         if (user.getPassword().equals(loginDto.getPassword())) {
             return user.getId();
         } else {
-            throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
+            throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR);
         }
     }
 
     public User findIdByEmail(String email) {
         User user = userRepository.findIdByEmail(email)
-                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR));
         return user;
     }
 
@@ -72,7 +72,7 @@ public class UserService {
         validateUserAuthorization(sessionId, userId);
         // 닉네임 중복검사
         if (userRepository.existsByNickname(newNickname)) {
-            throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR.getMessage());
+            throw new UserException(UserErrorCode.NICKNAME_ALREADY_EXISTS_ERROR);
         }
         // 닉네임 업데이트
         reviewRepository.updateAuthor(user.getId(), newNickname);
@@ -89,7 +89,7 @@ public class UserService {
         if (user.getPassword().equals(currentPassword)) {
             user.setPassword(newPassword);
         } else {
-            throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR.getMessage());
+            throw new UserException(UserErrorCode.INVALID_PASSWORD_ERROR);
         }
         // 비밀번호 업데이트
         userRepository.update(userId, user);
@@ -114,7 +114,7 @@ public class UserService {
 
     public void validateUserAuthorization(Long sessionId, Long userId) {
         if (sessionId != userId) {
-            throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
+//            throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR.getMessage());
         }
     }
 
@@ -133,6 +133,6 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR));
     }
 }
