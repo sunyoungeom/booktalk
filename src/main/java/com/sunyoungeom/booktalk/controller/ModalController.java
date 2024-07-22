@@ -19,7 +19,7 @@ public class ModalController {
         } else if (field.equals("password")) {
             model.addAttribute("field", "비밀번호");
         } else {
-            throw new UserException(UserErrorCode.IMMUTABLE_USER_FIELD.getMessage());
+            throw new UserException(UserErrorCode.IMMUTABLE_USER_FIELD);
         }
         return "fragments/modal :: modal";
     }

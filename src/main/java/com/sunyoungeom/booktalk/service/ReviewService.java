@@ -189,7 +189,7 @@ public class ReviewService {
 
     private static void validateUser(Long userId) {
         if (userId == null) {
-            throw new UserException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
+            throw new UserException(UserErrorCode.USER_NOT_FOUND_ERROR);
         }
     }
 }
