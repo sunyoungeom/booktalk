@@ -51,7 +51,7 @@ public class ExceptionHandlers {
     }
 
     // 500 에러 페이지
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({RuntimeException.class})
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     public ModelAndView handleAllException(Exception ex, Model model) {
         int errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR.getCode();
