@@ -68,12 +68,7 @@ public class ReviewApiController {
                 .content(reviewAddDTO.getContent())
                 .build();
 
-        Review result = null;
-        try {
-            result = reviewService.createReview(review, userId, author);
-        } catch (ReviewException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        Review result = reviewService.createReview(review, userId, author);
 
         return ApiResponseUtil.successResponse(HttpStatus.CREATED, "리뷰가 작성되었습니다.", result);
     }
@@ -125,13 +120,7 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> getReview(@PathVariable(name = "id") Long reviewId,
                                                        HttpServletRequest request) {
         Long userId = (Long) request.getSession().getAttribute("userId");
-
-        Review review = null;
-        try {
-            review = reviewService.existsById(reviewId);
-        } catch (ReviewException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        Review review = reviewService.existsById(reviewId);
 
         if (userId != review.getUserId()) {
             return ApiResponseUtil.failResponse(HttpStatus.FORBIDDEN, "작성자만 조회가 가능합니다.");
@@ -156,12 +145,7 @@ public class ReviewApiController {
         }
 
         Long userId = (Long) request.getSession().getAttribute("userId");
-        try {
-            reviewService.update(reviewId, userId, reviewUpdateDTO.getContent());
-        } catch (ReviewException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
-
+        reviewService.update(reviewId, userId, reviewUpdateDTO.getContent());
         return ApiResponseUtil.successResponse(HttpStatus.OK, "리뷰가 수정되었습니다.", reviewUpdateDTO);
     }
 
@@ -173,11 +157,7 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> deleteReview(@PathVariable(name = "id") Long reviewId,
                                                           HttpServletRequest request) {
         Long userId = (Long) request.getSession().getAttribute("userId");
-        try {
-            reviewService.deleteReview(reviewId, userId);
-        } catch (ReviewException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        reviewService.deleteReview(reviewId, userId);
         return ApiResponseUtil.successResponse(HttpStatus.NO_CONTENT, "리뷰가 성공적으로 삭제되었습니다.", "");
     }
 
@@ -190,14 +170,7 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> likeReview(@PathVariable(name = "id") Long reviewId,
                                                         HttpServletRequest request) throws InterruptedException {
         Long userId = (Long) request.getSession().getAttribute("userId");
-        ReviewLikesDTO reviewLikesDTO = null;
-        try {
-            reviewLikesDTO = reviewService.likeReview(reviewId, userId);
-        } catch (UserException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        } catch (ReviewException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(reviewId, userId);
         return ApiResponseUtil.successResponse(HttpStatus.OK, "좋아요가 반영되었습니다.", reviewLikesDTO);
     }
 }

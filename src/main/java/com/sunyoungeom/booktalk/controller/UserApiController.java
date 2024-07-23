@@ -48,12 +48,8 @@ public class UserApiController {
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
         User createdUser = new User(user.getNickname(), user.getEmail(), user.getPassword());
-        try {
-            // 회원가입
-            userService.join(createdUser);
-        } catch (UserException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        // 회원가입
+        userService.join(createdUser);
         return ApiResponseUtil.successResponse(HttpStatus.CREATED, "회원가입 성공", createdUser);
     }
 
@@ -83,14 +79,10 @@ public class UserApiController {
             log.info("errors={}", bindingResult);
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
-        try {
-            // 닉네임 업데이트
-            Long userId = (Long) request.getSession().getAttribute("userId");
-            userService.updateNickname(userId, id, nicknameUpdateDTO.getNewNickname());
-            request.getSession().setAttribute("username", nicknameUpdateDTO.getNewNickname());
-        } catch (UserException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        // 닉네임 업데이트
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        userService.updateNickname(userId, id, nicknameUpdateDTO.getNewNickname());
+        request.getSession().setAttribute("username", nicknameUpdateDTO.getNewNickname());
         return ApiResponseUtil.successResponse(HttpStatus.OK, "닉네임이 수정되었습니다.", nicknameUpdateDTO.getNewNickname());
     }
 
@@ -110,13 +102,9 @@ public class UserApiController {
             log.info("errors={}", bindingResult);
             return ApiResponseUtil.validatedErrorResponse("유효성 검사 오류", bindingResult);
         }
-        try {
-            // 비밀번호 업데이트
-            Long userId = (Long) request.getSession().getAttribute("userId");
-            userService.updatePassword(userId, id, passwordUpdateDTO.getCurrentPassword(), passwordUpdateDTO.getNewPassword());
-        } catch (UserException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        // 비밀번호 업데이트
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        userService.updatePassword(userId, id, passwordUpdateDTO.getCurrentPassword(), passwordUpdateDTO.getNewPassword());
         return ApiResponseUtil.successResponse(HttpStatus.OK, "비밀번호가 수정되었습니다.", null);
     }
 
@@ -180,17 +168,12 @@ public class UserApiController {
     @ApiResponse(responseCode = "200", description = "회원 탈퇴에 성공하였습니다.")
     public ResponseEntity<CustomApiResponse> deleteUser(@PathVariable(name = "id") Long id,
                                                         HttpServletRequest request) {
-        try {
-            // 회원탈퇴
-            Long userId = (Long) request.getSession().getAttribute("userId");
-            userService.deleteUser(userId, id);
-        } catch (UserException e) {
-            return ApiResponseUtil.errorResponse(e.getHttpStatus(), e.getMessage());
-        }
+        // 회원탈퇴
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        userService.deleteUser(userId, id);
 
         // 세션 무효화
         request.getSession().invalidate();
         return ApiResponseUtil.successResponse(HttpStatus.OK, "회원탈퇴가 완료되었습니다.", null);
-
     }
 }
