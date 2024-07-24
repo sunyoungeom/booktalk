@@ -1,6 +1,5 @@
 package com.sunyoungeom.booktalk.exception;
 
-import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.exception.common.ErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
