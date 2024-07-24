@@ -1,7 +1,5 @@
 package com.sunyoungeom.booktalk.exception;
 
-import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
-import com.sunyoungeom.booktalk.exception.common.ErrorCode;
 import com.sunyoungeom.booktalk.exception.common.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +19,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
     }
 
+    private static ErrorResponse reviewErrorResponse(ReviewException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(e.getCode())
+                .message(e.getMessage())
+                .build();
+        return errorResponse;
+    }
+
     private static ErrorResponse userErrorResponse(UserException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(e.getCode())
@@ -34,13 +40,5 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = userErrorResponse(ex);
         log.warn("handleUserException: code = {}, message = {}", ex.getCode(), ex.getMessage());
         return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
-    }
-
-    private static ErrorResponse reviewErrorResponse(ReviewException e) {
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .code(e.getCode())
-                .message(e.getMessage())
-                .build();
-        return errorResponse;
     }
 }

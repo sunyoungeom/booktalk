@@ -155,7 +155,7 @@ function likeFunction(id) {
             console.log(response)
 
             if (!response.ok) {
-                if (response.status === 400) {
+                if (response.status === 403) {
                     return response.json().then(json => {
                         alert("비회원은 좋아요를 누를 수 없습니다.");
                         throw new Error('비회원은 좋아요를 누를 수 없습니다.');

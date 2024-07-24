@@ -190,7 +190,9 @@ public class ReviewService {
     private static void validateUser(Long userId) {
         log.info("Validating userId: {}", userId);
         if (userId == null) {
+            log.error("예외발생");
             throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR);
         }
+            log.error("예외발생하지 않음");
     }
 }
