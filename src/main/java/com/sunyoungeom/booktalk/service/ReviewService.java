@@ -169,9 +169,9 @@ public class ReviewService {
     @Transactional
     public int likeReviewWithLock(Long reviewId, Long userId, boolean alreadyLiked) {
         Review review = existsById(reviewId);
-        checkAuthorMatch(userId, review, true);
         log.info("userId: {}", userId);
         log.info("ReviewUserId: {}", review.getUserId());
+        checkAuthorMatch(userId, review, true);
 
         log.info("리뷰 조회 결과: {}", review.toString());
 
