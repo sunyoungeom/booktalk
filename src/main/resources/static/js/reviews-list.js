@@ -40,6 +40,7 @@ function fetchReviews(page, title = '', author = '', sortBy = '') {
             currentAuthor = '' // 작성자 검색 초기화
 
             reviews.forEach(review => {
+                console.log(review)
                 reviewsContainer.innerHTML += createReviewHTML(review);
                 if (review.liked) {
                     const heartIcon = document.getElementById(`heartIcon${review.id}`);
