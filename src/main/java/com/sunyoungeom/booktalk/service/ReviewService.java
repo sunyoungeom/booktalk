@@ -170,6 +170,9 @@ public class ReviewService {
     public int likeReviewWithLock(Long reviewId, Long userId, boolean alreadyLiked) {
         Review review = existsById(reviewId);
         checkAuthorMatch(userId, review, true);
+        log.info("userId: {}", userId);
+        log.info("ReviewUserId: {}", review.getUserId());
+
         log.info("리뷰 조회 결과: {}", review.toString());
 
         Long currentVersion = review.getVersion(); // 버전 확인

@@ -176,7 +176,7 @@ function likeFunction(id) {
             const heartIcon = document.getElementById(`heartIcon${reviewId}`);
             const likesCount = document.getElementById(`likesCount${reviewId}`);
             const result = data.data;
-
+            console.log(result)
             if (result.liked) {
                 heartIcon.src = "/img/heart-liked.svg";
             } else {
