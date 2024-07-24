@@ -104,22 +104,19 @@ public class ReviewService {
     }
 
     public void update(Long reviewId, Long userId, String content) {
-        Review review = existsById(reviewId);
-        checkAuthorMatch(userId, review, false);
-
+        Review review = checkAuthorMatch(userId, reviewId, false);
         review.setContent(content);
         reviewRepository.update(review.getId(), content);
     }
 
     public void deleteReview(Long reviewId, Long userId) {
-        Review review = existsById(reviewId);
-        checkAuthorMatch(userId, review, false);
-
+        Review review = checkAuthorMatch(userId, reviewId, false);
         reviewLikesRepository.deleteReview(reviewId);
         reviewRepository.delete(reviewId);
     }
 
-    private void checkAuthorMatch(Long userId, Review review, boolean throwErrorWhenMatch) {
+    private Review checkAuthorMatch(Long userId, Long reviewId, boolean throwErrorWhenMatch) {
+        Review review = existsById(reviewId);
         // 본인이 작성한 리뷰에 좋아요 시도
         if (throwErrorWhenMatch && review.getUserId().equals(userId)) {
             throw new ReviewException(ReviewErrorCode.REVIEW_BY_YOU_ERROR);
@@ -127,6 +124,7 @@ public class ReviewService {
         } else if (!throwErrorWhenMatch && !review.getUserId().equals(userId)) {
             throw new ReviewException(CommonErrorCode.ACCESS_DENIED_ERROR);
         }
+        return review;
     }
 
     public Review existsById(Long reviewId) {
@@ -143,6 +141,7 @@ public class ReviewService {
 
     public ReviewLikesDTO likeReview(Long reviewId, Long userId) throws InterruptedException {
         validateUser(userId);
+        checkAuthorMatch(userId, reviewId, true);
 
         boolean alreadyLiked = reviewLikesRepository.findByUserIdAndReviewId(userId, reviewId); // 좋아요 확인
         int success = 0; // 업데이트 성공 확인
@@ -169,10 +168,6 @@ public class ReviewService {
     @Transactional
     public int likeReviewWithLock(Long reviewId, Long userId, boolean alreadyLiked) {
         Review review = existsById(reviewId);
-        log.info("userId: {}", userId);
-        log.info("ReviewUserId: {}", review.getUserId());
-        checkAuthorMatch(userId, review, true);
-
         log.info("리뷰 조회 결과: {}", review.toString());
 
         Long currentVersion = review.getVersion(); // 버전 확인
@@ -191,11 +186,8 @@ public class ReviewService {
     }
 
     private static void validateUser(Long userId) {
-        log.info("Validating userId: {}", userId);
         if (userId == null) {
-            log.error("예외발생");
             throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR);
         }
-            log.error("예외발생하지 않음");
     }
 }
