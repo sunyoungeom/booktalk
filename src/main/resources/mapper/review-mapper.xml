@@ -39,7 +39,7 @@
     <select id="findAllOrderByDateDesc" resultMap="ReviewMap">
         SELECT r.id, r.userId, r.title, r.author, DATE_FORMAT(r.date, '%Y-%m-%d') AS "date", r.content, r.likes,
         u.PROFILEIMGPATH,
-        CASE WHEN l.userid IS NOT NULL THEN true ELSE false END AS liked
+        CASE WHEN l.liked = 1 THEN true ELSE false END AS liked
         FROM reviews r
         JOIN users u ON r.userId = u.id
         LEFT JOIN likes l ON r.id = l.reviewId
