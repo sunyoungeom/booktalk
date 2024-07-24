@@ -2,6 +2,7 @@ package com.sunyoungeom.booktalk.exception;
 
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
+@Order(2)
 public class ExceptionHandlers {
 
     // 404 에러 페이지
