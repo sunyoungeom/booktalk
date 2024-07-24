@@ -188,6 +188,7 @@ public class ReviewService {
     }
 
     private static void validateUser(Long userId) {
+        log.info("Validating userId: {}", userId);
         if (userId == null) {
             throw new UserException(CommonErrorCode.ACCESS_DENIED_ERROR);
         }
