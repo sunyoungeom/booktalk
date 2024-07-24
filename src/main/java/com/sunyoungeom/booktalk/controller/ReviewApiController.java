@@ -170,7 +170,10 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> likeReview(@PathVariable(name = "id") Long reviewId,
                                                         HttpServletRequest request) throws InterruptedException {
         Long userId = (Long) request.getSession().getAttribute("userId");
+        log.info("userId: {}", userId);
+        log.info("reviewId: {}", reviewId);
         ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(reviewId, userId);
+        log.info("reviewLikesDTO: {}", reviewLikesDTO,reviewLikesDTO);
         return ApiResponseUtil.successResponse(HttpStatus.OK, "좋아요가 반영되었습니다.", reviewLikesDTO);
     }
 }
