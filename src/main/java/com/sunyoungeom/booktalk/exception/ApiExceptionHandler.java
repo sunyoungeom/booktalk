@@ -27,18 +27,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return errorResponse;
     }
 
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ErrorResponse> handleUserException(UserException ex) {
+        ErrorResponse errorResponse = userErrorResponse(ex);
+        log.warn("handleUserException: code = {}, message = {}", ex.getCode(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
+    }
+
     private static ErrorResponse userErrorResponse(UserException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(e.getCode())
                 .message(e.getMessage())
                 .build();
         return errorResponse;
-    }
-
-    @ExceptionHandler(UserException.class)
-    public ResponseEntity<ErrorResponse> handleUserException(UserException ex) {
-        ErrorResponse errorResponse = userErrorResponse(ex);
-        log.warn("handleUserException: code = {}, message = {}", ex.getCode(), ex.getMessage());
-        return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
     }
 }
