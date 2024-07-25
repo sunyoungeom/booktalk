@@ -27,15 +27,42 @@
 ## 주요 기능
 **[ 사용자 ]**
 - 회원가입 및 로그인
+  
+|회원 가입| 로그인 |
+|:---:|:---:|
+|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|
+
 - 회원 정보 수정
+
+|회원 정보 수정| 리뷰 보기 |
+|:---:|:---:|
+![정보수정](https://github.com/user-attachments/assets/b36894cf-78bf-44f7-bece-fa1a85989287)|![마이페이지](https://github.com/user-attachments/assets/03d8c2ec-ed9f-4384-8943-d1ad1ffed3c1)|
+
+
   
 **[ 도서 ]**
 - 스크래핑을 통한 베스트 셀러 출력
 - Kakao API 를 사용한 도서 검색
+  
+|베스트 셀러|도서 검색|
+|:---:|:---:|
+|![베스트셀러](https://github.com/user-attachments/assets/adf12c57-30ff-4a24-91d3-b47e6a8d683c)|![도서검색](https://github.com/user-attachments/assets/b030f9f2-c602-47d6-b517-8ea3ea885b92)|
+
+
 
 **[ 리뷰 ]**
 - 리뷰 CRUD
+
+|리뷰 CRUD-회원|리뷰 CRUD-비회원|
+|:---:|:---:|
+|![리뷰-회원](https://github.com/user-attachments/assets/258cea21-9f1c-45c9-97a6-6a5d0054356c)|![리뷰-비회원](https://github.com/user-attachments/assets/34e2490a-e232-44ea-b279-b0317aba50e9)|
+
 - 좋아요 기능
+
+|좋아요-회원|좋아요-비회원|
+|:---:|:---:|
+![좋아요-회원](https://github.com/user-attachments/assets/f0809c2f-3a33-4484-a8a2-8b52cf096dcb)|![좋아요-비회원](https://github.com/user-attachments/assets/a0db9654-3a56-48d6-9473-b77f2c1cb0f1)|
+
 <div align="right">
   
 [목차로](#목차)
