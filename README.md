@@ -20,6 +20,8 @@
 - [ERD](#erd)
 - [API 명세서](#api-명세서)
 - [결과 및 성과](#결과-및-성과)
+- [문제 해결](#문제-해결)
+
 </br>
 
 ## 주요 기능
@@ -195,7 +197,9 @@
 
 ## 문제 해결
 - 좋아요 기능 개선을 위한 낙관적 락 적용시 문제발생
+  [\[자세히 보기\]](https://github.com/sunyoungeom/booktalk/blob/main/Trouble-Shooting.md#%EC%A2%8B%EC%95%84%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0)
 - 배포 후 REST API 예외 처리가 되지 않는 문제
+  [\[자세히 보기\]](https://github.com/sunyoungeom/booktalk/blob/main/Trouble-Shooting.md#%EB%B0%B0%ED%8F%AC-%ED%9B%84-REST-API-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC%EA%B0%80-%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EB%AC%B8%EC%A0%9C)
 
 <div align="right">
  
