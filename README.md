@@ -20,20 +20,49 @@
 - [ERD](#erd)
 - [API 명세서](#api-명세서)
 - [결과 및 성과](#결과-및-성과)
+- [문제 해결](#문제-해결)
+
 </br>
 
 ## 주요 기능
 **[ 사용자 ]**
 - 회원가입 및 로그인
+  
+|회원 가입| 로그인 |
+|:---:|:---:|
+|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|
+
 - 회원 정보 수정
+
+|회원 정보 수정| 리뷰 보기 |
+|:---:|:---:|
+![정보수정](https://github.com/user-attachments/assets/b36894cf-78bf-44f7-bece-fa1a85989287)|![마이페이지](https://github.com/user-attachments/assets/03d8c2ec-ed9f-4384-8943-d1ad1ffed3c1)|
+
+
   
 **[ 도서 ]**
 - 스크래핑을 통한 베스트 셀러 출력
 - Kakao API 를 사용한 도서 검색
+  
+|베스트 셀러|도서 검색|
+|:---:|:---:|
+|![베스트셀러](https://github.com/user-attachments/assets/adf12c57-30ff-4a24-91d3-b47e6a8d683c)|![도서검색](https://github.com/user-attachments/assets/b030f9f2-c602-47d6-b517-8ea3ea885b92)|
+
+
 
 **[ 리뷰 ]**
 - 리뷰 CRUD
+
+|리뷰 CRUD-회원|리뷰 CRUD-비회원|
+|:---:|:---:|
+|![리뷰-회원](https://github.com/user-attachments/assets/258cea21-9f1c-45c9-97a6-6a5d0054356c)|![리뷰-비회원](https://github.com/user-attachments/assets/34e2490a-e232-44ea-b279-b0317aba50e9)|
+
 - 좋아요 기능
+
+|좋아요-회원|좋아요-비회원|
+|:---:|:---:|
+![좋아요-회원](https://github.com/user-attachments/assets/f0809c2f-3a33-4484-a8a2-8b52cf096dcb)|![좋아요-비회원](https://github.com/user-attachments/assets/a0db9654-3a56-48d6-9473-b77f2c1cb0f1)|
+
 <div align="right">
   
 [목차로](#목차)
@@ -184,6 +213,20 @@
 - `Docker`를 사용하여 `MySQL` 데이터베이스 컨테이너화 및 배포
 - `AWS EC2`에서 애플리케이션을 배포하고 실행하여 서비스 제공
 - `Caddy`를 사용하여 `HTTPS`를 자동으로 설정 및 관리
+
+<div align="right">
+ 
+[목차로](#목차)
+
+</div>
+
+<br>
+
+## 문제 해결
+- 좋아요 기능 개선을 위한 낙관적 락 적용시 문제발생
+  [\[자세히 보기\]](https://github.com/sunyoungeom/booktalk/blob/main/Trouble-Shooting.md#%EC%A2%8B%EC%95%84%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0)
+- 배포 후 REST API 예외 처리가 되지 않는 문제
+  [\[자세히 보기\]](https://github.com/sunyoungeom/booktalk/blob/main/Trouble-Shooting.md#%EB%B0%B0%ED%8F%AC-%ED%9B%84-REST-API-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC%EA%B0%80-%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EB%AC%B8%EC%A0%9C)
 
 <div align="right">
  
