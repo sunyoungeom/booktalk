@@ -30,7 +30,7 @@
   
 |회원 가입| 로그인 |
 |:---:|:---:|
-|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|
+|![회원가입](https://github.com/user-attachments/assets/c04d4926-d27e-4e14-bf71-cb0efac56670)|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|
 
 - 회원 정보 수정
 
