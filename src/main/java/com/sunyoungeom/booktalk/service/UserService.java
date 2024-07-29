@@ -12,6 +12,7 @@ import com.sunyoungeom.booktalk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
 
+    @Transactional
     public User join(User user) {
         // 중복회원 검증
         validateDuplicateUser(user);
@@ -55,16 +57,7 @@ public class UserService {
         }
     }
 
-    public User findIdByEmail(String email) {
-        User user = userRepository.findIdByEmail(email)
-                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND_ERROR));
-        return user;
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
+    @Transactional
     public void updateNickname(Long sessionId, Long userId, String newNickname) {
         // 회원 조회
         User user = findById(userId);
@@ -80,6 +73,7 @@ public class UserService {
         userRepository.update(userId, user);
     }
 
+    @Transactional
     public void updatePassword(Long sessionId, Long userId, String currentPassword, String newPassword) {
         // 회원조회
         User user = findById(userId);
@@ -95,6 +89,7 @@ public class UserService {
         userRepository.update(userId, user);
     }
 
+    @Transactional
     public void updateProfile(Long sessionId, Long userId, String profileImgPath) {
         // 회원조회
         User user = findById(userId);
@@ -105,6 +100,7 @@ public class UserService {
         userRepository.update(userId, user);
     }
 
+    @Transactional
     public void deleteUser(Long sessionId, Long userId) {
         // 권한 확인
         validateUserAuthorization(sessionId, userId);

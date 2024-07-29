@@ -28,6 +28,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewLikesRepository reviewLikesRepository;
 
+    @Transactional(readOnly = true)
     public Page<ReviewDTO> findReviewsWithLikeStatus(Long userId, String title, String author, String sortBy, Pageable pageable) {
         List<ReviewDTO> reviews = new ArrayList<>();
 
@@ -51,6 +52,7 @@ public class ReviewService {
         return new PageImpl<>(reviews, pageable, totalElements);
     }
 
+    @Transactional
     public Review createReview(Review review, Long userId, String username) {
         // 중복 리뷰 검증
         Integer result = validateDuplicateReview(userId, review.getTitle());
@@ -102,12 +104,14 @@ public class ReviewService {
         return reviewRepository.countReviewsByUserId(userId);
     }
 
+    @Transactional
     public void update(Long reviewId, Long userId, String content) {
         Review review = checkAuthorMatch(userId, reviewId, false);
         review.setContent(content);
         reviewRepository.update(review.getId(), content);
     }
 
+    @Transactional
     public void deleteReview(Long reviewId, Long userId) {
         Review review = checkAuthorMatch(userId, reviewId, false);
         reviewLikesRepository.deleteReview(reviewId);
