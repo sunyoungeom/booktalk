@@ -30,7 +30,7 @@
   
 |회원 가입| 로그인 |
 |:---:|:---:|
-|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|
+|![회원가입](https://github.com/user-attachments/assets/c04d4926-d27e-4e14-bf71-cb0efac56670)|![로그인](https://github.com/user-attachments/assets/7080e667-68e0-41c4-9c09-7a298a2f5724)|
 
 - 회원 정보 수정
 
@@ -138,8 +138,8 @@
 
 ## 아키텍처
 <div align=center>
-  
-![image](https://github.com/user-attachments/assets/9730f6d1-edde-4595-bac2-977d197bb422)
+
+![아키텍쳐 001](https://github.com/user-attachments/assets/3114490e-46a5-4aba-b35a-0cfca537399e)
 
 </div>
 
@@ -154,7 +154,7 @@
   
 </br>
 
-![image](https://github.com/user-attachments/assets/236d1199-903f-4449-8c97-86206d336a64)
+![image](https://github.com/user-attachments/assets/b69de8ea-1c05-4638-8af3-f2a268806e81)
 
 </br>
   
@@ -167,9 +167,9 @@
 </div>
 
 ## API 명세서
-<img width="701" alt="image" src="https://github.com/user-attachments/assets/6400c202-2c81-4445-9f1e-813b5dd57759">
+![image](https://github.com/user-attachments/assets/ef9d742d-0e03-4f9b-ac4a-06ea049e739a)
 
-<img width="701" alt="image" src="https://github.com/user-attachments/assets/dd40dab4-eb4c-4760-9642-28981ea6b801">
+![image](https://github.com/user-attachments/assets/968c2454-65f9-4448-842a-14eabad49c49)
 
 - API 명세서 보기: [https://3.36.235.110.nip.io/swagger-ui/index.html#/attendace-controller](https://3.36.235.110.nip.io/swagger-ui/index.html#/attendace-controller)
 <div align="right">
@@ -181,14 +181,14 @@
 ## 결과 및 성과
 **[ 좋아요 ]**
 - `일반글`의 경우 `낙관적 락`으로 데이터 경합 방지
-- `인기글`의 경우 성능 최적화를 위해 `비관적 락`를 사용
+- `인기글`의 경우 성능 최적화를 위해 `비관적 락`을 사용
 
 **[ 리뷰 ]**
 <!-- `쿼리 최적화`를 통해 조회 시 응답 시간 단축 [\[자세히 보기\]](https://github.com/sunyoungeom/booktalk) -->
 - 로그인 `인터셉터`를 활용하여 리뷰 작성 시 로그인 페이지로 리디렉션
 
 **[ 베스트 셀러 ]**
-- 베스트 셀러 스크래핑 결과를 `파일 시스템`에 캐싱하여 로딩 속도를 `약 0.8초 → 0.01초`로 `99%` 향상
+- 베스트 셀러 스크래핑 결과를 `파일 시스템`에 저장하여 로딩 속도를 `약 0.8초 → 0.01초`로 `99%` 향상
 - 스케줄러를 사용한 스크래핑 결과 업데이트시 `동시 접근 문제`를 `FileLock`으로 해결
 
 **[ REST API ]**
