@@ -15,14 +15,11 @@ public class MypageController {
 
     @GetMapping("/reviews/my")
     public String myReview() {
-
         return "mypage/reviews-my";
     }
 
     @GetMapping("/reviews/like")
     public String likeReview() {
         return "mypage/reviews-like";
-
     }
-
 }

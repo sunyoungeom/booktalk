@@ -28,8 +28,6 @@ public class ReviewController {
     public String write(@SessionAttribute(name = "userId") Long userId,
                         @PathVariable(name = "title") String title,
                         HttpServletRequest request, Model model) {
-        String referer = request.getHeader("Referer");
-
         // 제목 마지막 공백 제거
         title = title.replaceAll("\\s+$", "");
 

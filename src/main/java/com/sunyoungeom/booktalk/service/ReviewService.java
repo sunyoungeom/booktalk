@@ -5,7 +5,6 @@ import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.exception.ReviewException;
 import com.sunyoungeom.booktalk.exception.ReviewErrorCode;
-import com.sunyoungeom.booktalk.exception.UserErrorCode;
 import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.exception.common.CommonErrorCode;
 import com.sunyoungeom.booktalk.repository.ReviewLikesRepository;

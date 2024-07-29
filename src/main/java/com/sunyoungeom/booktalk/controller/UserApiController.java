@@ -4,7 +4,6 @@ import com.sunyoungeom.booktalk.common.ApiResponseUtil;
 import com.sunyoungeom.booktalk.common.CustomApiResponse;
 import com.sunyoungeom.booktalk.domain.User;
 import com.sunyoungeom.booktalk.dto.*;
-import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

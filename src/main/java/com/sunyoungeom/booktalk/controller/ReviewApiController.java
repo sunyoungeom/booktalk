@@ -7,8 +7,6 @@ import com.sunyoungeom.booktalk.dto.ReviewAddDTO;
 import com.sunyoungeom.booktalk.dto.ReviewDTO;
 import com.sunyoungeom.booktalk.dto.ReviewLikesDTO;
 import com.sunyoungeom.booktalk.dto.ReviewUpdateDTO;
-import com.sunyoungeom.booktalk.exception.ReviewException;
-import com.sunyoungeom.booktalk.exception.UserException;
 import com.sunyoungeom.booktalk.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -170,10 +168,7 @@ public class ReviewApiController {
     public ResponseEntity<CustomApiResponse> likeReview(@PathVariable(name = "id") Long reviewId,
                                                         HttpServletRequest request) throws InterruptedException {
         Long userId = (Long) request.getSession().getAttribute("userId");
-        log.info("userId: {}", userId);
-        log.info("reviewId: {}", reviewId);
         ReviewLikesDTO reviewLikesDTO = reviewService.likeReview(reviewId, userId);
-        log.info("reviewLikesDTO: {}", reviewLikesDTO,reviewLikesDTO);
         return ApiResponseUtil.successResponse(HttpStatus.OK, "좋아요가 반영되었습니다.", reviewLikesDTO);
     }
 }
